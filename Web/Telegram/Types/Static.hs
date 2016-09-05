@@ -11,3 +11,13 @@ data ChatType = Private
 data ParseMode = Markdown
                | HTML
     deriving (Show)
+
+-- | MIME type for InlineQueryResultVideo
+data VideoMIME = TextHTML
+               | VideoMP4
+    deriving (Show)
+
+-- | MIME type for InlineQueryResultDocument
+data DocumentMIME = ApplicationPDF
+                  | ApplicationZIP
+    deriving (Show)

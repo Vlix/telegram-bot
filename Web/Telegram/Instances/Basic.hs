@@ -4,7 +4,9 @@ module Web.Telegram.Instances.Basic where
 import           Control.Applicative        ((<|>))
 import           Data.Aeson
 import           Data.Aeson.Types           (typeMismatch)
+import           Data.Text                  (unpack)
 import           Data.Maybe                 (isJust)
+import           Data.Monoid                ((<>))
 import qualified Data.HashMap.Strict        as HM
 
 import           Web.Telegram.Types.Basic
@@ -576,9 +578,9 @@ instance FromJSON MessageEntity where
         Just (String "text_mention") -> TextMentionEntity <$> o .: "offset"
                                                           <*> o .: "length"
                                                           <*> o .: "user"
-        Just (String _) -> fail "wrong String in MessageEntity's [type] parameter"
-        Just _          -> fail "wrong type in MessageEntity's [type] parameter"
-        Nothing         -> fail "no [type] parameter in MessageEntity"
+        Just (String wat) -> fail $ "Wrong String \"" <> unpack wat <> "\" in MessageEntity's [type] parameter"
+        Just _          -> fail "Wrong type in MessageEntity's [type] parameter"
+        Nothing         -> fail "No [type] parameter in MessageEntity"
     parseJSON wat = typeMismatch "MessageEntity" wat
 
 instance FromJSON PhotoSize where
