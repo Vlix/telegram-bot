@@ -1,6 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE PatternGuards #-}
-
 -- | This module contains objects which represent data of Telegram Bot API responses
 module Web.Telegram.Types
     ( module Web.Telegram.Types.Basic
