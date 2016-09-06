@@ -1,28 +1,7 @@
 {-# LANGUAGE PatternGuards #-}
 
 -- | This module contains objects which represent data of Telegram Bot API responses
-module Web.Telegram.Types.Basic
-    ( User                  (..)
-      -- * Types
-    , Chat                  (..)
-    , Message               (..)
-    , MessageEntity         (..)
-    , PhotoSize             (..)
-    , Audio                 (..)
-    , Document              (..)
-    , Sticker               (..)
-    , Video                 (..)
-    , Voice                 (..)
-    , Contact               (..)
-    , Location              (..)
-    , Venue                 (..)
-    , UserProfilePhotos     (..)
-    , File                  (..)
-    , ReplyKeyboard         (..)
-    , KeyboardButton        (..)
-    , InlineKeyboardButton  (..)
-    , CallbackQuery         (..)
-    ) where
+module Web.Telegram.Types.Basic where
 
 import           Data.Text                  (Text (..))
 
@@ -40,7 +19,6 @@ data User = User
 data Chat =
   PrivateChat
   { chat_id         :: Int        -- ^ Unique identifier for this chat, not exceeding 1e13 by absolute value
-  --, chat_type       :: ChatType   -- ^ Type of chat, can be either 'Private', 'Group', 'Supergroup' or 'Channel'
   , chat_username   :: Maybe Text -- ^ Username, for private chats and channels if available
   , chat_first_name :: Text       -- ^ First name of the other party in a private chat
   , chat_last_name  :: Maybe Text -- ^ Last name of the other party in a private chat
@@ -52,6 +30,7 @@ data Chat =
   | SuperGroupChat
   { chat_id         :: Int        -- ^ Unique identifier for this chat, not exceeding 1e13 by absolute value
   , chat_title      :: Text       -- ^ Title, for channels and group chats
+  , chat_username   :: Maybe Text -- ^ Username, for private chats and channels if available
   }
   | ChannelChat
   { chat_id         :: Int        -- ^ Unique identifier for this chat, not exceeding 1e13 by absolute value
@@ -367,23 +346,6 @@ data Venue = Venue
   , venue_title         :: Text       -- ^ Name of the venue
   , venue_address       :: Text       -- ^ Address of the venue
   , venue_foursquare_id :: Maybe Text -- ^ Foursquare identifier of the venue
-  } deriving (Show)
-
--- | This object represent a user's profile pictures.
-data UserProfilePhotos = UserProfilePhotos
-  { total_count :: Int           -- ^ Total number of profile pictures the target user has
-  , photos      :: [[PhotoSize]] -- ^ Requested profile pictures (in up to 4 sizes each)
-  } deriving (Show)
-
--- | This object represents a file ready to be downloaded. The file can be downloaded via the link
---   @https://api.telegram.org/file/bot<token>/<file_path>@. It is guaranteed that the link will be valid
---   for at least 1 hour. When the link expires, a new one can be requested by calling 'getFile'.
---
---       Maximum file size to download is 20 MB
-data File = File
-  { file_id   :: Text         -- ^ Unique identifier for this file
-  , file_size :: Maybe Int  -- ^ File size, if known
-  , file_path :: Maybe Text -- ^ File path. Use @https://api.telegram.org/file/bot<token>/<file_path>@ to get the file.
   } deriving (Show)
 
   -- | This object represents a custom keyboard with reply options

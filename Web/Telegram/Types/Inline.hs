@@ -58,11 +58,6 @@ data InputMessageContent =
     , last_name    :: Maybe Text -- ^ Contact's last name
     } deriving (Show)
 
-
--- !!!!!!!!!! THIS IS A REQUEST NOT A STANDARD TYPE !!!!!!!!!! --
---data AnswerInlineQuery =
--- !!!!!!!!!! THIS IS A REQUEST NOT A STANDARD TYPE !!!!!!!!!! --
-
 data InlineQueryResult =
     -- | Represents a link to an article or web page.
     InlineQueryResultArticle

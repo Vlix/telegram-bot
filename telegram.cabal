@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                telegram
-version:             0.1.1.0
+version:             0.1.1.1
 synopsis:            Telegram package with all necessary types to interact with its Bot API
 -- description:         
 license:             MIT
@@ -20,10 +20,14 @@ library
                        Web.Telegram.Types.Basic
                        Web.Telegram.Types.Static
                        Web.Telegram.Types.Inline
+                       Web.Telegram.Types.Requests
+                       Web.Telegram.Types.UpdateRequests
                        Web.Telegram.Instances
                        Web.Telegram.Instances.Basic
                        Web.Telegram.Instances.Static
                        Web.Telegram.Instances.Inline
+                       Web.Telegram.Instances.Requests
+                       Web.Telegram.Instances.UpdateRequests
   -- other-modules:       
   -- other-extensions:    
   build-depends:   base                 >= 4.8  && < 4.9

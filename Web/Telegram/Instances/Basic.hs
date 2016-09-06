@@ -36,10 +36,11 @@ instance ToJSON Chat where
                                             , "type"  .= toJSON Group
                                             , "title" .= title
                                             ]
-    toJSON (SuperGroupChat ident title) = object [ "id"       .= ident
-                                                 , "type"     .= toJSON Supergroup
-                                                 , "title"    .= title
-                                                 ]
+    toJSON (SuperGroupChat ident title username) = object [ "id"       .= ident
+                                                          , "type"     .= toJSON Supergroup
+                                                          , "title"    .= title
+                                                          , "username" .= username
+                                                          ]
     toJSON (ChannelChat ident title username) = object [ "id"       .= ident
                                                        , "type"     .= toJSON Channel
                                                        , "title"    .= title
@@ -332,17 +333,6 @@ instance ToJSON Venue where
                                                               , "foursquare_id" .= foursquare
                                                               ]
 
-instance ToJSON UserProfilePhotos where
-  toJSON (UserProfilePhotos total_count photos) = object [ "total_count" .= total_count
-                                                         , "photos"      .= photos
-                                                         ]
-
-instance ToJSON File where
-    toJSON (File ident size path) = object [ "file_id"   .= ident
-                                           , "file_size" .= size
-                                           , "file_path" .= path
-                                           ]
-
 instance ToJSON ReplyKeyboard where
     toJSON (ReplyKeyboardMarkup buttons resize onetime sel) = object [ "keyboard"          .= buttons
                                                                      , "resize_keyboard"   .= resize
@@ -411,6 +401,7 @@ instance FromJSON Chat where
                                                 <*> o .: "title"
         Just (String "supergroup") -> SuperGroupChat <$> o .: "id"
                                                      <*> o .: "title"
+                                                     <*> o .:? "username"
         Just (String "channel")    -> ChannelChat <$> o .: "id"
                                                   <*> o .: "title"
                                                   <*> o .:? "username"
@@ -651,16 +642,6 @@ instance FromJSON Venue where
                                  <*> o .: "address"
                                  <*> o .:? "foursquare_id" 
     parseJSON wat = typeMismatch "Venue" wat
-
-instance FromJSON UserProfilePhotos where
-  parseJSON (Object o) = UserProfilePhotos <$> o .: "total_count"
-                                           <*> o .: "photos"
-  parseJSON wat = typeMismatch "UserProfilePhotos" wat
-
-instance FromJSON File where
-    parseJSON (Object o) = File <$> o .: "file_id"
-                                <*> o .:? "file_size"
-                                <*> o .:? "file_path"
 
 instance FromJSON ReplyKeyboard where
     parseJSON (Object o) | "hide_keyboard" `HM.lookup` o == Just (Bool True) = ReplyKeyboardHide <$> o .:? "selective"

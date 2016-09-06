@@ -21,3 +21,14 @@ data VideoMIME = TextHTML
 data DocumentMIME = ApplicationPDF
                   | ApplicationZIP
     deriving (Show)
+
+-- | Type of action to broadcast.
+data ChatAction = Typing
+                | UploadPhoto
+                | RecordVideo
+                | UploadVideo
+                | RecordAudio
+                | UploadAudio
+                | UploadDocument
+                | FindLocation
+    deriving (Show)
