@@ -16,13 +16,13 @@ instance ToJSON SendMessageRequest where
     toJSON (SendMessageRequest chat_id              text
                                parse_mode           disable_web_page_preview
                                disable_notification reply_to_message_id
-                               reply_markup) = object [ "chat_id" .= chat_id
-                                                      , "text" .= text
-                                                      , "parse_mode" .= parse_mode
+                               reply_markup) = object [ "chat_id"                  .= chat_id
+                                                      , "text"                     .= text
+                                                      , "parse_mode"               .= parse_mode
                                                       , "disable_web_page_preview" .= disable_web_page_preview
-                                                      , "disable_notification" .= disable_notification
-                                                      , "reply_to_message_id" .= reply_to_message_id
-                                                      , "reply_markup" .= reply_markup
+                                                      , "disable_notification"     .= disable_notification
+                                                      , "reply_to_message_id"      .= reply_to_message_id
+                                                      , "reply_markup"             .= reply_markup
                                                       ]
 
 instance ToJSON ForwardMessageRequest where
@@ -58,7 +58,7 @@ instance ToJSON SendAudioRequest where
 instance ToJSON SendStickerRequest where
   toJSON (SendStickerRequest chat_id             sticker     disable_notification
                              reply_to_message_id reply_markup) = object [ "chat_id"              .= chat_id
-                                                                        , "sticker"                .= sticker
+                                                                        , "sticker"              .= sticker
                                                                         , "disable_notification" .= disable_notification
                                                                         , "reply_to_message_id"  .= reply_to_message_id
                                                                         , "reply_markup"         .= reply_markup
@@ -151,22 +151,11 @@ instance ToJSON AnswerInlineQueryRequest where
                                                                                                 , "switch_pm_parameter" .= switch_pm_parameter
                                                                                                 ]
 
-instance ToJSON UserProfilePhotos where
-  toJSON (UserProfilePhotos total_count photos) = object [ "total_count" .= total_count
-                                                         , "photos"      .= photos
-                                                         ]
-
 instance ToJSON UserProfilePhotosRequest where
   toJSON (UserProfilePhotosRequest user_id offset limit) = object [ "user_id" .= user_id
                                                                   , "offset"  .= offset
                                                                   , "limit"   .= limit
                                                                   ]
-
-instance ToJSON File where
-  toJSON (File ident size path) = object [ "file_id"   .= ident
-                                         , "file_size" .= size
-                                         , "file_path" .= path
-                                         ]
 
 instance ToJSON FileRequest where
   toJSON (FileRequest file_id) = object [ "file_id" .= file_id ]
@@ -329,22 +318,11 @@ instance FromJSON AnswerInlineQueryRequest where
                                                     <*> o .:? "switch_pm_parameter"
     parseJSON wat = typeMismatch "AnswerInlineQueryRequest" wat
 
-instance FromJSON UserProfilePhotos where
-  parseJSON (Object o) = UserProfilePhotos <$> o .: "total_count"
-                                           <*> o .: "photos"
-  parseJSON wat = typeMismatch "UserProfilePhotos" wat
-
 instance FromJSON UserProfilePhotosRequest where
   parseJSON (Object o) = UserProfilePhotosRequest <$> o .: "user_id"
                                                   <*> o .:? "offset"
                                                   <*> o .:? "limit"
   parseJSON wat = typeMismatch "UserProfilePhotosRequest" wat
-
-instance FromJSON File where
-  parseJSON (Object o) = File <$> o .: "file_id"
-                              <*> o .:? "file_size"
-                              <*> o .:? "file_path"
-  parseJSON wat = typeMismatch "File" wat
 
 instance FromJSON FileRequest where
   parseJSON (Object o) = FileRequest <$> o .: "file_id"

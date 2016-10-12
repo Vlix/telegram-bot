@@ -5,22 +5,22 @@ data ChatType = Private
               | Group
               | Supergroup
               | Channel
-    deriving (Show)
+    deriving (Eq, Show)
 
 -- | Parse mode for text message
 data ParseMode = Markdown
                | HTML
-    deriving (Show)
+    deriving (Eq, Show)
 
 -- | MIME type for InlineQueryResultVideo
 data VideoMIME = TextHTML
                | VideoMP4
-    deriving (Show)
+    deriving (Eq, Show)
 
 -- | MIME type for InlineQueryResultDocument
 data DocumentMIME = ApplicationPDF
                   | ApplicationZIP
-    deriving (Show)
+    deriving (Eq, Show)
 
 -- | Type of action to broadcast.
 data ChatAction = Typing
@@ -31,4 +31,12 @@ data ChatAction = Typing
                 | UploadAudio
                 | UploadDocument
                 | FindLocation
-    deriving (Show)
+    deriving (Eq, Show)
+
+-- | Status of ChatMembers
+data ChatMemberStatus = Creator
+                      | Administrator
+                      | Member
+                      | MemberLeft
+                      | MemberKicked
+    deriving (Eq, Show)

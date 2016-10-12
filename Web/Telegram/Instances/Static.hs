@@ -23,8 +23,8 @@ instance ToJSON ChatType where
   toJSON Channel        = String "channel"
 
 instance ToJSON ParseMode where
-  toJSON Markdown = "Markdown"
-  toJSON HTML     = "HTML"
+  toJSON Markdown = String "Markdown"
+  toJSON HTML     = String "HTML"
 
 instance ToJSON VideoMIME where
   toJSON TextHTML = String "text/html"
@@ -35,15 +35,21 @@ instance ToJSON DocumentMIME where
   toJSON ApplicationZIP = String "application/zip"
 
 instance ToJSON ChatAction where
-  toJSON Typing         = "typing"
-  toJSON UploadPhoto    = "upload_photo"
-  toJSON RecordVideo    = "record_video"
-  toJSON UploadVideo    = "upload_video"
-  toJSON RecordAudio    = "record_audio"
-  toJSON UploadAudio    = "upload_audio"
-  toJSON UploadDocument = "upload_document"
-  toJSON FindLocation   = "find_location"
+  toJSON Typing         = String "typing"
+  toJSON UploadPhoto    = String "upload_photo"
+  toJSON RecordVideo    = String "record_video"
+  toJSON UploadVideo    = String "upload_video"
+  toJSON RecordAudio    = String "record_audio"
+  toJSON UploadAudio    = String "upload_audio"
+  toJSON UploadDocument = String "upload_document"
+  toJSON FindLocation   = String "find_location"
 
+instance ToJSON ChatMemberStatus where
+  toJSON Creator       = String "creator"
+  toJSON Administrator = String "administrator" 
+  toJSON Member        = String "member"
+  toJSON MemberLeft    = String "left"
+  toJSON MemberKicked  = String "kicked"
 
 ------------------------
 -- FromJSON INSTANCES --
@@ -86,3 +92,12 @@ instance FromJSON ChatAction where
   parseJSON (String "find_location")   = pure FindLocation
   parseJSON (String wat) = fail $ "Wrong String \"" <> unpack wat <> "\" as ChatAction"
   parseJSON wat = typeMismatch "ChatAction" wat
+
+instance FromJSON ChatMemberStatus where
+  parseJSON (String "creator")        = pure Creator
+  parseJSON (String "administrator" ) = pure Administrator
+  parseJSON (String "member")         = pure Member
+  parseJSON (String "left")           = pure MemberLeft
+  parseJSON (String "kicked")         = pure MemberKicked
+  parseJSON (String wat) = fail $ "Wrong String \"" <> unpack wat <> "\" as ChatAction"
+  parseJSON wat = typeMismatch "ChatMemberStatus" wat

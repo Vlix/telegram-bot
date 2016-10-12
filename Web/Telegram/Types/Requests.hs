@@ -16,7 +16,7 @@ data SendMessageRequest = SendMessageRequest
   , message_disable_notification     :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
   , message_reply_to_message_id      :: Maybe Int           -- ^ If the message is a reply, ID of the original message
   , message_reply_markup             :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-  } deriving (Show)
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'forwardMessage'
 -- | Use this method to forward messages of any kind. On success, the sent Message is returned.
@@ -25,115 +25,115 @@ data ForwardMessageRequest = ForwardMessageRequest
   , forward_from_chat_id         :: Text       -- ^ Unique identifier for the chat where the original message was sent (or channel username in the format @@channelusername@)
   , forward_disable_notification :: Maybe Bool -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
   , forward_message_id           :: Int        -- ^ Unique message identifier
-  } deriving (Show)
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'sendPhoto'
 -- | Use this method to send photos. On success, the sent Message is returned.
 data SendPhotoRequest = SendPhotoRequest
-  { photo_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
-  , photo_photo                :: Text                -- ^ Photo to send. Pass a file_id as String to resend a photo that is already on the Telegram servers
-  , photo_caption              :: Maybe Text          -- ^ Photo caption (may also be used when resending photos by file_id), 0-200 characters.
-  , photo_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-  , photo_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
-  , photo_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-  } deriving (Show)
+  { req_photo_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
+  , req_photo_photo                :: Text                -- ^ Photo to send. Pass a file_id as String to resend a photo that is already on the Telegram servers
+  , req_photo_caption              :: Maybe Text          -- ^ Photo caption (may also be used when resending photos by file_id), 0-200 characters.
+  , req_photo_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+  , req_photo_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
+  , req_photo_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'sendAudio'
 -- | Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. On success, the sent Message is returned.
 -- | Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future. For sending voice messages, use the sendVoice method instead.
 data SendAudioRequest = SendAudioRequest
-  { audio_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
-  , audio_audio                :: Text                -- ^ Audio file to send. Pass a file_id as String to resend an audio that is already on the Telegram servers.
-  , audio_duration             :: Maybe Int           -- ^ Duration of the audio in seconds
-  , audio_performer            :: Maybe Text          -- ^ Performer
-  , audio_title                :: Maybe Text          -- ^ Track name
-  , audio_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-  , audio_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
-  , audio_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-  } deriving (Show)
+  { req_audio_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
+  , req_audio_audio                :: Text                -- ^ Audio file to send. Pass a file_id as String to resend an audio that is already on the Telegram servers.
+  , req_audio_duration             :: Maybe Int           -- ^ Duration of the audio in seconds
+  , req_audio_performer            :: Maybe Text          -- ^ Performer
+  , req_audio_title                :: Maybe Text          -- ^ Track name
+  , req_audio_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+  , req_audio_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
+  , req_audio_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'sendSticker'
 -- | Use this method to send .webp stickers. On success, the sent Message is returned.
 data SendStickerRequest = SendStickerRequest
-  { sticker_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
-  , sticker_sticker              :: Text                -- ^ Sticker to send. A file_id as String to resend a sticker that is already on the Telegram servers
-  , sticker_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-  , sticker_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
-  , sticker_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-  } deriving (Show)
+  { req_sticker_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
+  , req_sticker_sticker              :: Text                -- ^ Sticker to send. A file_id as String to resend a sticker that is already on the Telegram servers
+  , req_sticker_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+  , req_sticker_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
+  , req_sticker_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'sendDocument'
 -- | Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
 data SendDocumentRequest = SendDocumentRequest
-  { document_chat_id                  :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
-  , document_document                 :: Text                -- ^ File to send. A file_id as String to resend a file that is already on the Telegram servers
-  , document_caption                  :: Maybe Text          -- ^ Document caption (may also be used when resending documents by file_id), 0-200 characters
-  , document_disable_notification     :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-  , document_reply_to_message_id      :: Maybe Int           -- ^ If the message is a reply, ID of the original message
-  , document_reply_markup             :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-  } deriving (Show)
+  { req_doc_chat_id                  :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
+  , req_doc_document                 :: Text                -- ^ File to send. A file_id as String to resend a file that is already on the Telegram servers
+  , req_doc_caption                  :: Maybe Text          -- ^ Document caption (may also be used when resending documents by file_id), 0-200 characters
+  , req_doc_disable_notification     :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+  , req_doc_reply_to_message_id      :: Maybe Int           -- ^ If the message is a reply, ID of the original message
+  , req_doc_reply_markup             :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'sendVideo'
 data SendVideoRequest = SendVideoRequest
-  { video_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
-  , video_video                :: Text                -- ^ Video to send. A file_id as String to resend a video that is already on the Telegram servers
-  , video_duration             :: Maybe Int           -- ^ Duration of sent video in seconds
-  , video_width                :: Maybe Int           -- ^ Video width
-  , video_height               :: Maybe Int           -- ^ Video height
-  , video_caption              :: Maybe Text          -- ^ Video caption, 0-200 characters.
-  , video_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-  , video_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
-  , video_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-  } deriving (Show)
+  { req_video_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
+  , req_video_video                :: Text                -- ^ Video to send. A file_id as String to resend a video that is already on the Telegram servers
+  , req_video_duration             :: Maybe Int           -- ^ Duration of sent video in seconds
+  , req_video_width                :: Maybe Int           -- ^ Video width
+  , req_video_height               :: Maybe Int           -- ^ Video height
+  , req_video_caption              :: Maybe Text          -- ^ Video caption, 0-200 characters.
+  , req_video_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+  , req_video_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
+  , req_video_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'sendVoice'
 -- | Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document).
 -- | On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 data SendVoiceRequest = SendVoiceRequest
-  { voice_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
-  , voice_voice                :: Text                -- ^ Audio file to send. A file_id as String to resend an audio that is already on the Telegram servers
-  , voice_duration             :: Maybe Int           -- ^ Duration of sent audio in seconds
-  , voice_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-  , voice_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
-  , voice_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-  } deriving (Show)
+  { req_voice_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
+  , req_voice_voice                :: Text                -- ^ Audio file to send. A file_id as String to resend an audio that is already on the Telegram servers
+  , req_voice_duration             :: Maybe Int           -- ^ Duration of sent audio in seconds
+  , req_voice_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+  , req_voice_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
+  , req_voice_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'sendLocation'
 -- | Use this method to send point on the map. On success, the sent Message is returned.
 data SendLocationRequest = SendLocationRequest
-  { location_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
-  , location_latitude             :: Float               -- ^ Latitude of location
-  , location_longitude            :: Float               -- ^ Longitude of location
-  , location_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-  , location_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
-  , location_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-  } deriving (Show)
+  { req_location_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
+  , req_location_latitude             :: Double              -- ^ Latitude of location
+  , req_location_longitude            :: Double              -- ^ Longitude of location
+  , req_location_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+  , req_location_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
+  , req_location_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'sendVenue'
 -- | Use this method to send information about a venue. On success, the sent Message is returned.
 data SendVenueRequest = SendVenueRequest
-  { venue_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
-  , venue_latitude             :: Float               -- ^ Latitude of location
-  , venue_longitude            :: Float               -- ^ Longitude of location
-  , venue_title                :: Text                -- ^ Name of the venue
-  , venue_address              :: Text                -- ^ Address of the venue
-  , venue_foursquare_id        :: Maybe Text          -- ^ Address of the venue
-  , venue_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-  , venue_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
-  , venue_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-  } deriving (Show)
+  { req_venue_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
+  , req_venue_latitude             :: Double              -- ^ Latitude of location
+  , req_venue_longitude            :: Double              -- ^ Longitude of location
+  , req_venue_title                :: Text                -- ^ Name of the venue
+  , req_venue_address              :: Text                -- ^ Address of the venue
+  , req_venue_foursquare_id        :: Maybe Text          -- ^ Address of the venue
+  , req_venue_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+  , req_venue_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
+  , req_venue_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'sendContact'
--- |  Use this method to send phone contacts. On success, the sent Message is returned.
+-- | Use this method to send phone contacts. On success, the sent Message is returned.
 data SendContactRequest = SendContactRequest
-  { contact_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
-  , contact_phone_number         :: Text                -- ^ Contact's phone number
-  , contact_first_name           :: Text                -- ^ Contact' first name
-  , contact_last_name            :: Maybe Text          -- ^ Contact' last name
-  , contact_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
-  , contact_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
-  , contact_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
-  } deriving (Show)
+  { req_contact_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
+  , req_contact_phone_number         :: Text                -- ^ Contact's phone number
+  , req_contact_first_name           :: Text                -- ^ Contact' first name
+  , req_contact_last_name            :: Maybe Text          -- ^ Contact' last name
+  , req_contact_disable_notification :: Maybe Bool          -- ^ Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound.
+  , req_contact_reply_to_message_id  :: Maybe Int           -- ^ If the message is a reply, ID of the original message
+  , req_contact_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'sendChatAction'
 -- | Use this method when you need to tell the user that something is happening on the bot's side.
@@ -141,7 +141,7 @@ data SendContactRequest = SendContactRequest
 data SendChatActionRequest = SendChatActionRequest
   { action_chat_id :: Text
   , action_action  :: ChatAction
-  } deriving (Show)
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'answerInlineQuery'
 -- | Use this method to send answers to an inline query. On success, True is returned. No more than 50 results per query are allowed.
@@ -153,17 +153,11 @@ data AnswerInlineQueryRequest = AnswerInlineQueryRequest
   , query_next_offset         :: Maybe Text -- ^ Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don‘t support pagination. Offset length can’t exceed 64 bytes.
   , query_switch_pm_text      :: Maybe Text -- ^ If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter
   , query_switch_pm_parameter :: Maybe Text -- ^ Parameter for the start message sent to the bot when user presses the switch button
-  } deriving (Show)
+  } deriving (Eq, Show)
 -- Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly.
 -- To do this, it displays a ‘Connect your YouTube account’ button above the results, or even before showing any.
 -- The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link.
 -- Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
-
--- | This object represent a user's profile pictures.
-data UserProfilePhotos = UserProfilePhotos
-  { total_count :: Int           -- ^ Total number of profile pictures the target user has
-  , photos      :: [[PhotoSize]] -- ^ Requested profile pictures (in up to 4 sizes each)
-  } deriving (Show)
 
 -- | This object represents request for 'getUserProfilePhotos'
 -- | Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
@@ -172,18 +166,7 @@ data UserProfilePhotosRequest =
   { photos_user_id :: Int       -- ^ Unique identifier of the target user
   , photos_offset  :: Maybe Int -- ^ Sequential number of the first photo to be returned. By default, all photos are returned.
   , photos_limit   :: Maybe Int -- ^ Limits the number of photos to be retrieved. Values between 1—100 are accepted. Defaults to 100.
-  } deriving (Show)
-
--- | This object represents a file ready to be downloaded. The file can be downloaded via the link
---   @https://api.telegram.org/file/bot<token>/<file_path>@. It is guaranteed that the link will be valid
---   for at least 1 hour. When the link expires, a new one can be requested by calling 'getFile'.
---
---       Maximum file size to download is 20 MB
-data File = File
-  { file_id   :: Text         -- ^ Unique identifier for this file
-  , file_size :: Maybe Int  -- ^ File size, if known
-  , file_path :: Maybe Text -- ^ File path. Use @https://api.telegram.org/file/bot<token>/<file_path>@ to get the file.
-  } deriving (Show)
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'getFile'
 -- | Use this method to get basic info about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size.
@@ -199,7 +182,7 @@ data KickChatMemberRequest =
   KickChatMemberRequest
   { kick_chat_id :: Text -- ^ Unique identifier for the target group or username of the target supergroup (in the format @supergroupusername)
   , kick_user_id :: Int  -- ^ Unique identifier of the target user
-  } deriving (Show)
+  } deriving (Eq, Show)
 -- Note: This will method only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group's creator or by the member that added them.
 
 -- | This object represents request for 'leaveChat'
@@ -212,23 +195,23 @@ data UnbanChatMemberRequest =
   UnbanChatMemberRequest
   { unban_chat_id :: Text -- ^ Unique identifier for the target group or username of the target supergroup (in the format @supergroupusername)
   , unban_user_id :: Int  -- ^ Unique identifier of the target user
-  } deriving (Show)
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'getChat'
 -- | Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
 newtype GetChatRequest = GetChatRequest { getchat_chat_id :: Text } -- ^ Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
-  deriving (Show)
+  deriving (Eq, Show)
 
 -- | This object represents request for 'getChatAdministrators'
 -- | Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots.
 --   If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
 newtype GetChatAdministratorsRequest = GetChatAdministratorsRequest { admin_chat_id :: Text } -- ^ Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
-  deriving (Show)
+  deriving (Eq, Show)
 
 -- | This object represents request for 'getChatMembersCount'
 -- | Use this method to get the number of members in a chat. Returns Int on success.
 newtype GetChatMembersCountRequest = GetChatMembersCountRequest { count_chat_id :: Text } -- ^ Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
-  deriving (Show)
+  deriving (Eq, Show)
 
 -- | This object represents request for 'getChatMember'
 -- | Use this method to get information about a member of a chat. Returns a ChatMember object on success.
@@ -236,7 +219,7 @@ data GetChatMemberRequest =
   GetChatMemberRequest
   { member_chat_id :: Text -- ^ Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
   , member_user_id :: Int  -- ^ Unique identifier of the target user
-  } deriving (Show)
+  } deriving (Eq, Show)
 
 -- | This object represents request for 'answerCallbackQuery'
 -- | Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
@@ -245,4 +228,4 @@ data AnswerCallbackQueryRequest =
   { callback_callback_query_id :: Text       -- ^ Unique identifier for the query to be answered
   , callback_text              :: Maybe Text -- ^ Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters
   , callback_show_alert        :: Maybe Bool -- ^ If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
-  } deriving (Show)
+  } deriving (Eq, Show)

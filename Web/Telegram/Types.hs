@@ -1,21 +1,29 @@
 -- | This module contains objects which represent data of Telegram Bot API responses
 module Web.Telegram.Types
-    ( module Web.Telegram.Types.Basic
+    ( module Web.Telegram.Requests
+    , module Web.Telegram.Responses
+    , module Web.Telegram.Types.Basic
     , module Web.Telegram.Types.Static
     , module Web.Telegram.Types.Inline
+    , module Web.Telegram.Instances.Basic
+    , module Web.Telegram.Instances.Inline
+    , module Web.Telegram.Instances.Static
     -- * Types
     , Update                (..)
     ) where
 
 import           Control.Applicative        ((<|>))
 import           Data.Aeson
-import           Data.Text                  (Text (..))
 import           Data.Aeson.Types           (typeMismatch)
 
+import           Web.Telegram.Requests
+import           Web.Telegram.Responses
 import           Web.Telegram.Types.Basic
 import           Web.Telegram.Types.Static
 import           Web.Telegram.Types.Inline
-import           Web.Telegram.Instances
+import           Web.Telegram.Instances.Basic
+import           Web.Telegram.Instances.Inline
+import           Web.Telegram.Instances.Static
 
 
 -- | This object represents an incoming update.
@@ -25,17 +33,17 @@ data Update =
   , message   :: Message -- ^ New incoming message of any kind — text, photo, sticker, etc.
   }
   | InlineQueryUpdate
-  { update_id    :: Int
+  { update_id    :: Int         -- ^ Same as MessageUpdate
   , inline_query :: InlineQuery -- ^ New incoming inline query
   }
   | ChosenInlineUpdate
-  { update_id            :: Int
+  { update_id            :: Int                -- ^ Same as MessageUpdate
   , chosen_inline_result :: ChosenInlineResult -- ^ The result of a inline query that was chosen by a user and sent to their chat partner
   }
   | CallbackUpdate
-  { update_id      :: Int
+  { update_id      :: Int           -- ^ Same as MessageUpdate
   , callback_query :: CallbackQuery -- ^ New incoming callback query
-  } deriving (Show)
+  } deriving (Eq, Show)
 
 
 --------------------

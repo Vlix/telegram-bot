@@ -14,7 +14,7 @@ data InlineQuery = InlineQuery
   , query_query     :: Text           -- ^ Text of the query
   , query_offset    :: Text           -- ^ Offset of the results to be returned, can be controlled by the bot
   , query_location  :: Maybe Location -- ^ Sender location, only for bots that request user location
-  } deriving (Show)
+  } deriving (Eq, Show)
 
 -- | This object represents a result of an inline query that was chosen by the user and sent to their chat partner.
 data ChosenInlineResult = ChosenInlineResult
@@ -23,18 +23,18 @@ data ChosenInlineResult = ChosenInlineResult
   , chosen_query             :: Text           -- ^ Text of the query
   , chosen_inline_message_id :: Maybe Text     -- ^ Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message. Will be also received in callback queries and can be used to edit the message. 
   , chosen_location          :: Maybe Location -- ^ Sender location, only for bots that request user location
-  } deriving (Show)
+  } deriving (Eq, Show)
 
 -- because everything here uses only the InlineKeyboardMarkup we can't just use ReplyKeyboard
 newtype InlineKeyboardMarkup =
     IKM { ikm_reply_inline_keyboard :: [[InlineKeyboardButton]] } -- ^ Array of button rows, each represented by an Array of InlineKeyboardButton objects
-  deriving (Show)
+  deriving (Eq, Show)
 
 -- | This object represents the content of a message to be sent as a result of an inline query.
 data InputMessageContent =
     -- | Represents the content of a text message to be sent as the result of an inline query.
     InputTextMessageContent
-    { message_text             :: Text            -- ^ Text of the message to be sent, 1-4096 characters
+    { input_message_text       :: Text            -- ^ Text of the message to be sent, 1-4096 characters
     , parse_mode               :: Maybe ParseMode -- ^ Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
     , disable_web_page_preview :: Maybe Bool      -- ^ Disables link previews for links in the sent message
     }
@@ -56,7 +56,7 @@ data InputMessageContent =
     { phone_number :: Text       -- ^ Contact's phone number
     , first_name   :: Text       -- ^ Contact's first name
     , last_name    :: Maybe Text -- ^ Contact's last name
-    } deriving (Show)
+    } deriving (Eq, Show)
 
 data InlineQueryResult =
     -- | Represents a link to an article or web page.
@@ -282,5 +282,5 @@ data InlineQueryResult =
     , iqrc_audio_file_id         :: Text                       -- ^ A valid file identifier for the audio file
     , iqrc_reply_markup          :: Maybe InlineKeyboardMarkup -- ^ Inline keyboard attached to the message
     , iqrc_input_message_content :: Maybe InputMessageContent  -- ^ Content of the message to be sent instead of the audio
-    } deriving (Show)
+    } deriving (Eq, Show)
 

@@ -322,9 +322,9 @@ instance ToJSON Contact where
                                                                         ]
 
 instance ToJSON Location where
-  toJSON (Location longitude latitude) = object [ "longitude" .= longitude
-                                                , "latitude"  .= latitude
-                                                ]
+    toJSON (Location longitude latitude) = object [ "longitude" .= longitude
+                                                  , "latitude"  .= latitude
+                                                  ]
 
 instance ToJSON Venue where
     toJSON (Venue location title address foursquare) = object [ "location"      .= location
@@ -332,6 +332,17 @@ instance ToJSON Venue where
                                                               , "address"       .= address
                                                               , "foursquare_id" .= foursquare
                                                               ]
+
+instance ToJSON UserProfilePhotos where
+  toJSON (UserProfilePhotos total_count photos) = object [ "total_count" .= total_count
+                                                         , "photos"      .= photos
+                                                         ]
+
+instance ToJSON File where
+  toJSON (File ident size path) = object [ "file_id"   .= ident
+                                         , "file_size" .= size
+                                         , "file_path" .= path
+                                         ]
 
 instance ToJSON ReplyKeyboard where
     toJSON (ReplyKeyboardMarkup buttons resize onetime sel) = object [ "keyboard"          .= buttons
@@ -378,6 +389,11 @@ instance ToJSON CallbackQuery where
                                                              , "inline_message_id" .= inline
                                                              , "data"              .= dataa
                                                              ] 
+
+instance ToJSON ChatMember where
+    toJSON (ChatMember user status) = object [ "user"   .= user
+                                             , "status" .= status
+                                             ]
 
 
 ------------------------
@@ -643,6 +659,17 @@ instance FromJSON Venue where
                                  <*> o .:? "foursquare_id" 
     parseJSON wat = typeMismatch "Venue" wat
 
+instance FromJSON UserProfilePhotos where
+    parseJSON (Object o) = UserProfilePhotos <$> o .: "total_count"
+                                             <*> o .: "photos"
+    parseJSON wat = typeMismatch "UserProfilePhotos" wat
+
+instance FromJSON File where
+    parseJSON (Object o) = File <$> o .: "file_id"
+                                <*> o .:? "file_size"
+                                <*> o .:? "file_path"
+    parseJSON wat = typeMismatch "File" wat
+
 instance FromJSON ReplyKeyboard where
     parseJSON (Object o) | "hide_keyboard" `HM.lookup` o == Just (Bool True) = ReplyKeyboardHide <$> o .:? "selective"
                          | "force_reply" `HM.lookup` o   == Just (Bool True) = ForceReply <$> o .:? "selective"
@@ -669,12 +696,17 @@ instance FromJSON InlineKeyboardButton where
     parseJSON wat = typeMismatch "InlineKeyboardButton" wat
 
 instance FromJSON CallbackQuery where
-  parseJSON (Object o) = CallbackMessage <$> o .: "id"
-                                         <*> o .: "from"
-                                         <*> o .: "message"
-                                         <*> o .: "data"
-                     <|> CallbackInline <$> o .: "id"
-                                        <*> o .: "from"
-                                        <*> o .: "inline_message_id"
-                                        <*> o .: "data"
-  parseJSON wat = typeMismatch "CallbackQuery" wat
+    parseJSON (Object o) = CallbackMessage <$> o .: "id"
+                                           <*> o .: "from"
+                                           <*> o .: "message"
+                                           <*> o .: "data"
+                       <|> CallbackInline <$> o .: "id"
+                                          <*> o .: "from"
+                                          <*> o .: "inline_message_id"
+                                          <*> o .: "data"
+    parseJSON wat = typeMismatch "CallbackQuery" wat
+
+instance FromJSON ChatMember where
+    parseJSON (Object o) = ChatMember <$> o .: "user"
+                                      <*> o .: "status"
+    parseJSON wat = typeMismatch "ChatMember" wat
