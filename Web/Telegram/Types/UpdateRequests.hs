@@ -13,15 +13,15 @@ data EditMessageTextRequest =
   { edit_text_chat_id                  :: Text                       -- ^ Unique identifier for the target chat or username of the target channel (in the format @channelusername)
   , edit_text_message_id               :: Int                        -- ^ Unique identifier of the sent message
   , edit_text_text                     :: Text                       -- ^ New text of the message
+  , edit_text_disable_web_page_preview :: Bool                       -- ^ Disables link previews for links in this message
   , edit_text_parse_mode               :: Maybe ParseMode            -- ^ Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-  , edit_text_disable_web_page_preview :: Maybe Bool                 -- ^ Disables link previews for links in this message
   , edit_text_reply_markup             :: Maybe InlineKeyboardMarkup -- ^ A JSON-serialized object for an inline keyboard.
   }
   | EditInlineTextRequest
   { edit_text_inline_message_id        :: Int                        -- ^ Identifier of the inline message
   , edit_text_text                     :: Text                       -- ^ New text of the message
+  , edit_text_disable_web_page_preview :: Bool                       -- ^ Disables link previews for links in this message
   , edit_text_parse_mode               :: Maybe ParseMode            -- ^ Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
-  , edit_text_disable_web_page_preview :: Maybe Bool                 -- ^ Disables link previews for links in this message
   , edit_text_reply_markup             :: Maybe InlineKeyboardMarkup -- ^ A JSON-serialized object for an inline keyboard.
   } deriving (Eq, Show)
 

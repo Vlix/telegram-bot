@@ -1,5 +1,33 @@
 module Web.Telegram.Types.Static where
 
+
+import Data.Aeson
+import Data.Aeson.Types     (Pair)
+import Data.Maybe           (catMaybes)
+import Data.Text            (Text)
+import Data.HashMap.Strict  as HM
+
+-- | Helper function to avoid `Maybe [a]`s
+mEmptyList :: ToJSON a => Text -> [a] -> Maybe Pair
+mEmptyList _ [] = Nothing
+mEmptyList t l  = Just $ t .= l
+
+-- | Helper function to avoid `Maybe Bool`s
+-- (first Bool is what Nothing would default to)
+mBool :: Text -> Bool -> Bool -> Maybe Pair
+mBool t a b = if a == b then Nothing else Just $ t .= b
+
+object' :: [Maybe Pair] -> Value
+object' = Object . HM.fromList . catMaybes
+
+(.=!!) :: ToJSON a => Text -> Maybe a -> Maybe Pair
+_    .=!! Nothing  = Nothing
+name .=!! (Just v) = Just $ name .= v
+
+(.=!) :: ToJSON a => Text -> a -> Maybe Pair
+name .=! value = Just $ name .= value
+
+
 -- | Type of chat.
 data ChatType = Private
               | Group
