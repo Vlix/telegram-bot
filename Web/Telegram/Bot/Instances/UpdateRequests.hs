@@ -1,16 +1,16 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module Web.Telegram.Instances.UpdateRequests where
+module Web.Telegram.Bot.Instances.UpdateRequests where
 
 
 import           Control.Applicative        ((<|>))
 import           Data.Aeson
 import           Data.Aeson.Types           (typeMismatch)
 
-import           Web.Telegram.Types.UpdateRequests
-import           Web.Telegram.Types.Static
-import           Web.Telegram.Instances.Inline
-import           Web.Telegram.Instances.Static
+import           Web.Telegram.Bot.Types.UpdateRequests
+import           Web.Telegram.Bot.Types.Static
+import           Web.Telegram.Bot.Instances.Inline
+import           Web.Telegram.Bot.Instances.Static
 
 ----------------------
 -- ToJSON INSTANCES --

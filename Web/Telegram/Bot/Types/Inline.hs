@@ -1,4 +1,4 @@
-module Web.Telegram.Types.Inline where
+module Web.Telegram.Bot.Types.Inline where
 
 
 import           Data.Text                  (Text (..))

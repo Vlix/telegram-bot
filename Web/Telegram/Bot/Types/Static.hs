@@ -1,4 +1,4 @@
-module Web.Telegram.Types.Static where
+module Web.Telegram.Bot.Types.Static where
 
 
 import Data.Aeson

@@ -1,4 +1,4 @@
-module Web.Telegram.Instances.Static where
+module Web.Telegram.Bot.Instances.Static where
 
 
 import           Control.Applicative        ((<|>))
@@ -9,7 +9,7 @@ import           Data.Maybe                 (isJust)
 import           Data.Monoid                ((<>))
 import           Data.Text                  (unpack)
 
-import           Web.Telegram.Types.Static
+import           Web.Telegram.Bot.Types.Static
 
 
 ----------------------

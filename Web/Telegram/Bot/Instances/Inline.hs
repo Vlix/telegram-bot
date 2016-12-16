@@ -1,6 +1,6 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module Web.Telegram.Instances.Inline where
+module Web.Telegram.Bot.Instances.Inline where
 
 
 import           Control.Applicative        ((<|>))
@@ -10,10 +10,10 @@ import           Data.Text                  (unpack)
 import           Data.Monoid                ((<>))
 import qualified Data.HashMap.Strict        as HM
 
-import           Web.Telegram.Types.Basic
-import           Web.Telegram.Types.Inline
-import           Web.Telegram.Types.Static
-import           Web.Telegram.Instances.Basic
+import           Web.Telegram.Bot.Types.Basic
+import           Web.Telegram.Bot.Types.Inline
+import           Web.Telegram.Bot.Types.Static
+import           Web.Telegram.Bot.Instances.Basic
 
 ----------------------
 -- ToJSON INSTANCES --

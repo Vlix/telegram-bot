@@ -1,9 +1,9 @@
-module Web.Telegram where
+module Web.Telegram.Bot where
 
 
 import           Data.Text              (Text (..))
 
-import           Web.Telegram.Types
+import           Web.Telegram.Bot.Types
 
 
 type UpdateID = Int

@@ -1,10 +1,10 @@
 -- | This module contains data objects which represents requests to Telegram Bot API
-module Web.Telegram.Types.Requests where
+module Web.Telegram.Bot.Types.Requests where
 
 import           Data.Text                  (Text (..))
-import           Web.Telegram.Types.Basic
-import           Web.Telegram.Types.Inline
-import           Web.Telegram.Types.Static
+import           Web.Telegram.Bot.Types.Basic
+import           Web.Telegram.Bot.Types.Inline
+import           Web.Telegram.Bot.Types.Static
 
 -- | This object represents request for 'sendMessage'
 -- | Use this method to send text messages. On success, the sent Message is returned.

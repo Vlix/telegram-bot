@@ -1,4 +1,4 @@
-module Web.Telegram.Responses where
+module Web.Telegram.Bot.Responses where
 
 
 import           Control.Applicative    ((<|>))
@@ -8,9 +8,9 @@ import           Data.Aeson.Types       (typeMismatch)
 import qualified Data.HashMap.Strict    as HM
 import           Data.Monoid            ((<>))
 
-import           Web.Telegram.Types.Basic
-import           Web.Telegram.Types.Static
-import           Web.Telegram.Instances
+import           Web.Telegram.Bot.Types.Basic
+import           Web.Telegram.Bot.Types.Static
+import           Web.Telegram.Bot.Instances
 
 -- | The `a` can be any of [User,Message,UserProfilePhotos,File,Chat,[ChatMember],Int,True]
 data Response a =

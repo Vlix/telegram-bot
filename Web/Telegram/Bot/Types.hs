@@ -1,13 +1,13 @@
 -- | This module contains objects which represent data of Telegram Bot API responses
-module Web.Telegram.Types
-    ( module Web.Telegram.Requests
-    , module Web.Telegram.Responses
-    , module Web.Telegram.Types.Basic
-    , module Web.Telegram.Types.Static
-    , module Web.Telegram.Types.Inline
-    , module Web.Telegram.Instances.Basic
-    , module Web.Telegram.Instances.Inline
-    , module Web.Telegram.Instances.Static
+module Web.Telegram.Bot.Types
+    ( module Web.Telegram.Bot.Requests
+    , module Web.Telegram.Bot.Responses
+    , module Web.Telegram.Bot.Types.Basic
+    , module Web.Telegram.Bot.Types.Static
+    , module Web.Telegram.Bot.Types.Inline
+    , module Web.Telegram.Bot.Instances.Basic
+    , module Web.Telegram.Bot.Instances.Inline
+    , module Web.Telegram.Bot.Instances.Static
     -- * Types
     , Update                (..)
     ) where
@@ -16,14 +16,14 @@ import           Control.Applicative        ((<|>))
 import           Data.Aeson
 import           Data.Aeson.Types           (typeMismatch)
 
-import           Web.Telegram.Requests
-import           Web.Telegram.Responses
-import           Web.Telegram.Types.Basic
-import           Web.Telegram.Types.Static
-import           Web.Telegram.Types.Inline
-import           Web.Telegram.Instances.Basic
-import           Web.Telegram.Instances.Inline
-import           Web.Telegram.Instances.Static
+import           Web.Telegram.Bot.Requests
+import           Web.Telegram.Bot.Responses
+import           Web.Telegram.Bot.Types.Basic
+import           Web.Telegram.Bot.Types.Static
+import           Web.Telegram.Bot.Types.Inline
+import           Web.Telegram.Bot.Instances.Basic
+import           Web.Telegram.Bot.Instances.Inline
+import           Web.Telegram.Bot.Instances.Static
 
 
 -- | This object represents an incoming update.

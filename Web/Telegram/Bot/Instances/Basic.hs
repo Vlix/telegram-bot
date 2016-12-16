@@ -1,4 +1,4 @@
-module Web.Telegram.Instances.Basic where
+module Web.Telegram.Bot.Instances.Basic where
 
 
 import           Control.Applicative        ((<|>))
@@ -9,9 +9,9 @@ import           Data.Maybe                 (isJust,fromMaybe)
 import           Data.Monoid                ((<>))
 import qualified Data.HashMap.Strict        as HM
 
-import           Web.Telegram.Types.Basic
-import           Web.Telegram.Types.Static
-import           Web.Telegram.Instances.Static
+import           Web.Telegram.Bot.Types.Basic
+import           Web.Telegram.Bot.Types.Static
+import           Web.Telegram.Bot.Instances.Static
 
 
 ----------------------
