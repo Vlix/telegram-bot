@@ -51,6 +51,15 @@ instance ToJSON ChatMemberStatus where
   toJSON MemberLeft    = String "left"
   toJSON MemberKicked  = String "kicked"
 
+instance ToJSON UpdateType where
+  toJSON MESSAGE            = String "message"
+  toJSON EDITEDMESSAGE      = String "edited_message"
+  toJSON CHANNELPOST        = String "channel_post"
+  toJSON EDITEDCHANNELPOST  = String "edited_channel_post"
+  toJSON INLINEQUERY        = String "inline_query"
+  toJSON CHOSENINLINERESULT = String "chosen_inline_result"
+  toJSON CALLBACKQUERY      = String "callback_query"
+
 ------------------------
 -- FromJSON INSTANCES --
 ------------------------
@@ -101,3 +110,12 @@ instance FromJSON ChatMemberStatus where
   parseJSON (String "kicked")         = pure MemberKicked
   parseJSON (String wat) = fail $ "Wrong String \"" <> unpack wat <> "\" as ChatAction"
   parseJSON wat = typeMismatch "ChatMemberStatus" wat
+
+instance FromJSON UpdateType where
+  parseJSON (String "message")              = pure MESSAGE
+  parseJSON (String "edited_message")       = pure EDITEDMESSAGE
+  parseJSON (String "channel_post")         = pure CHANNELPOST
+  parseJSON (String "edited_channel_post")  = pure EDITEDCHANNELPOST
+  parseJSON (String "inline_query")         = pure INLINEQUERY
+  parseJSON (String "chosen_inline_result") = pure CHOSENINLINERESULT
+  parseJSON (String "callback_query")       = pure CALLBACKQUERY

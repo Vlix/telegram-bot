@@ -3,7 +3,7 @@ module Web.Telegram.Bot.Types.Basic where
 
 import           Data.Text                  (Text (..))
 
-import           Web.Telegram.Types.Static
+import           Web.Telegram.Bot.Types.Static
 
 -- | This object represents a Telegram user or bot.
 data User = User

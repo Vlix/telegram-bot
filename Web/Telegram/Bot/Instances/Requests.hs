@@ -241,7 +241,30 @@ instance ToJSON AnswerCallbackQueryRequest where
             , "text"              .=!! text
             , mBool "show_alert" False show_alert
             , "url"               .=!! url
-            , if cache_time == 0 then Nothing else Just $ "cache_time" .= cache_time
+            , if cache_time == 0
+                then Nothing
+                else Just $ "cache_time" .= cache_time
+            ]
+
+instance ToJSON UpdatesRequest where
+  toJSON (UpdatesRequest offset limit timeout allowed_updates) =
+    object' [ "offset" .=!! offset
+            , if limit >= 100
+                then Nothing
+                else Just $ "limit" .= limit
+            , if timeout == 0
+                then Nothing
+                else Just $ "timeout" .= abs timeout
+            , "allowed_updates" .=!! allowed_updates
+            ]
+
+instance ToJSON WebhookRequest where
+  toJSON (WebhookRequest url max_conns allowed_updates) =
+    object' [ "url"    .=! url
+            , if max_conns == 40 || max_conns < 1 || max_conns > 100
+                then Nothing
+                else Just $ "max_connections" .= max_conns
+            , "allowed_updates" .=!! allowed_updates
             ]
 
 ------------------------
@@ -466,3 +489,18 @@ instance FromJSON AnswerCallbackQueryRequest where
                                <*> o .:? "url"
                                <*> o .:? "cache_time" .!= 0
   parseJSON wat = typeMismatch "AnswerCallbackQueryRequest" wat
+
+instance FromJSON UpdatesRequest where
+  parseJSON (Object o) =
+    UpdatesRequest <$> o .:? "offset"
+                   <*> o .:? "limit" .!= 100
+                   <*> o .:? "timeout" .!= 0
+                   <*> o .:? "allowed_updates"
+  parseJSON wat = typeMismatch "UpdatesRequest" wat
+
+instance FromJSON WebhookRequest where
+  parseJSON (Object o) =
+    WebhookRequest <$> o .: "url"
+                   <*> o .:? "max_conns" .!= 40
+                   <*> o .:? "allowed_updates"
+  parseJSON wat = typeMismatch "WebhookRequest" wat

@@ -6,7 +6,7 @@ import           Web.Telegram.Bot.Types.Basic
 import           Web.Telegram.Bot.Types.Inline
 import           Web.Telegram.Bot.Types.Static
 
--- | This object represents request for 'sendMessage'
+-- | This object represents the request for 'sendMessage'
 -- | Use this method to send text messages. On success, the sent Message is returned.
 data SendMessageRequest = SendMessageRequest
   { message_chat_id                  :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
@@ -18,7 +18,7 @@ data SendMessageRequest = SendMessageRequest
   , message_reply_markup             :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
   } deriving (Eq, Show)
 
--- | This object represents request for 'forwardMessage'
+-- | This object represents the request for 'forwardMessage'
 -- | Use this method to forward messages of any kind. On success, the sent Message is returned.
 data ForwardMessageRequest = ForwardMessageRequest
   { forward_chat_id              :: Text -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
@@ -27,7 +27,7 @@ data ForwardMessageRequest = ForwardMessageRequest
   , forward_message_id           :: Int  -- ^ Unique message identifier
   } deriving (Eq, Show)
 
--- | This object represents request for 'sendPhoto'
+-- | This object represents the request for 'sendPhoto'
 -- | Use this method to send photos. On success, the sent Message is returned.
 data SendPhotoRequest = SendPhotoRequest
   { req_photo_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
@@ -38,7 +38,7 @@ data SendPhotoRequest = SendPhotoRequest
   , req_photo_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
   } deriving (Eq, Show)
 
--- | This object represents request for 'sendAudio'
+-- | This object represents the request for 'sendAudio'
 -- | Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. On success, the sent Message is returned.
 -- | Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future. For sending voice messages, use the sendVoice method instead.
 data SendAudioRequest = SendAudioRequest
@@ -53,7 +53,7 @@ data SendAudioRequest = SendAudioRequest
   , req_audio_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
   } deriving (Eq, Show)
 
--- | This object represents request for 'sendSticker'
+-- | This object represents the request for 'sendSticker'
 -- | Use this method to send .webp stickers. On success, the sent Message is returned.
 data SendStickerRequest = SendStickerRequest
   { req_sticker_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
@@ -63,7 +63,7 @@ data SendStickerRequest = SendStickerRequest
   , req_sticker_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
   } deriving (Eq, Show)
 
--- | This object represents request for 'sendDocument'
+-- | This object represents the request for 'sendDocument'
 -- | Use this method to send general files. On success, the sent Message is returned. Bots can currently send files of any type of up to 50 MB in size, this limit may be changed in the future.
 data SendDocumentRequest = SendDocumentRequest
   { req_doc_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
@@ -74,7 +74,7 @@ data SendDocumentRequest = SendDocumentRequest
   , req_doc_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
   } deriving (Eq, Show)
 
--- | This object represents request for 'sendVideo'
+-- | This object represents the request for 'sendVideo'
 data SendVideoRequest = SendVideoRequest
   { req_video_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
   , req_video_video                :: Text                -- ^ Video to send. A file_id as String to resend a video that is already on the Telegram servers
@@ -87,7 +87,7 @@ data SendVideoRequest = SendVideoRequest
   , req_video_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
   } deriving (Eq, Show)
 
--- | This object represents request for 'sendVoice'
+-- | This object represents the request for 'sendVoice'
 -- | Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document).
 -- | On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 data SendVoiceRequest = SendVoiceRequest
@@ -100,7 +100,7 @@ data SendVoiceRequest = SendVoiceRequest
   , req_voice_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
   } deriving (Eq, Show)
 
--- | This object represents request for 'sendLocation'
+-- | This object represents the request for 'sendLocation'
 -- | Use this method to send point on the map. On success, the sent Message is returned.
 data SendLocationRequest = SendLocationRequest
   { req_location_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
@@ -111,7 +111,7 @@ data SendLocationRequest = SendLocationRequest
   , req_location_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
   } deriving (Eq, Show)
 
--- | This object represents request for 'sendVenue'
+-- | This object represents the request for 'sendVenue'
 -- | Use this method to send information about a venue. On success, the sent Message is returned.
 data SendVenueRequest = SendVenueRequest
   { req_venue_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
@@ -125,7 +125,7 @@ data SendVenueRequest = SendVenueRequest
   , req_venue_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
   } deriving (Eq, Show)
 
--- | This object represents request for 'sendContact'
+-- | This object represents the request for 'sendContact'
 -- | Use this method to send phone contacts. On success, the sent Message is returned.
 data SendContactRequest = SendContactRequest
   { req_contact_chat_id              :: Text                -- ^ Unique identifier for the target chat or username of the target channel (in the format @@channelusername@)
@@ -137,7 +137,8 @@ data SendContactRequest = SendContactRequest
   , req_contact_reply_markup         :: Maybe ReplyKeyboard -- ^ Additional interface options. A JSON-serialized object for a custom reply keyboard, instructions to hide keyboard or to force a reply from the user.
   } deriving (Eq, Show)
 
--- |
+-- | This object represents the request for 'sendGame'
+-- | Use this method to send a game. On success, the sent Message is returned.
 data SendGameRequest = SendGameRequest
   { req_game_chat_id              :: Text                -- ^ Unique identifier for the target chat
   , req_game_game_short_name      :: Text                -- ^ Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
@@ -146,6 +147,7 @@ data SendGameRequest = SendGameRequest
   , req_game_reply_markup         :: Maybe ReplyKeyboard -- ^ A JSON-serialized object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown. If not empty, the first button must launch the game.
   } deriving (Eq,Show)
 
+-- | This object represents the request for 'setGameScore'
 -- | Use this method to set the score of the specified user in a game.
 -- | On success, if the message was sent by the bot, returns the edited Message, otherwise returns True.
 -- | Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
@@ -166,6 +168,7 @@ data SetGameScoreRequest =
   , req_score_disable_edit_message :: Bool -- ^ Pass True, if the game message should not be automatically edited to include the current scoreboard
   } deriving (Eq,Show)
 
+-- | This object represents the request for 'getGameHighScores'
 -- | Use this method to get data for high score tables. Will return the score of the specified user and several of his neighbors in a game.
 -- | On success, returns an Array of GameHighScore objects.
 -- This method will currently return scores for the target user, plus two of his closest neighbors on each side.
@@ -181,7 +184,7 @@ data GetGameHighScores =
   , req_highscore_inline_message_id :: Text -- ^ Identifier of the inline message
   } deriving (Eq,Show)
 
--- | This object represents request for 'sendChatAction'
+-- | This object represents the request for 'sendChatAction'
 -- | Use this method when you need to tell the user that something is happening on the bot's side.
 -- | The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status).
 data SendChatActionRequest = SendChatActionRequest
@@ -189,7 +192,7 @@ data SendChatActionRequest = SendChatActionRequest
   , action_action  :: ChatAction
   } deriving (Eq, Show)
 
--- | This object represents request for 'answerInlineQuery'
+-- | This object represents the request for 'answerInlineQuery'
 -- | Use this method to send answers to an inline query. On success, True is returned. No more than 50 results per query are allowed.
 data AnswerInlineQueryRequest = AnswerInlineQueryRequest
   { query_inline_query_id     :: Text       -- ^ Unique identifier for the answered query
@@ -205,7 +208,7 @@ data AnswerInlineQueryRequest = AnswerInlineQueryRequest
 -- The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link.
 -- Once done, the bot can offer a switch_inline button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
 
--- | This object represents request for 'getUserProfilePhotos'
+-- | This object represents the request for 'getUserProfilePhotos'
 -- | Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
 data UserProfilePhotosRequest =
   UserProfilePhotosRequest
@@ -214,14 +217,14 @@ data UserProfilePhotosRequest =
   , photos_limit   :: Maybe Int -- ^ Limits the number of photos to be retrieved. Values between 1—100 are accepted. Defaults to 100.
   } deriving (Eq, Show)
 
--- | This object represents request for 'getFile'
+-- | This object represents the request for 'getFile'
 -- | Use this method to get basic info about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size.
 --   On success, a File object is returned. The file can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>,
 --   where <file_path> is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.
 newtype FileRequest = FileRequest { filereq_file_id :: Text } -- ^ File identifier to get info about
 -- Note: This function may not preserve original file name. Mime type of the file and its name (if available) should be saved when the File object is received.
 
--- | This object represents request for 'kickChatMember'
+-- | This object represents the request for 'kickChatMember'
 -- | Use this method to kick a user from a group or a supergroup. In the case of supergroups, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first.
 --   The bot must be an administrator in the group for this to work. Returns True on success.
 data KickChatMemberRequest =
@@ -231,11 +234,11 @@ data KickChatMemberRequest =
   } deriving (Eq, Show)
 -- Note: This will method only work if the ‘All Members Are Admins’ setting is off in the target group. Otherwise members may only be removed by the group's creator or by the member that added them.
 
--- | This object represents request for 'leaveChat'
+-- | This object represents the request for 'leaveChat'
 -- | Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
 newtype LeaveChatRequest = LeaveChatRequest { leave_chat_id :: Text } -- ^ Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
 
--- | This object represents request for 'unbanChatMember'
+-- | This object represents the request for 'unbanChatMember'
 -- | Use this method to unban a previously kicked user in a supergroup. The user will not return to the group automatically, but will be able to join via link, etc. The bot must be an administrator in the group for this to work. Returns True on success.
 data UnbanChatMemberRequest =
   UnbanChatMemberRequest
@@ -243,23 +246,23 @@ data UnbanChatMemberRequest =
   , unban_user_id :: Int  -- ^ Unique identifier of the target user
   } deriving (Eq, Show)
 
--- | This object represents request for 'getChat'
+-- | This object represents the request for 'getChat'
 -- | Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
 newtype GetChatRequest = GetChatRequest { getchat_chat_id :: Text } -- ^ Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
   deriving (Eq, Show)
 
--- | This object represents request for 'getChatAdministrators'
+-- | This object represents the request for 'getChatAdministrators'
 -- | Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots.
 --   If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
 newtype GetChatAdministratorsRequest = GetChatAdministratorsRequest { admin_chat_id :: Text } -- ^ Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
   deriving (Eq, Show)
 
--- | This object represents request for 'getChatMembersCount'
+-- | This object represents the request for 'getChatMembersCount'
 -- | Use this method to get the number of members in a chat. Returns Int on success.
 newtype GetChatMembersCountRequest = GetChatMembersCountRequest { count_chat_id :: Text } -- ^ Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
   deriving (Eq, Show)
 
--- | This object represents request for 'getChatMember'
+-- | This object represents the request for 'getChatMember'
 -- | Use this method to get information about a member of a chat. Returns a ChatMember object on success.
 data GetChatMemberRequest =
   GetChatMemberRequest
@@ -267,7 +270,7 @@ data GetChatMemberRequest =
   , member_user_id :: Int  -- ^ Unique identifier of the target user
   } deriving (Eq, Show)
 
--- | This object represents request for 'answerCallbackQuery'
+-- | This object represents the request for 'answerCallbackQuery'
 -- | Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
 data AnswerCallbackQueryRequest =
   AnswerCallbackQueryRequest
@@ -279,3 +282,32 @@ data AnswerCallbackQueryRequest =
                                              -- Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
   , callback_cache_time        :: Int        -- ^ The maximum amount of time in seconds that the result of the callback query may be cached client-side. Defaults to 0.
   } deriving (Eq, Show)
+
+
+----------------------------
+-- MISCELLANEOUS REQUESTS --
+----------------------------
+
+data UpdatesRequest = UpdatesRequest
+  { getUpdates_offset          :: Maybe Int -- ^ Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates.
+                                            -- By default, updates starting with the earliest unconfirmed update are returned.
+                                            -- An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id.
+                                            -- The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue.
+                                            -- All previous updates will forgotten.
+  , getUpdates_limit           :: Int       -- ^ Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100.
+  , getUpdates_timeout         :: Int       -- ^ Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
+  , getUpdates_allowed_updates :: Maybe [UpdateType] -- ^ List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types.
+                                                     -- See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default).
+                                                     -- If not specified, the previous setting will be used.
+                                                     -- Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
+  } deriving (Eq,Show)
+
+data WebhookRequest = WebhookRequest
+  { webhook_url       :: Text -- ^ HTTPS url to send updates to. Use an empty string to remove webhook integration
+  , webhook_max_conns :: Int  -- ^ Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40.
+                              -- Use lower values to limit the load on your bot‘s server, and higher values to increase your bot’s throughput.
+  , webhook_allowed_updates :: Maybe [UpdateType] -- ^ List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types.
+                                                  -- See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default).
+                                                  -- If not specified, the previous setting will be used.
+                                                  -- Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
+  } deriving (Eq,Show)
