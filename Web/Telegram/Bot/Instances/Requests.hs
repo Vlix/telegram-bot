@@ -5,7 +5,8 @@ module Web.Telegram.Bot.Instances.Requests where
 
 import           Control.Applicative        ((<|>))
 import           Data.Aeson
-import           Data.Aeson.Types           (typeMismatch)
+import           Data.Aeson.Types           (typeMismatch,Pair)
+import           Data.Text                  (Text)
 
 import           Web.Telegram.Bot.Types.Requests
 import           Web.Telegram.Bot.Types.Static
@@ -162,13 +163,13 @@ instance ToJSON SetGameScoreRequest where
             , mBool "disable_edit_message" False req_score_disable_edit_message
             ]
 
-instance ToJSON GetGameHighScores where
-  toJSON (GetGameHighScores user_id chat_id message_id) =
+instance ToJSON GetGameHighScoresRequest where
+  toJSON (GetGameHighScoresRequest user_id chat_id message_id) =
     object [ "user_id"    .= user_id
            , "chat_id"    .= chat_id
            , "message_id" .= message_id
            ]
-  toJSON (GetGameHighScoresInline user_id inline_message_id) =
+  toJSON (GetGameHighScoresInlineRequest user_id inline_message_id) =
     object [ "user_id"           .= user_id
            , "inline_message_id" .= inline_message_id
            ]
@@ -249,23 +250,25 @@ instance ToJSON AnswerCallbackQueryRequest where
 instance ToJSON UpdatesRequest where
   toJSON (UpdatesRequest offset limit timeout allowed_updates) =
     object' [ "offset" .=!! offset
-            , if limit >= 100
-                then Nothing
-                else Just $ "limit" .= limit
-            , if timeout == 0
-                then Nothing
-                else Just $ "timeout" .= abs timeout
+            , check "limit" (\x -> x < 100 && x > 0) limit
+            , check "timeout" (<= 0 ) timeout
             , "allowed_updates" .=!! allowed_updates
             ]
+   where check :: ToJSON a => Text -> (a -> Bool) -> Maybe a -> Maybe Pair
+         check _ _ Nothing  = Nothing
+         check t f (Just a) | f a = Just $ t .= a
+                            | otherwise = Nothing
 
 instance ToJSON WebhookRequest where
   toJSON (WebhookRequest url max_conns allowed_updates) =
     object' [ "url"    .=! url
-            , if max_conns == 40 || max_conns < 1 || max_conns > 100
-                then Nothing
-                else Just $ "max_connections" .= max_conns
+            , check "max_connections" (\x -> x > 1 || x < 100 || x /= 40) max_conns
             , "allowed_updates" .=!! allowed_updates
             ]
+   where check :: ToJSON a => Text -> (a -> Bool) -> Maybe a -> Maybe Pair
+         check _ _ Nothing  = Nothing
+         check t f (Just a) | f a = Just $ t .= a
+                            | otherwise = Nothing
 
 ------------------------
 -- FromJSON INSTANCES --
@@ -414,13 +417,13 @@ instance FromJSON SetGameScoreRequest where
                            <*> o .:? "disable_edit_message" .!= False
   parseJSON wat = typeMismatch "SetGameScoreRequest" wat
 
-instance FromJSON GetGameHighScores where
+instance FromJSON GetGameHighScoresRequest where
   parseJSON (Object o) =
-    GetGameHighScores <$> o .: "user_id"
-                      <*> o .: "chat_id"
-                      <*> o .: "message_id"
-    <|> GetGameHighScoresInline <$> o .: "user_id"
-                                <*> o .: "inline_message_id"
+    GetGameHighScoresRequest <$> o .: "user_id"
+                             <*> o .: "chat_id"
+                             <*> o .: "message_id"
+    <|> GetGameHighScoresInlineRequest <$> o .: "user_id"
+                                       <*> o .: "inline_message_id"
   parseJSON wat = typeMismatch "GetGameHighScores" wat
 
 instance FromJSON SendChatActionRequest where
@@ -493,14 +496,14 @@ instance FromJSON AnswerCallbackQueryRequest where
 instance FromJSON UpdatesRequest where
   parseJSON (Object o) =
     UpdatesRequest <$> o .:? "offset"
-                   <*> o .:? "limit" .!= 100
-                   <*> o .:? "timeout" .!= 0
+                   <*> o .:? "limit"
+                   <*> o .:? "timeout"
                    <*> o .:? "allowed_updates"
   parseJSON wat = typeMismatch "UpdatesRequest" wat
 
 instance FromJSON WebhookRequest where
   parseJSON (Object o) =
     WebhookRequest <$> o .: "url"
-                   <*> o .:? "max_conns" .!= 40
+                   <*> o .:? "max_conns"
                    <*> o .:? "allowed_updates"
   parseJSON wat = typeMismatch "WebhookRequest" wat

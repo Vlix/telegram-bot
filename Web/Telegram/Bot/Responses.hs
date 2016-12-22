@@ -12,7 +12,7 @@ import           Web.Telegram.Bot.Types.Basic
 import           Web.Telegram.Bot.Types.Static
 import           Web.Telegram.Bot.Instances
 
--- | The `a` can be any of [User,Message,UserProfilePhotos,File,Chat,[ChatMember],Int,True]
+-- | The `a` can be any of [User,Message,UserProfilePhotos,File,Chat,[ChatMember],Int,Bool]
 data Response a =
   OKResponse
   { ok_result      :: a

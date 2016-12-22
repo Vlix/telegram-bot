@@ -1,4 +1,22 @@
-module Web.Telegram.Bot where
+module Web.Telegram.Bot
+  ( module Web.Telegram.Bot.Types
+  , handleUpdates
+  , UpdateHandler (..)
+  , sendMessage
+  , forwardMessage
+  , sendPhoto
+  , sendAudio
+  , sendSticker
+  , sendDocument
+  , sendVideo
+  , sendVoice
+  , sendLocation
+  , sendVenue
+  , sendContact
+  , sendGame
+  , setGameScore
+  , setGameScoreInline
+  ) where
 
 
 import           Data.Text              (Text (..))

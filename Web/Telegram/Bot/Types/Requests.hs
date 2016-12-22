@@ -173,13 +173,13 @@ data SetGameScoreRequest =
 -- | On success, returns an Array of GameHighScore objects.
 -- This method will currently return scores for the target user, plus two of his closest neighbors on each side.
 -- Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
-data GetGameHighScores =
-  GetGameHighScores
+data GetGameHighScoresRequest =
+  GetGameHighScoresRequest
   { req_highscore_user_id    :: Int  -- ^ Target user id
   , req_highscore_chat_id    :: Text -- ^ Unique identifier for the target chat
   , req_highscore_message_id :: Int  -- ^ Identifier of the sent message
   }
-  | GetGameHighScoresInline
+  | GetGameHighScoresInlineRequest
   { req_highscore_user_id           :: Int  -- ^ Target user id
   , req_highscore_inline_message_id :: Text -- ^ Identifier of the inline message
   } deriving (Eq,Show)
@@ -294,8 +294,8 @@ data UpdatesRequest = UpdatesRequest
                                             -- An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id.
                                             -- The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue.
                                             -- All previous updates will forgotten.
-  , getUpdates_limit           :: Int       -- ^ Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100.
-  , getUpdates_timeout         :: Int       -- ^ Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
+  , getUpdates_limit           :: Maybe Int -- ^ Limits the number of updates to be retrieved. Values between 1—100 are accepted. Defaults to 100.
+  , getUpdates_timeout         :: Maybe Int -- ^ Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
   , getUpdates_allowed_updates :: Maybe [UpdateType] -- ^ List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types.
                                                      -- See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default).
                                                      -- If not specified, the previous setting will be used.
@@ -303,9 +303,9 @@ data UpdatesRequest = UpdatesRequest
   } deriving (Eq,Show)
 
 data WebhookRequest = WebhookRequest
-  { webhook_url       :: Text -- ^ HTTPS url to send updates to. Use an empty string to remove webhook integration
-  , webhook_max_conns :: Int  -- ^ Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40.
-                              -- Use lower values to limit the load on your bot‘s server, and higher values to increase your bot’s throughput.
+  { webhook_url       :: Text      -- ^ HTTPS url to send updates to. Use an empty string to remove webhook integration
+  , webhook_max_conns :: Maybe Int -- ^ Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40.
+                                   -- Use lower values to limit the load on your bot‘s server, and higher values to increase your bot’s throughput.
   , webhook_allowed_updates :: Maybe [UpdateType] -- ^ List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types.
                                                   -- See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default).
                                                   -- If not specified, the previous setting will be used.

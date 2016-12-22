@@ -1,3 +1,5 @@
+{-# LANGUAGE RecordWildCards #-}
+
 module Web.Telegram.Bot.Instances.Basic where
 
 
@@ -516,6 +518,17 @@ instance ToJSON ResponseParameters where
             , "retry_after"        .=!! retry
             ]
 
+instance ToJSON WebhookInfo where
+  toJSON WebhookInfo{..} =
+    object' [ "url"                    .=! webhookinfo_url
+            , "has_custom_certificate" .=! webhookinfo_has_custom_certificate
+            , "pending_update_count"   .=! webhookinfo_pending_update_count
+            , "last_error_date"        .=!! webhookinfo_last_error_date
+            , "last_error_message"     .=!! webhookinfo_last_error_message
+            , "max_connections"        .=!! webhookinfo_max_connections
+            , mEmptyList "allowed_updates" webhookinfo_allowed_updates
+            ]
+
 ------------------------
 -- FromJSON INSTANCES --
 ------------------------
@@ -918,3 +931,14 @@ instance FromJSON ResponseParameters where
     ResponseParameters <$> o .:? "migrate_to_chat_id"
                        <*> o .:? "retry_after"
   parseJSON wat = typeMismatch "ResponseParameters" wat
+
+instance FromJSON WebhookInfo where
+  parseJSON (Object o) =
+    WebhookInfo <$> o .: "url"
+                <*> o .: "has_custom_certificate"
+                <*> o .: "pending_update_count"
+                <*> o .:? "last_error_date"
+                <*> o .:? "last_error_message"
+                <*> o .:? "max_connections"
+                <*> o .:? "allowed_updates" .!= []
+  parseJSON wat = typeMismatch "WebhookInfo" wat

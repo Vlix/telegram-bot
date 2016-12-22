@@ -1,3 +1,6 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
+
 module Web.Telegram.Bot.Types.Static where
 
 
@@ -21,11 +24,15 @@ object' :: [Maybe Pair] -> Value
 object' = Object . HM.fromList . catMaybes
 
 (.=!!) :: ToJSON a => Text -> Maybe a -> Maybe Pair
-_    .=!! Nothing  = Nothing
-name .=!! (Just v) = Just $ name .= v
+name .=!! v = (name .=) <$> v
 
 (.=!) :: ToJSON a => Text -> a -> Maybe Pair
 name .=! value = Just $ name .= value
+
+
+instance {-# OVERLAPPING #-} (FromJSON a) => FromJSON (Either Bool a) where
+  parseJSON (Bool b) = pure $ Left b
+  parseJSON x = Right <$> parseJSON x
 
 
 -- | Type of chat.

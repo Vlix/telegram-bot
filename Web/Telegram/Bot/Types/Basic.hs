@@ -509,3 +509,14 @@ data ResponseParameters = ResponseParameters
   { rps_migrate_to_chat_id :: Maybe Integer -- ^ The group has been migrated to a supergroup with the specified identifier.
   , rps_retry_after        :: Maybe Int     -- ^ In case of exceeding flood control, the number of seconds left to wait before the request can be repeated
   } deriving (Eq,Show)
+
+-- | Contains information about the current status of a webhook.
+data WebhookInfo = WebhookInfo
+  { webhookinfo_url                    :: Text       -- ^ Webhook URL, may be empty if webhook is not set up
+  , webhookinfo_has_custom_certificate :: Bool       -- ^ True, if a custom certificate was provided for webhook certificate checks
+  , webhookinfo_pending_update_count   :: Int        -- ^ Number of updates awaiting delivery
+  , webhookinfo_last_error_date        :: Maybe Int  -- ^ Unix time for the most recent error that happened when trying to deliver an update via webhook
+  , webhookinfo_last_error_message     :: Maybe Text -- ^ Error message in human-readable format for the most recent error that happened when trying to deliver an update via webhook
+  , webhookinfo_max_connections        :: Maybe Int  -- ^ Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
+  , webhookinfo_allowed_updates        :: [Text]     -- ^ A list of update types the bot is subscribed to. Defaults to all update types
+  }
