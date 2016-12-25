@@ -1,7 +1,7 @@
 -- | This module contains data objects which represents requests to update messages to Telegram Bot API
 module Web.Telegram.Bot.Types.UpdateRequests where
 
-import           Data.Text                  (Text (..))
+import           Data.Text                  (Text)
 import           Web.Telegram.Bot.Types.Inline
 import           Web.Telegram.Bot.Types.Static
 

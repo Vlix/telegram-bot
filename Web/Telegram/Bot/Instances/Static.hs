@@ -1,11 +1,10 @@
+{-# OPTIONS_GHC -fno-warn-orphans #-}
+
 module Web.Telegram.Bot.Instances.Static where
 
 
-import           Control.Applicative        ((<|>))
 import           Data.Aeson
 import           Data.Aeson.Types           (typeMismatch)
-import qualified Data.HashMap.Strict        as HM
-import           Data.Maybe                 (isJust)
 import           Data.Monoid                ((<>))
 import           Data.Text                  (unpack)
 
@@ -119,3 +118,5 @@ instance FromJSON UpdateType where
   parseJSON (String "inline_query")         = pure INLINEQUERY
   parseJSON (String "chosen_inline_result") = pure CHOSENINLINERESULT
   parseJSON (String "callback_query")       = pure CALLBACKQUERY
+  parseJSON (String wat) = fail $ "Wrong String \"" <> unpack wat <> "\" as UpdateType"
+  parseJSON wat = typeMismatch "ChatMemberStatus" wat

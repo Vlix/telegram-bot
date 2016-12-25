@@ -1,11 +1,10 @@
 module Web.Telegram.Bot.Types.Inline where
 
 
-import           Data.Text                  (Text (..))
+import           Data.Text                  (Text)
 
 import           Web.Telegram.Bot.Types.Basic
 import           Web.Telegram.Bot.Types.Static
-
 
 -- | This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.
 data InlineQuery = InlineQuery

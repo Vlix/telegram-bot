@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 {-# LANGUAGE RecordWildCards #-}
 
 module Web.Telegram.Bot.Instances.Basic where
@@ -13,7 +14,7 @@ import qualified Data.HashMap.Strict        as HM
 
 import           Web.Telegram.Bot.Types.Basic
 import           Web.Telegram.Bot.Types.Static
-import           Web.Telegram.Bot.Instances.Static
+import           Web.Telegram.Bot.Instances.Static()
 
 
 ----------------------
@@ -214,7 +215,6 @@ instance ToJSON Message where
            , "chat"                    .= chat
            , "supergroup_chat_created" .= Bool True
            ]
-{-
   toJSON (ChannelChatCreatedMessage message_id from date chat) =
     object [ "message_id"           .= message_id
            , "from"                 .= from
@@ -222,7 +222,6 @@ instance ToJSON Message where
            , "chat"                 .= chat
            , "channel_chat_created" .= Bool True
            ]
--}
   toJSON (MigratedToChatMessage message_id from date chat migrate_to_chat_id) =
     object [ "message_id"         .= message_id
            , "from"               .= from
@@ -246,61 +245,61 @@ instance ToJSON Message where
            ]
 
 instance ToJSON MessageEntity where
-  toJSON (MentionEntity offset length) =
+  toJSON (MentionEntity offset length') =
     object [ "type"   .= String "mention"
            , "offset" .= offset
-           , "length" .= length
+           , "length" .= length'
            ]
-  toJSON (HashtagEntity offset length) =
+  toJSON (HashtagEntity offset length') =
     object [ "type"   .= String "hashtag"
            , "offset" .= offset
-           , "length" .= length
+           , "length" .= length'
            ]
-  toJSON (BotCommandEntity offset length) =
+  toJSON (BotCommandEntity offset length') =
     object [ "type"   .= String "bot_command"
            , "offset" .= offset
-           , "length" .= length
+           , "length" .= length'
            ]
-  toJSON (UrlEntity offset length) =
+  toJSON (UrlEntity offset length') =
     object [ "type"   .= String "url"
            , "offset" .= offset
-           , "length" .= length
+           , "length" .= length'
            ]
-  toJSON (EmailEntity offset length) =
+  toJSON (EmailEntity offset length') =
     object [ "type"   .= String "email"
            , "offset" .= offset
-           , "length" .= length
+           , "length" .= length'
            ]
-  toJSON (BoldEntity offset length) =
+  toJSON (BoldEntity offset length') =
     object [ "type"   .= String "bold"
            , "offset" .= offset
-           , "length" .= length
+           , "length" .= length'
            ]
-  toJSON (ItalicEntity offset length) =
+  toJSON (ItalicEntity offset length') =
     object [ "type"   .= String "italic"
            , "offset" .= offset
-           , "length" .= length
+           , "length" .= length'
            ]
-  toJSON (CodeEntity offset length) =
+  toJSON (CodeEntity offset length') =
     object [ "type"   .= String "code"
            , "offset" .= offset
-           , "length" .= length
+           , "length" .= length'
            ]
-  toJSON (PreEntity offset length) =
+  toJSON (PreEntity offset length') =
     object [ "type"   .= String "pre"
            , "offset" .= offset
-           , "length" .= length
+           , "length" .= length'
            ]
-  toJSON (TextLinkEntity offset length url) =
+  toJSON (TextLinkEntity offset length' url) =
     object [ "type"   .= String "text_link"
            , "offset" .= offset
-           , "length" .= length
+           , "length" .= length'
            , "url"    .= url
            ]
-  toJSON (TextMentionEntity offset length user) =
+  toJSON (TextMentionEntity offset length' user) =
     object [ "type"   .= String "text_mention"
            , "offset" .= offset
-           , "length" .= length
+           , "length" .= length'
            , "user"   .= user
            ]
 
@@ -461,7 +460,7 @@ instance ToJSON InlineKeyboardButton where
     object [ "text"                             .= txt
            , "switch_inline_query_current_chat" .= fromMaybe "" switch
            ]
-  toJSON (InlineGameButton txt game) =
+  toJSON (InlineGameButton txt _game) =
     object [ "text"          .= txt
            , "callback_game" .= Object HM.empty
            ]

@@ -1,13 +1,11 @@
 -- | This module contains objects which represent data of Telegram Bot API responses
 module Web.Telegram.Bot.Types
-    ( module Web.Telegram.Bot.Requests
+    ( module Web.Telegram.Bot.Instances
+    , module Web.Telegram.Bot.Requests
     , module Web.Telegram.Bot.Responses
     , module Web.Telegram.Bot.Types.Basic
     , module Web.Telegram.Bot.Types.Static
     , module Web.Telegram.Bot.Types.Inline
-    , module Web.Telegram.Bot.Instances.Basic
-    , module Web.Telegram.Bot.Instances.Inline
-    , module Web.Telegram.Bot.Instances.Static
     -- * Types
     , Update                (..)
     ) where
@@ -16,14 +14,12 @@ import           Control.Applicative        ((<|>))
 import           Data.Aeson
 import           Data.Aeson.Types           (typeMismatch)
 
+import           Web.Telegram.Bot.Instances()
 import           Web.Telegram.Bot.Requests
 import           Web.Telegram.Bot.Responses
 import           Web.Telegram.Bot.Types.Basic
 import           Web.Telegram.Bot.Types.Static
 import           Web.Telegram.Bot.Types.Inline
-import           Web.Telegram.Bot.Instances.Basic
-import           Web.Telegram.Bot.Instances.Inline
-import           Web.Telegram.Bot.Instances.Static
 
 
 -- | This object represents an incoming update.
@@ -64,33 +60,33 @@ data Update =
 
 
 instance ToJSON Update where
-  toJSON (MessageUpdate update_id message) =
-    object [ "update_id" .= update_id
-           , "message"   .= message
+  toJSON (MessageUpdate updateid msg) =
+    object [ "update_id" .= updateid
+           , "message"   .= msg
            ]
-  toJSON (EditedMessageUpdate update_id message) =
-    object [ "update_id"      .= update_id
-           , "edited_message" .= message
+  toJSON (EditedMessageUpdate updateid msg) =
+    object [ "update_id"      .= updateid
+           , "edited_message" .= msg
            ]
-  toJSON (ChannelPostUpdate update_id message) =
-    object [ "update_id"    .= update_id
-           , "channel_post" .= message
+  toJSON (ChannelPostUpdate updateid msg) =
+    object [ "update_id"    .= updateid
+           , "channel_post" .= msg
            ]
-  toJSON (EditedChannelPostUpdate update_id message) =
-    object [ "update_id"           .= update_id
-           , "edited_channel_post" .= message
+  toJSON (EditedChannelPostUpdate updateid msg) =
+    object [ "update_id"           .= updateid
+           , "edited_channel_post" .= msg
            ]
-  toJSON (InlineQueryUpdate update_id inline_query) =
-    object [ "update_id"    .= update_id
-           , "inline_query" .= inline_query
+  toJSON (InlineQueryUpdate updateid inlineQuery) =
+    object [ "update_id"    .= updateid
+           , "inline_query" .= inlineQuery
            ]
-  toJSON (ChosenInlineUpdate update_id chosen_inline_result) =
-    object [ "update_id" .= update_id
-           , "chosen_inline_result" .= chosen_inline_result
+  toJSON (ChosenInlineUpdate updateid chosenInlineResult) =
+    object [ "update_id" .= updateid
+           , "chosen_inline_result" .= chosenInlineResult
            ]
-  toJSON (CallbackUpdate update_id callback_query) =
-    object [ "update_id" .= update_id
-           , "callback_query" .= callback_query
+  toJSON (CallbackUpdate updateid callbackQuery) =
+    object [ "update_id" .= updateid
+           , "callback_query" .= callbackQuery
            ]
 
 instance FromJSON Update where

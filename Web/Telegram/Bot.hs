@@ -19,7 +19,7 @@ module Web.Telegram.Bot
   ) where
 
 
-import           Data.Text              (Text (..))
+import           Data.Text              (Text)
 
 import           Web.Telegram.Bot.Types
 
@@ -105,8 +105,8 @@ sendLocation chatid lat lon =
   SendLocationRequest chatid lat lon False Nothing Nothing
 
 sendVenue :: ChatId -> Latitude -> Longitude -> Title -> Address -> SendVenueRequest
-sendVenue chatid lat lon title address =
-  SendVenueRequest chatid lat lon title address False Nothing Nothing Nothing
+sendVenue chatid lat lon title' addr =
+  SendVenueRequest chatid lat lon title' addr False Nothing Nothing Nothing
 
 sendContact :: ChatId -> PhoneNumber -> FirstName -> Maybe LastName -> SendContactRequest
 sendContact chatid phonenumber firstname mlastname =

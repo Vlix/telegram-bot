@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 {-# LANGUAGE RecordWildCards #-}
 
 module Web.Telegram.Bot.Instances.Requests where
@@ -10,7 +11,8 @@ import           Data.Text                  (Text)
 
 import           Web.Telegram.Bot.Types.Requests
 import           Web.Telegram.Bot.Types.Static
-import           Web.Telegram.Bot.Instances.Inline
+import           Web.Telegram.Bot.Instances.Inline()
+import           Web.Telegram.Bot.Instances.Static()
 
 
 ----------------------

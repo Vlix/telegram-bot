@@ -1,7 +1,8 @@
 -- | This module contains objects which represent data of Telegram Bot API responses
 module Web.Telegram.Bot.Types.Basic where
 
-import           Data.Text                  (Text (..))
+
+import           Data.Text                  (Text)
 
 import           Web.Telegram.Bot.Types.Static
 

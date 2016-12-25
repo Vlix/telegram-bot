@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 {-# LANGUAGE RecordWildCards #-}
 
 module Web.Telegram.Bot.Instances.Inline where
@@ -10,10 +11,10 @@ import           Data.Text                  (unpack)
 import           Data.Monoid                ((<>))
 import qualified Data.HashMap.Strict        as HM
 
-import           Web.Telegram.Bot.Types.Basic
 import           Web.Telegram.Bot.Types.Inline
 import           Web.Telegram.Bot.Types.Static
-import           Web.Telegram.Bot.Instances.Basic
+import           Web.Telegram.Bot.Instances.Basic()
+import           Web.Telegram.Bot.Instances.Static()
 
 ----------------------
 -- ToJSON INSTANCES --
@@ -39,8 +40,8 @@ instance ToJSON ChosenInlineResult where
 
 instance ToJSON InputMessageContent where
   toJSON (InputTextMessageContent message_text parse_mode disable_web_page_preview) =
-    object' [ "message_text"             .=! message_text
-            , "parse_mode"               .=!! parse_mode
+    object' [ "message_text" .=! message_text
+            , "parse_mode"   .=!! parse_mode
             , mBool "disable_web_page_preview" False disable_web_page_preview
             ]
   toJSON (InputVenueMessageContent latitude longitude title address foursquare_id) =

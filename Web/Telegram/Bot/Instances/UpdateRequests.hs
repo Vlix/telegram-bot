@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 {-# LANGUAGE RecordWildCards #-}
 
 module Web.Telegram.Bot.Instances.UpdateRequests where
@@ -9,8 +10,8 @@ import           Data.Aeson.Types           (typeMismatch)
 
 import           Web.Telegram.Bot.Types.UpdateRequests
 import           Web.Telegram.Bot.Types.Static
-import           Web.Telegram.Bot.Instances.Inline
-import           Web.Telegram.Bot.Instances.Static
+import           Web.Telegram.Bot.Instances.Inline()
+import           Web.Telegram.Bot.Instances.Static()
 
 ----------------------
 -- ToJSON INSTANCES --
