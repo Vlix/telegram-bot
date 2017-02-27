@@ -22,286 +22,137 @@ import           Web.Telegram.Bot.Instances.Static()
 ----------------------
 
 instance ToJSON User where
-  toJSON (User ident first_name last_name username) =
-    object' [ "id"         .=! ident
-            , "first_name" .=! first_name
-            , "last_name"  .=!! last_name
-            , "username"   .=!! username
+  toJSON User{..} =
+    object' [ "id"         .=! user_id
+            , "first_name" .=! user_first_name
+            , "last_name"  .=!! user_last_name
+            , "username"   .=!! user_username
             ]
 
 instance ToJSON Chat where
-  toJSON (PrivateChat ident first_name last_name username) =
-    object' [ "id"         .=! ident
+  toJSON PrivateChat{..} =
+    object' [ "id"         .=! chat_id
             , "type"       .=! toJSON Private
-            , "first_name" .=! first_name
-            , "last_name"  .=!! last_name
-            , "username"   .=!! username
+            , "first_name" .=! chat_first_name
+            , "last_name"  .=!! chat_last_name
+            , "username"   .=!! chat_username
             ]
-  toJSON (GroupChat ident title allAdmin) =
-    object' [ "id"    .=! ident
+  toJSON GroupChat{..} =
+    object' [ "id"    .=! chat_id
             , "type"  .=! toJSON Group
-            , "title" .=! title
-            , mBool "all_members_are_administrators" False allAdmin
+            , "title" .=! chat_title
+            , mBool "all_members_are_administrators" False chat_all_admin
             ]
-  toJSON (SuperGroupChat ident title allAdmin username) =
-    object' [ "id"       .=! ident
+  toJSON SuperGroupChat{..} =
+    object' [ "id"       .=! chat_id
             , "type"     .=! toJSON Supergroup
-            , "title"    .=! title
-            , mBool "all_members_are_administrators" False allAdmin
-            , "username" .=!! username
+            , "title"    .=! chat_title
+            , mBool "all_members_are_administrators" False chat_all_admin
+            , "username" .=!! chat_username
             ]
-  toJSON (ChannelChat ident title username) =
-    object' [ "id"       .=! ident
+  toJSON ChannelChat{..} =
+    object' [ "id"       .=! chat_id
             , "type"     .=! toJSON Channel
-            , "title"    .=! title
-            , "username" .=!! username
+            , "title"    .=! chat_title
+            , "username" .=!! chat_username
             ]
 
 instance ToJSON Message where
-  toJSON (ForwardedMessage message forward_from forward_from_chat forward_from_message_id forward_date)
-        | Object msg <- toJSON message = Object $ HM.fromList [ ("forward_from", toJSON forward_from)
-                                                              , ("forward_from_chat",toJSON forward_from_chat)
-                                                              , ("forward_date",toJSON forward_date)
-                                                              , ("forward_from_message_id",toJSON forward_from_message_id)
-                                                              ] `HM.union` msg
+  toJSON ForwardedMessage{..}
+        | Object msg <- toJSON forward_message =
+            Object $ HM.fromList [ ("forward_from", toJSON forward_from)
+                                 , ("forward_from_chat",toJSON forward_from_chat)
+                                 , ("forward_date",toJSON forward_date)
+                                 , ("forward_from_message_id",toJSON forward_from_message_id)
+                                 ] `HM.union` msg
         | otherwise = error "message parameter isn't an Object in ToJSON Message - ForwardedMessage"
-  toJSON (TextMessage message_id from date chat text edit_date reply entities) =
-    object' [ "message_id"       .=! message_id
-            , "from"             .=! from
-            , "date"             .=! date
-            , "chat"             .=! chat
-            , "text"             .=! text
-            , "edit_date"        .=!! edit_date
-            , "reply_to_message" .=!! reply
-            , mEmptyList "entities" entities
-            ]
-  toJSON (AudioMessage message_id from date chat audio caption edit_date reply) =
-    object' [ "message_id"       .=! message_id
-            , "from"             .=! from
-            , "date"             .=! date
-            , "chat"             .=! chat
-            , "audio"            .=! audio
-            , "caption"          .=!! caption
-            , "edit_date"        .=!! edit_date
-            , "reply_to_message" .=!! reply
-            ]
-  toJSON (DocumentMessage message_id from date chat document caption edit_date reply) =
-    object' [ "message_id"       .=! message_id
-            , "from"             .=! from
-            , "date"             .=! date
-            , "chat"             .=! chat
-            , "document"         .=! document
-            , "caption"          .=!! caption
-            , "edit_date"        .=!! edit_date
-            , "reply_to_message" .=!! reply
-            ]
-  toJSON (GameMessage message_id from date chat game edit_date reply) =
-    object' [ "message_id"       .=! message_id
-            , "from"             .=! from
-            , "date"             .=! date
-            , "chat"             .=! chat
-            , "game"             .=! game
-            , "edit_date"        .=!! edit_date
-            , "reply_to_message" .=!! reply
-            ]
-  toJSON (PhotoMessage message_id from date chat photo caption edit_date reply) =
-    object' [ "message_id"       .=! message_id
-            , "from"             .=! from
-            , "date"             .=! date
-            , "chat"             .=! chat
-            , "photo"            .=! photo
-            , "caption"          .=!! caption
-            , "edit_date"        .=!! edit_date
-            , "reply_to_message" .=!! reply
-            ]
-  toJSON (StickerMessage message_id from date chat sticker reply) =
-    object' [ "message_id"       .=! message_id
-            , "from"             .=! from
-            , "date"             .=! date
-            , "chat"             .=! chat
-            , "sticker"          .=! sticker
-            , "reply_to_message" .=!! reply
-            ]
-  toJSON (VideoMessage message_id from date chat video caption edit_date reply) =
-    object' [ "message_id"       .=! message_id
-            , "from"             .=! from
-            , "date"             .=! date
-            , "chat"             .=! chat
-            , "video"            .=! video
-            , "caption"          .=!! caption
-            , "edit_date"        .=!! edit_date
-            , "reply_to_message" .=!! reply
-            ]
-  toJSON (VoiceMessage message_id from date chat voice caption edit_date reply) =
-    object' [ "message_id"       .=! message_id
-            , "from"             .=! from
-            , "date"             .=! date
-            , "chat"             .=! chat
-            , "voice"            .=! voice
-            , "caption"          .=!! caption
-            , "edit_date"        .=!! edit_date
-            , "reply_to_message" .=!! reply
-            ]
-  toJSON (ContactMessage message_id from date chat contact reply) =
-    object' [ "message_id"       .=! message_id
-            , "from"             .=! from
-            , "date"             .=! date
-            , "chat"             .=! chat
-            , "contact"          .=! contact
-            , "reply_to_message" .=!! reply
-            ]
-  toJSON (LocationMessage message_id from date chat location reply) =
-    object' [ "message_id"       .=! message_id
-            , "from"             .=! from
-            , "date"             .=! date
-            , "chat"             .=! chat
-            , "location"         .=! location
-            , "reply_to_message" .=!! reply
-            ]
-  toJSON (VenueMessage message_id from date chat venue reply) =
-    object' [ "message_id"       .=! message_id
-            , "from"             .=! from
-            , "date"             .=! date
-            , "chat"             .=! chat
-            , "venue"            .=! venue
-            , "reply_to_message" .=!! reply
-            ]
-  toJSON (NewChatParticipantMessage message_id from date chat new_chat_member) =
-    object [ "message_id"      .= message_id
-           , "from"            .= from
-           , "date"            .= date
-           , "chat"            .= chat
-           , "new_chat_member" .= new_chat_member
-           ]
-  toJSON (LeftChatParticipantMessage message_id from date chat left_chat_member) =
-    object [ "message_id"            .= message_id
-           , "from"                  .= from
-           , "date"                  .= date
-           , "chat"                  .= chat
-           , "left_chat_participant" .= left_chat_member
-           ]
-  toJSON (NewChatTitleMessage message_id from date chat new_chat_title) =
-    object [ "message_id"     .= message_id
-           , "from"           .= from
-           , "date"           .= date
-           , "chat"           .= chat
-           , "new_chat_title" .= new_chat_title
-           ]
-  toJSON (NewChatPhotoMessage message_id from date chat new_chat_photo) =
-    object [ "message_id"     .= message_id
-           , "from"           .= from
-           , "date"           .= date
-           , "chat"           .= chat
-           , "new_chat_photo" .= new_chat_photo
-           ]
-  toJSON (DeleteChatPhotoMessage message_id from date chat) =
-    object [ "message_id"        .= message_id
-           , "from"              .= from
-           , "date"              .= date
-           , "chat"              .= chat
-           , "delete_chat_photo" .= Bool True
-           ]
-  toJSON (GroupChatCreatedMessage message_id from date chat) =
-    object [ "message_id"         .= message_id
-           , "from"               .= from
-           , "date"               .= date
-           , "chat"               .= chat
-           , "group_chat_created" .= Bool True
-           ]
-  toJSON (SuperGroupChatCreatedMessage message_id from date chat) =
-    object [ "message_id"              .= message_id
-           , "from"                    .= from
-           , "date"                    .= date
-           , "chat"                    .= chat
-           , "supergroup_chat_created" .= Bool True
-           ]
-  toJSON (ChannelChatCreatedMessage message_id from date chat) =
-    object [ "message_id"           .= message_id
-           , "from"                 .= from
-           , "date"                 .= date
-           , "chat"                 .= chat
-           , "channel_chat_created" .= Bool True
-           ]
-  toJSON (MigratedToChatMessage message_id from date chat migrate_to_chat_id) =
-    object [ "message_id"         .= message_id
-           , "from"               .= from
-           , "date"               .= date
-           , "chat"               .= chat
-           , "migrate_to_chat_id" .= migrate_to_chat_id
-           ]
-  toJSON (MigrateFromChatMessage message_id from date chat migrate_from_chat_id) =
-    object [ "message_id"           .= message_id
-           , "from"                 .= from
-           , "date"                 .= date
-           , "chat"                 .= chat
-           , "migrate_from_chat_id" .= migrate_from_chat_id
-           ]
-  toJSON (PinnedMessage message_id from date chat pinned_message) =
-    object [ "message_id"     .= message_id
-           , "from"           .= from
-           , "date"           .= date
-           , "chat"           .= chat
-           , "pinned_message" .= pinned_message
-           ]
+  toJSON other = object' $ extra ++ basis
+   where
+    basis = [ "message_id"       .=! message_id other
+            , "from"             .=! from other
+            , "date"             .=! date other
+            , "chat"             .=! chat other ]
+    extra = case other of
+      TextMessage{..} ->
+        [ "text"             .=! text
+        , "edit_date"        .=!! edit_date
+        , "reply_to_message" .=!! reply_to_message
+        , mEmptyList "entities" entities ]
+      AudioMessage{..} ->
+        [ "audio"            .=! audio
+        , "caption"          .=!! caption
+        , "edit_date"        .=!! edit_date
+        , "reply_to_message" .=!! reply_to_message ]
+      DocumentMessage{..} ->
+        [ "document"         .=! document
+        , "caption"          .=!! caption
+        , "edit_date"        .=!! edit_date
+        , "reply_to_message" .=!! reply_to_message ]
+      GameMessage{..} ->
+        [ "game"             .=! game
+        , "edit_date"        .=!! edit_date
+        , "reply_to_message" .=!! reply_to_message ]
+      PhotoMessage{..} ->
+        [ "photo"            .=! photo
+        , "caption"          .=!! caption
+        , "edit_date"        .=!! edit_date
+        , "reply_to_message" .=!! reply_to_message ]
+      StickerMessage{..} ->
+        [ "sticker"          .=! sticker
+        , "reply_to_message" .=!! reply_to_message ]
+      VideoMessage{..} ->
+        [ "video"            .=! video
+        , "caption"          .=!! caption
+        , "edit_date"        .=!! edit_date
+        , "reply_to_message" .=!! reply_to_message ]
+      VoiceMessage{..} ->
+        [ "voice"            .=! voice
+        , "caption"          .=!! caption
+        , "edit_date"        .=!! edit_date
+        , "reply_to_message" .=!! reply_to_message ]
+      ContactMessage{..} ->
+        [ "contact"          .=! contact
+        , "reply_to_message" .=!! reply_to_message ]
+      LocationMessage{..} ->
+        [ "location"         .=! location
+        , "reply_to_message" .=!! reply_to_message ]
+      VenueMessage{..} ->
+        [ "venue"            .=! venue
+        , "reply_to_message" .=!! reply_to_message ]
+      NewChatParticipantMessage{..}    -> [ "new_chat_member"         .=! new_chat_member ]
+      LeftChatParticipantMessage{..}   -> [ "left_chat_participant"   .=! left_chat_member ]
+      NewChatTitleMessage{..}          -> [ "new_chat_title"          .=! new_chat_title ]
+      NewChatPhotoMessage{..}          -> [ "new_chat_photo"          .=! new_chat_photo ]
+      DeleteChatPhotoMessage{..}       -> [ "delete_chat_photo"       .=! Bool True ]
+      GroupChatCreatedMessage{..}      -> [ "group_chat_created"      .=! Bool True ]
+      SuperGroupChatCreatedMessage{..} -> [ "supergroup_chat_created" .=! Bool True ]
+      ChannelChatCreatedMessage{..}    -> [ "channel_chat_created"    .=! Bool True ]
+      MigratedToChatMessage{..}        -> [ "migrate_to_chat_id"      .=! migrate_to_chat_id ]
+      MigrateFromChatMessage{..}       -> [ "migrate_from_chat_id"    .=! migrate_from_chat_id ]
+      PinnedMessage{..}                -> [ "pinned_message"          .=! pinned_message ]
+      _ -> [ "error" .=! String "this should never occur, please report"]
 
 instance ToJSON MessageEntity where
-  toJSON (MentionEntity offset length') =
-    object [ "type"   .= String "mention"
-           , "offset" .= offset
-           , "length" .= length'
-           ]
-  toJSON (HashtagEntity offset length') =
-    object [ "type"   .= String "hashtag"
-           , "offset" .= offset
-           , "length" .= length'
-           ]
-  toJSON (BotCommandEntity offset length') =
-    object [ "type"   .= String "bot_command"
-           , "offset" .= offset
-           , "length" .= length'
-           ]
-  toJSON (UrlEntity offset length') =
-    object [ "type"   .= String "url"
-           , "offset" .= offset
-           , "length" .= length'
-           ]
-  toJSON (EmailEntity offset length') =
-    object [ "type"   .= String "email"
-           , "offset" .= offset
-           , "length" .= length'
-           ]
-  toJSON (BoldEntity offset length') =
-    object [ "type"   .= String "bold"
-           , "offset" .= offset
-           , "length" .= length'
-           ]
-  toJSON (ItalicEntity offset length') =
-    object [ "type"   .= String "italic"
-           , "offset" .= offset
-           , "length" .= length'
-           ]
-  toJSON (CodeEntity offset length') =
-    object [ "type"   .= String "code"
-           , "offset" .= offset
-           , "length" .= length'
-           ]
-  toJSON (PreEntity offset length') =
-    object [ "type"   .= String "pre"
-           , "offset" .= offset
-           , "length" .= length'
-           ]
-  toJSON (TextLinkEntity offset length' url) =
-    object [ "type"   .= String "text_link"
-           , "offset" .= offset
-           , "length" .= length'
-           , "url"    .= url
-           ]
-  toJSON (TextMentionEntity offset length' user) =
-    object [ "type"   .= String "text_mention"
-           , "offset" .= offset
-           , "length" .= length'
-           , "user"   .= user
-           ]
+  toJSON ent = object $ extra ++ basis
+   where
+    basis = [ "offset" .= entity_offset ent
+            , "length" .= entity_length ent ]
+    extra = case ent of
+      MentionEntity{}    -> [ "type" .= String "mention" ]
+      HashtagEntity{}    -> [ "type" .= String "hashtag" ]
+      BotCommandEntity{} -> [ "type" .= String "bot_command" ]
+      UrlEntity{}        -> [ "type" .= String "url" ]
+      EmailEntity{}      -> [ "type" .= String "email" ]
+      BoldEntity{}       -> [ "type" .= String "bold" ]
+      ItalicEntity{}     -> [ "type" .= String "italic" ]
+      CodeEntity{}       -> [ "type" .= String "code" ]
+      PreEntity{}        -> [ "type" .= String "pre" ]
+      TextLinkEntity{..} ->
+        [ "type" .= String "text_link"
+        , "url"  .= entity_url ]
+      TextMentionEntity{..} ->
+        [ "type" .= String "text_mention"
+        , "user" .= entity_user ]
 
 instance ToJSON PhotoSize where
   toJSON (PhotoSize file_id width height file_size) =
@@ -533,30 +384,34 @@ instance ToJSON WebhookInfo where
 ------------------------
 
 instance FromJSON User where
-    parseJSON (Object o) = User <$> o .: "id"
+    parseJSON = withObject "User" $ \o -> User <$> o .: "id"
                                 <*> o .: "first_name"
                                 <*> o .:? "last_name"
-                                <*> o .:? "username" 
-    parseJSON wat = typeMismatch "User" wat
+                                <*> o .:? "username"
 
 instance FromJSON Chat where
-    parseJSON (Object o) = case HM.lookup "type" o of
-        Just (String "private")    -> PrivateChat <$> o .: "id"
-                                                  <*> o .: "first_name"
-                                                  <*> o .:? "last_name"
-                                                  <*> o .:? "username"
-        Just (String "group")      -> GroupChat <$> o .: "id"
-                                                <*> o .: "title"
-                                                <*> o .:? "all_members_are_administrators" .!= False
-        Just (String "supergroup") -> SuperGroupChat <$> o .: "id"
-                                                     <*> o .: "title"
-                                                     <*> o .:? "all_members_are_administrators" .!= False
-                                                     <*> o .:? "username"
-        Just (String "channel")    -> ChannelChat <$> o .: "id"
-                                                  <*> o .: "title"
-                                                  <*> o .:? "username"
-        _ -> fail "wrong type of Chat type in Chat object"
-    parseJSON wat = typeMismatch "Chat" wat
+  parseJSON = withObject "Chat" $ \o ->
+    case "type" `HM.lookup` o of
+      Nothing  -> fail "no 'type' argument in Chat object"
+      Just val -> go o val
+   where
+    go o = withText "Chat(type)" $ \s ->
+      case s of
+        "private"    -> PrivateChat <$> o .: "id"
+                                    <*> o .: "first_name"
+                                    <*> o .:? "last_name"
+                                    <*> o .:? "username"
+        "group"      -> GroupChat <$> o .: "id"
+                                  <*> o .: "title"
+                                  <*> o .:? "all_members_are_administrators" .!= False
+        "supergroup" -> SuperGroupChat <$> o .: "id"
+                                       <*> o .: "title"
+                                       <*> o .:? "all_members_are_administrators" .!= False
+                                       <*> o .:? "username"
+        "channel"    -> ChannelChat <$> o .: "id"
+                                    <*> o .: "title"
+                                    <*> o .:? "username"
+        wat -> fail $ "wrong string as Chat type in Chat object: " <> unpack wat
 
 instance FromJSON Message where
   parseJSON (Object o)
@@ -702,105 +557,80 @@ instance FromJSON Message where
   parseJSON wat = typeMismatch "Message" wat
 
 instance FromJSON MessageEntity where
-  parseJSON (Object o) = case "type" `HM.lookup` o of
-    Just (String "mention") ->
-      MentionEntity <$> o .: "offset"
-                    <*> o .: "length"
-    Just (String "hashtag") ->
-      HashtagEntity <$> o .: "offset"
-                    <*> o .: "length"
-    Just (String "bot_command") ->
-      BotCommandEntity <$> o .: "offset"
-                       <*> o .: "length"
-    Just (String "url") ->
-      UrlEntity <$> o .: "offset"
-                <*> o .: "length"
-    Just (String "email") ->
-      EmailEntity <$> o .: "offset"
-                  <*> o .: "length"
-    Just (String "bold") ->
-      BoldEntity <$> o .: "offset"
-                 <*> o .: "length"
-    Just (String "italic") ->
-      ItalicEntity <$> o .: "offset"
-                   <*> o .: "length"
-    Just (String "code") ->
-      CodeEntity <$> o .: "offset"
-                 <*> o .: "length"
-    Just (String "pre") ->
-      PreEntity <$> o .: "offset"
-                <*> o .: "length"
-    Just (String "text_link") ->
-      TextLinkEntity <$> o .: "offset"
-                     <*> o .: "length"
-                     <*> o .: "url"
-    Just (String "text_mention") ->
-      TextMentionEntity <$> o .: "offset"
-                        <*> o .: "length"
-                        <*> o .: "user"
-    Just (String wat) -> fail $ "Wrong String \"" <> unpack wat <> "\" in MessageEntity's [type] parameter"
-    Just _          -> fail "Wrong type in MessageEntity's [type] parameter"
-    Nothing         -> fail "No [type] parameter in MessageEntity"
-  parseJSON wat = typeMismatch "MessageEntity" wat
+  parseJSON = withObject "MessageEntity" $ \o ->
+    case "type" `HM.lookup` o of
+      Nothing  -> fail "No 'type' parameter in MessageEntity"
+      Just val -> go o val
+   where
+    go o = withText "MessageEntity(type)" $ \s -> do
+      offset  <- o .: "offset"
+      length' <- o .: "length"
+      case s of
+        "mention"     -> return $ MentionEntity offset length'
+        "hashtag"     -> return $ HashtagEntity offset length'
+        "bot_command" -> return $ BotCommandEntity offset length'
+        "url"         -> return $ UrlEntity offset length'
+        "email"       -> return $ EmailEntity offset length'
+        "bold"        -> return $ BoldEntity offset length'
+        "italic"      -> return $ ItalicEntity offset length'
+        "code"        -> return $ CodeEntity offset length'
+        "pre"         -> return $ PreEntity offset length'
+        "text_link"   -> TextLinkEntity offset length' <$> o .: "url"
+        "text_mention" -> TextMentionEntity offset length' <$> o .: "user"
+        wat -> fail $ "Wrong String \"" <> unpack wat <> "\" in MessageEntity's 'type' parameter"
 
 instance FromJSON PhotoSize where
-  parseJSON (Object o) =
+  parseJSON = withObject "PhotoSize" $ \o ->
     PhotoSize <$> o .: "file_id"
               <*> o .: "width"
               <*> o .: "height"
-              <*> o .:? "file_size" 
-  parseJSON wat = typeMismatch "PhotoSize" wat
+              <*> o .:? "file_size"
 
 instance FromJSON Audio where
-  parseJSON (Object o) =
+  parseJSON = withObject "Audio" $ \o ->
     Audio <$> o .: "file_id"
           <*> o .: "duration"
           <*> o .:? "performer"
           <*> o .:? "title"
           <*> o .:? "mime_type"
           <*> o .:? "file_size"
-  parseJSON wat = typeMismatch "Audio" wat
 
 instance FromJSON Document where
-  parseJSON (Object o) =
+  parseJSON = withObject "Document" $ \o ->
     Document <$> o .: "file_id"
              <*> o .:? "thumb"
              <*> o .:? "file_name"
              <*> o .:? "mime_type"
              <*> o .:? "file_size"
-  parseJSON wat = typeMismatch "Document" wat
 
 instance FromJSON Game where
-  parseJSON (Object o) =
+  parseJSON = withObject "Game" $ \o ->
     Game <$> o .: "title"
          <*> o .: "description"
          <*> o .: "photo"
          <*> o .:? "text"
          <*> o .:? "text_entities" .!= []
          <*> o .:? "animation"
-  parseJSON wat = typeMismatch "Game" wat
 
 instance FromJSON Animation where
-  parseJSON (Object o) =
+  parseJSON = withObject "Animation" $ \o ->
     Animation <$> o .: "file_id"
               <*> o .:? "thumb"
               <*> o .:? "file_name"
               <*> o .:? "mime_type"
               <*> o .:? "file_size"
-  parseJSON wat = typeMismatch "Animation" wat
 
 instance FromJSON Sticker where
-  parseJSON (Object o) =
+  parseJSON = withObject "Sticker" $ \o ->
     Sticker <$> o .: "file_id"
             <*> o .: "width"
             <*> o .: "height"
             <*> o .:? "thumb"
             <*> o .:? "emoji"
             <*> o .:? "file_size"
-  parseJSON wat = typeMismatch "Sticker" wat
 
 instance FromJSON Video where
-  parseJSON (Object o) =
+  parseJSON = withObject "Video" $ \o ->
     Video <$> o .: "file_id"
           <*> o .: "width"
           <*> o .: "height"
@@ -808,50 +638,43 @@ instance FromJSON Video where
           <*> o .:? "thumb"
           <*> o .:? "mime_type"
           <*> o .:? "file_size"
-  parseJSON wat = typeMismatch "Video" wat
 
 instance FromJSON Voice where
-  parseJSON (Object o) =
+  parseJSON = withObject "Voice" $ \o ->
     Voice <$> o .: "file_id"
           <*> o .: "duration"
           <*> o .:? "mime_type"
           <*> o .:? "file_size"
-  parseJSON wat = typeMismatch "Voice" wat
 
 instance FromJSON Contact where
-  parseJSON (Object o) =
+  parseJSON = withObject "Contact" $ \o ->
     Contact <$> o .: "phone_number"
             <*> o .: "first_name"
             <*> o .:? "last_name"
             <*> o .:? "user_id"
-  parseJSON wat = typeMismatch "Contact" wat
 
 instance FromJSON Location where
-  parseJSON (Object o) =
+  parseJSON = withObject "Location" $ \o ->
     Location <$> o .: "longitude"
              <*> o .: "latitude"
-  parseJSON wat = typeMismatch "Location" wat
 
 instance FromJSON Venue where
-  parseJSON (Object o) =
+  parseJSON = withObject "Venue" $ \o ->
     Venue <$> o .: "location"
           <*> o .: "title"
           <*> o .: "address"
           <*> o .:? "foursquare_id"
-  parseJSON wat = typeMismatch "Venue" wat
 
 instance FromJSON UserProfilePhotos where
-  parseJSON (Object o) =
+  parseJSON = withObject "UserProfilePhotos" $ \o ->
     UserProfilePhotos <$> o .: "total_count"
                       <*> o .: "photos"
-  parseJSON wat = typeMismatch "UserProfilePhotos" wat
 
 instance FromJSON File where
-  parseJSON (Object o) =
+  parseJSON = withObject "File" $ \o ->
     File <$> o .: "file_id"
          <*> o .:? "file_size"
          <*> o .:? "file_path"
-  parseJSON wat = typeMismatch "File" wat
 
 instance FromJSON ReplyKeyboard where
   parseJSON (Object o)
@@ -873,7 +696,7 @@ instance FromJSON KeyboardButton where
   parseJSON wat = typeMismatch "KeyboardButton" wat
 
 instance FromJSON InlineKeyboardButton where
-  parseJSON (Object o) =
+  parseJSON = withObject "InlineKeyboardButton" $ \o ->
     InlineUrlButton <$> o .: "text"
                     <*> o .: "url"
     <|> InlineCallbackButton <$> o .: "text"
@@ -884,19 +707,18 @@ instance FromJSON InlineKeyboardButton where
                                   <*> o .:? "switch_inline_query_current_chat"
     <|> InlineGameButton <$> o .: "text"
                          <*> o .: "callback_game"
-  parseJSON wat = typeMismatch "InlineKeyboardButton" wat
 
 instance FromJSON CallbackGame where
   parseJSON _ = pure CallbackGame
 
 instance FromJSON GameHighScore where
-  parseJSON (Object o) = GameHighScore <$> o .: "position"
-                                       <*> o .: "user"
-                                       <*> o .: "score"
-  parseJSON wat = typeMismatch "GameHighScore" wat
+  parseJSON = withObject "GameHighScore" $ \o ->
+    GameHighScore <$> o .: "position"
+                  <*> o .: "user"
+                  <*> o .: "score"
 
 instance FromJSON CallbackQuery where
-  parseJSON (Object o) =
+  parseJSON = withObject "CallbackQuery" $ \o ->
     CallbackMessage <$> o .: "id"
                     <*> o .: "from"
                     <*> o .: "message"
@@ -917,22 +739,19 @@ instance FromJSON CallbackQuery where
                            <*> o .: "inline_message_id"
                            <*> o .: "chat_instance"
                            <*> o .: "game_short_name"
-  parseJSON wat = typeMismatch "CallbackQuery" wat
 
 instance FromJSON ChatMember where
-  parseJSON (Object o) =
+  parseJSON = withObject "ChatMember" $ \o ->
     ChatMember <$> o .: "user"
                <*> o .: "status"
-  parseJSON wat = typeMismatch "ChatMember" wat
 
 instance FromJSON ResponseParameters where
-  parseJSON (Object o) =
+  parseJSON = withObject "ResponseParameters" $ \o ->
     ResponseParameters <$> o .:? "migrate_to_chat_id"
                        <*> o .:? "retry_after"
-  parseJSON wat = typeMismatch "ResponseParameters" wat
 
 instance FromJSON WebhookInfo where
-  parseJSON (Object o) =
+  parseJSON = withObject "WebhookInfo" $ \o ->
     WebhookInfo <$> o .: "url"
                 <*> o .: "has_custom_certificate"
                 <*> o .: "pending_update_count"
@@ -940,4 +759,3 @@ instance FromJSON WebhookInfo where
                 <*> o .:? "last_error_message"
                 <*> o .:? "max_connections"
                 <*> o .:? "allowed_updates" .!= []
-  parseJSON wat = typeMismatch "WebhookInfo" wat

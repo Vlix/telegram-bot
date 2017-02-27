@@ -12,7 +12,6 @@ module Web.Telegram.Bot.Types
 
 import           Control.Applicative        ((<|>))
 import           Data.Aeson
-import           Data.Aeson.Types           (typeMismatch)
 
 import           Web.Telegram.Bot.Instances()
 import           Web.Telegram.Bot.Requests
@@ -25,7 +24,9 @@ import           Web.Telegram.Bot.Types.Inline
 -- | This object represents an incoming update.
 data Update =
   MessageUpdate
-  { update_id :: Int     -- ^ The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you’re using 'setWebhooks', since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order.
+  { update_id :: Int     -- ^ The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially.
+                         -- This ID becomes especially handy if you’re using 'setWebhooks', since it allows you to ignore repeated updates or
+                         -- to restore the correct update sequence, should they get out of order.
   , message   :: Message -- ^ New incoming message of any kind — text, photo, sticker, etc.
   }
   | EditedMessageUpdate
@@ -60,49 +61,25 @@ data Update =
 
 
 instance ToJSON Update where
-  toJSON (MessageUpdate updateid msg) =
-    object [ "update_id" .= updateid
-           , "message"   .= msg
-           ]
-  toJSON (EditedMessageUpdate updateid msg) =
-    object [ "update_id"      .= updateid
-           , "edited_message" .= msg
-           ]
-  toJSON (ChannelPostUpdate updateid msg) =
-    object [ "update_id"    .= updateid
-           , "channel_post" .= msg
-           ]
-  toJSON (EditedChannelPostUpdate updateid msg) =
-    object [ "update_id"           .= updateid
-           , "edited_channel_post" .= msg
-           ]
-  toJSON (InlineQueryUpdate updateid inlineQuery) =
-    object [ "update_id"    .= updateid
-           , "inline_query" .= inlineQuery
-           ]
-  toJSON (ChosenInlineUpdate updateid chosenInlineResult) =
-    object [ "update_id" .= updateid
-           , "chosen_inline_result" .= chosenInlineResult
-           ]
-  toJSON (CallbackUpdate updateid callbackQuery) =
-    object [ "update_id" .= updateid
-           , "callback_query" .= callbackQuery
-           ]
+  toJSON upd = object $ extra : updateId : []
+   where
+    updateId = "update_id" .= update_id upd
+    extra = case upd of
+      MessageUpdate{}           -> "message"              .= message upd
+      EditedMessageUpdate{}     -> "edited_message"       .= message upd
+      ChannelPostUpdate{}       -> "channel_post"         .= message upd
+      EditedChannelPostUpdate{} -> "edited_channel_post"  .= message upd
+      InlineQueryUpdate{}       -> "inline_query"         .= inline_query upd
+      ChosenInlineUpdate{}      -> "chosen_inline_result" .= chosen_inline_result upd
+      CallbackUpdate{}          -> "callback_query"       .= callback_query upd
 
 instance FromJSON Update where
-  parseJSON (Object o) =
-    MessageUpdate <$> o .: "update_id"
-                  <*> o .: "message"
-    <|> EditedMessageUpdate <$> o .: "update_id"
-                            <*> o .: "edited_message"
-    <|> ChannelPostUpdate <$> o .: "update_id"
-                          <*> o .: "channel_post"
-    <|> EditedChannelPostUpdate <$> o .: "update_id"
-                                <*> o .: "edited_channel_post"
-    <|> InlineQueryUpdate <$> o .: "update_id"
-                          <*> o .: "inline_query"
-    <|> ChosenInlineUpdate <$> o .: "update_id"
-                           <*> o .: "chosen_inline_result"
-    <|> CallbackUpdate <$> o .: "update_id"
-                       <*> o .: "callback_query"
-  parseJSON wat = typeMismatch "Update" wat
+  parseJSON = withObject "Update" $ \o -> do
+    updateId <- o .: "update_id"
+    (MessageUpdate               updateId <$> o .: "message"
+        <|> EditedMessageUpdate     updateId <$> o .: "edited_message"
+        <|> ChannelPostUpdate       updateId <$> o .: "channel_post"
+        <|> EditedChannelPostUpdate updateId <$> o .: "edited_channel_post"
+        <|> InlineQueryUpdate       updateId <$> o .: "inline_query"
+        <|> ChosenInlineUpdate      updateId <$> o .: "chosen_inline_result"
+        <|> CallbackUpdate          updateId <$> o .: "callback_query")

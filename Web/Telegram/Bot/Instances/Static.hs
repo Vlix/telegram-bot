@@ -4,7 +4,6 @@ module Web.Telegram.Bot.Instances.Static where
 
 
 import           Data.Aeson
-import           Data.Aeson.Types           (typeMismatch)
 import           Data.Monoid                ((<>))
 import           Data.Text                  (unpack)
 
@@ -16,10 +15,13 @@ import           Web.Telegram.Bot.Types.Static
 ----------------------
 
 instance ToJSON ChatType where
-  toJSON Private        = String "private"
-  toJSON Group          = String "group"
-  toJSON Supergroup     = String "supergroup"
-  toJSON Channel        = String "channel"
+  toJSON typ = String t
+   where
+    t = case typ of
+      Private    -> "private"
+      Group      -> "group"
+      Supergroup -> "supergroup"
+      Channel    -> "channel"
 
 instance ToJSON ParseMode where
   toJSON Markdown = String "Markdown"
@@ -34,89 +36,105 @@ instance ToJSON DocumentMIME where
   toJSON ApplicationZIP = String "application/zip"
 
 instance ToJSON ChatAction where
-  toJSON Typing         = String "typing"
-  toJSON UploadPhoto    = String "upload_photo"
-  toJSON RecordVideo    = String "record_video"
-  toJSON UploadVideo    = String "upload_video"
-  toJSON RecordAudio    = String "record_audio"
-  toJSON UploadAudio    = String "upload_audio"
-  toJSON UploadDocument = String "upload_document"
-  toJSON FindLocation   = String "find_location"
+  toJSON typ = String t
+   where
+    t = case typ of
+      Typing         -> "typing"
+      UploadPhoto    -> "upload_photo"
+      RecordVideo    -> "record_video"
+      UploadVideo    -> "upload_video"
+      RecordAudio    -> "record_audio"
+      UploadAudio    -> "upload_audio"
+      UploadDocument -> "upload_document"
+      FindLocation   -> "find_location"
 
 instance ToJSON ChatMemberStatus where
-  toJSON Creator       = String "creator"
-  toJSON Administrator = String "administrator" 
-  toJSON Member        = String "member"
-  toJSON MemberLeft    = String "left"
-  toJSON MemberKicked  = String "kicked"
+  toJSON typ = String t
+   where
+    t = case typ of
+      Creator       -> "creator"
+      Administrator -> "administrator" 
+      Member        -> "member"
+      MemberLeft    -> "left"
+      MemberKicked  -> "kicked"
 
 instance ToJSON UpdateType where
-  toJSON MESSAGE            = String "message"
-  toJSON EDITEDMESSAGE      = String "edited_message"
-  toJSON CHANNELPOST        = String "channel_post"
-  toJSON EDITEDCHANNELPOST  = String "edited_channel_post"
-  toJSON INLINEQUERY        = String "inline_query"
-  toJSON CHOSENINLINERESULT = String "chosen_inline_result"
-  toJSON CALLBACKQUERY      = String "callback_query"
+  toJSON typ = String t
+   where
+    t = case typ of
+      MESSAGE            -> "message"
+      EDITEDMESSAGE      -> "edited_message"
+      CHANNELPOST        -> "channel_post"
+      EDITEDCHANNELPOST  -> "edited_channel_post"
+      INLINEQUERY        -> "inline_query"
+      CHOSENINLINERESULT -> "chosen_inline_result"
+      CALLBACKQUERY      -> "callback_query"
 
 ------------------------
 -- FromJSON INSTANCES --
 ------------------------
 
 instance FromJSON ChatType where
-  parseJSON (String "private")    = pure Private
-  parseJSON (String "group")      = pure Group
-  parseJSON (String "supergroup") = pure Supergroup
-  parseJSON (String "channel")    = pure Channel
-  parseJSON (String wat) = fail $ "Wrong String \"" <> unpack wat <> "\" as ChatType"
-  parseJSON wat = typeMismatch "ChatType" wat
+  parseJSON = withText "ChatType" $ \s ->
+    case s of
+      "private"    -> pure Private
+      "group"      -> pure Group
+      "supergroup" -> pure Supergroup
+      "channel"    -> pure Channel
+      wat          -> fail $ "Wrong String \"" <> unpack wat <> "\" as ChatType"
 
 instance FromJSON ParseMode where
-  parseJSON (String "Markdown") = pure Markdown
-  parseJSON (String "HTML")     = pure HTML
-  parseJSON (String wat) = fail $ "Wrong String \"" <> unpack wat <> "\" as ParseMode"
-  parseJSON wat = typeMismatch "ParseMode" wat
+  parseJSON = withText "ParseMode" $ \s ->
+    case s of
+      "Markdown" -> pure Markdown
+      "HTML"     -> pure HTML
+      wat        -> fail $ "Wrong String \"" <> unpack wat <> "\" as ParseMode"
 
 instance FromJSON VideoMIME where
-  parseJSON (String "text/html") = pure TextHTML
-  parseJSON (String "video/mp4") = pure VideoMP4
-  parseJSON (String wat) = fail $ "Wrong String \"" <> unpack wat <> "\" as VideoMIME"
-  parseJSON wat = typeMismatch "VideoMIME" wat
+  parseJSON = withText "VideoMIME" $ \s ->
+    case s of
+      "text/html" -> pure TextHTML
+      "video/mp4" -> pure VideoMP4
+      wat         -> fail $ "Wrong String \"" <> unpack wat <> "\" as VideoMIME"
 
 instance FromJSON DocumentMIME where
-  parseJSON (String "application/pdf") = pure ApplicationPDF
-  parseJSON (String "application/zip") = pure ApplicationZIP
-  parseJSON (String wat) = fail $ "Wrong String \"" <> unpack wat <> "\" as DocumentMIME"
-  parseJSON wat = typeMismatch "VideoMIME" wat
+  parseJSON = withText "DocumentMIME" $ \s ->
+    case s of
+      "application/pdf" -> pure ApplicationPDF
+      "application/zip" -> pure ApplicationZIP
+      wat               -> fail $ "Wrong String \"" <> unpack wat <> "\" as DocumentMIME"
 
 instance FromJSON ChatAction where
-  parseJSON (String "typing")          = pure Typing
-  parseJSON (String "upload_photo")    = pure UploadPhoto
-  parseJSON (String "record_video")    = pure RecordVideo
-  parseJSON (String "upload_video")    = pure UploadVideo
-  parseJSON (String "record_audio")    = pure RecordAudio
-  parseJSON (String "upload_audio")    = pure UploadAudio
-  parseJSON (String "upload_document") = pure UploadDocument
-  parseJSON (String "find_location")   = pure FindLocation
-  parseJSON (String wat) = fail $ "Wrong String \"" <> unpack wat <> "\" as ChatAction"
-  parseJSON wat = typeMismatch "ChatAction" wat
+  parseJSON = withText "ChatAction" $ \s ->
+    case s of
+      "typing"          -> pure Typing
+      "upload_photo"    -> pure UploadPhoto
+      "record_video"    -> pure RecordVideo
+      "upload_video"    -> pure UploadVideo
+      "record_audio"    -> pure RecordAudio
+      "upload_audio"    -> pure UploadAudio
+      "upload_document" -> pure UploadDocument
+      "find_location"   -> pure FindLocation
+      wat               -> fail $ "Wrong String \"" <> unpack wat <> "\" as ChatAction"
 
 instance FromJSON ChatMemberStatus where
-  parseJSON (String "creator")        = pure Creator
-  parseJSON (String "administrator" ) = pure Administrator
-  parseJSON (String "member")         = pure Member
-  parseJSON (String "left")           = pure MemberLeft
-  parseJSON (String "kicked")         = pure MemberKicked
-  parseJSON (String wat) = fail $ "Wrong String \"" <> unpack wat <> "\" as ChatAction"
-  parseJSON wat = typeMismatch "ChatMemberStatus" wat
+  parseJSON = withText "ChatMemberStatus" $ \s ->
+    case s of
+      "creator"       -> pure Creator
+      "administrator" -> pure Administrator
+      "member"        -> pure Member
+      "left"          -> pure MemberLeft
+      "kicked"        -> pure MemberKicked
+      wat             -> fail $ "Wrong String \"" <> unpack wat <> "\" as ChatAction"
 
 instance FromJSON UpdateType where
-  parseJSON (String "message")              = pure MESSAGE
-  parseJSON (String "edited_message")       = pure EDITEDMESSAGE
-  parseJSON (String "channel_post")         = pure CHANNELPOST
-  parseJSON (String "edited_channel_post")  = pure EDITEDCHANNELPOST
-  parseJSON (String "inline_query")         = pure INLINEQUERY
-  parseJSON (String "chosen_inline_result") = pure CHOSENINLINERESULT
-  parseJSON (String "callback_query")       = pure CALLBACKQUERY
-  parseJSON (String wat) = fail $ "Wrong String \"" <> unpack wat <> "\" as UpdateType"
-  parseJSON wat = typeMismatch "ChatMemberStatus" wat
+  parseJSON = withText "UpdateType" $ \s ->
+    case s of
+      "message"              -> pure MESSAGE
+      "edited_message"       -> pure EDITEDMESSAGE
+      "channel_post"         -> pure CHANNELPOST
+      "edited_channel_post"  -> pure EDITEDCHANNELPOST
+      "inline_query"         -> pure INLINEQUERY
+      "chosen_inline_result" -> pure CHOSENINLINERESULT
+      "callback_query"       -> pure CALLBACKQUERY
+      wat                    -> fail $ "Wrong String \"" <> unpack wat <> "\" as UpdateType"

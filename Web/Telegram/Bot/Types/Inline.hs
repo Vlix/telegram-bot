@@ -39,16 +39,16 @@ data InputMessageContent =
   }
   -- | Represents the content of a venue message to be sent as the result of an inline query.
   | InputVenueMessageContent
-  { venue_latitude  :: Double     -- ^ Latitude of the venue in degrees
-  , venue_longitude :: Double     -- ^ Longitude of the venue in degrees
-  , title           :: Text       -- ^ Name of the venue
-  , address         :: Text       -- ^ Address of the venue
-  , foursquare_id   :: Maybe Text -- ^ Foursquare identifier of the venue, if known
+  { latitude      :: Double     -- ^ Latitude of the venue in degrees
+  , longitude     :: Double     -- ^ Longitude of the venue in degrees
+  , title         :: Text       -- ^ Name of the venue
+  , address       :: Text       -- ^ Address of the venue
+  , foursquare_id :: Maybe Text -- ^ Foursquare identifier of the venue, if known
   }
   -- | Represents the content of a location message to be sent as the result of an inline query.
   | InputLocationMessageContent
-  { location_latitude  :: Double -- ^ Latitude of the location in degrees
-  , location_longitude :: Double -- ^ Longitude of the location in degrees
+  { latitude  :: Double -- ^ Latitude of the location in degrees
+  , longitude :: Double -- ^ Longitude of the location in degrees
   }
   -- | Represents the content of a contact message to be sent as the result of an inline query.
   | InputContactMessageContent
@@ -291,4 +291,3 @@ data InlineQueryResult =
   , iqrc_reply_markup          :: Maybe InlineKeyboardMarkup -- ^ Inline keyboard attached to the message
   , iqrc_input_message_content :: Maybe InputMessageContent  -- ^ Content of the message to be sent instead of the audio
   } deriving (Eq, Show)
-

@@ -6,7 +6,6 @@ module Web.Telegram.Bot.Instances.UpdateRequests where
 
 import           Control.Applicative        ((<|>))
 import           Data.Aeson
-import           Data.Aeson.Types           (typeMismatch)
 
 import           Web.Telegram.Bot.Types.UpdateRequests
 import           Web.Telegram.Bot.Types.Static
@@ -18,52 +17,49 @@ import           Web.Telegram.Bot.Instances.Static()
 ----------------------
 
 instance ToJSON EditMessageTextRequest where
-  toJSON EditMessageTextRequest{..} =
-    object' [ "chat_id"                  .=! edit_text_chat_id
-            , "message_id"               .=! edit_text_message_id
-            , "text"                     .=! edit_text_text
-            , mBool "disable_web_page_preview" False edit_text_disable_web_page_preview
-            , "parse_mode"               .=! edit_text_parse_mode
-            , "reply_markup"             .=! edit_text_reply_markup
+  toJSON editMsgReq = object' $ extra ++ basis
+   where
+    basis = [ "text"                     .=! edit_text_text editMsgReq
+            , mBool "disable_web_page_preview" False $ edit_text_disable_web_page_preview editMsgReq
+            , "parse_mode"               .=! edit_text_parse_mode editMsgReq
+            , "reply_markup"             .=! edit_text_reply_markup editMsgReq
             ]
-  toJSON EditInlineTextRequest{..} =
-    object' [ "inline_message_id"        .=! edit_text_inline_message_id
-            , "text"                     .=! edit_text_text
-            , mBool "disable_web_page_preview" False edit_text_disable_web_page_preview
-            , "parse_mode"               .=! edit_text_parse_mode
-            , "reply_markup"             .=! edit_text_reply_markup
-            ]
+    extra = case editMsgReq of
+      EditMessageTextRequest{..} ->
+        [ "chat_id"    .=! edit_text_chat_id
+        , "message_id" .=! edit_text_message_id ]
+      EditInlineTextRequest{..} ->
+        [ "inline_message_id" .=! edit_text_inline_message_id ]
 
 instance ToJSON EditMessageCaptionRequest where
-  toJSON EditMessageCaptionRequest{..} =
-    object' [ "chat_id"      .=! edit_caption_chat_id
-            , "message_id"   .=! edit_caption_message_id
-            , "caption"      .=! edit_caption_caption
-            , "reply_markup" .=! edit_caption_reply_markup
-            ]
-  toJSON EditInlineCaptionRequest{..} =
-    object' [ "inline_message_id" .=! edit_caption_inline_message_id
-            , "caption"           .=! edit_caption_caption
-            , "reply_markup"      .=! edit_caption_reply_markup
-            ]
+  toJSON editCaptReq = object' $ extra ++ basis
+   where
+    basis = [ "caption"      .=! edit_caption_caption editCaptReq
+            , "reply_markup" .=! edit_caption_reply_markup editCaptReq ]
+    extra = case editCaptReq of
+      EditMessageCaptionRequest{..} ->
+        [ "chat_id"    .=! edit_caption_chat_id
+        , "message_id" .=! edit_caption_message_id ]
+      EditInlineCaptionRequest{..} ->
+        [ "inline_message_id" .=! edit_caption_inline_message_id ]
+
 
 instance ToJSON EditMessageReplyMarkupRequest where
-  toJSON (EditMessageReplyMarkupRequest chat_id message_id reply_markup) =
-    object' [ "chat_id"      .=! chat_id
-            , "message_id"   .=! message_id
-            , "reply_markup" .=!! reply_markup
-            ]
-  toJSON (EditInlineReplyMarkupRequest inline_message_id reply_markup) =
-    object' [ "inline_message_id" .=! inline_message_id
-            , "reply_markup"      .=!! reply_markup
-            ]
+  toJSON editMarkupReq = object' $ extra ++ [ "reply_markup" .=!! edit_reply_markup_reply_markup editMarkupReq ]
+   where
+    extra = case editMarkupReq of
+      EditMessageReplyMarkupRequest{..} ->
+        [ "chat_id"    .=! edit_reply_markup_chat_id
+        , "message_id" .=! edit_reply_markup_message_id ]
+      EditInlineReplyMarkupRequest{..} ->
+        [ "inline_message_id" .=! edit_reply_markup_inline_message_id ]
 
 ------------------------
 -- FromJSON INSTANCES --
 ------------------------
 
 instance FromJSON EditMessageTextRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "EditMessageTextRequest" $ \o ->
     EditMessageTextRequest <$> o .: "chat_id"
                            <*> o .: "message_id"
                            <*> o .: "text"
@@ -75,10 +71,9 @@ instance FromJSON EditMessageTextRequest where
                               <*> o .:? "disable_web_page_preview" .!= False
                               <*> o .:? "parse_mode"
                               <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "EditMessageTextRequest" wat
 
 instance FromJSON EditMessageCaptionRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "EditMessageCaptionRequest" $ \o ->
     EditMessageCaptionRequest <$> o .: "chat_id"
                               <*> o .: "message_id"
                               <*> o .: "caption"
@@ -86,13 +81,11 @@ instance FromJSON EditMessageCaptionRequest where
     <|> EditInlineCaptionRequest <$> o .: "inline_message_id"
                                  <*> o .: "caption"
                                  <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "EditMessageCaptionRequest" wat
 
 instance FromJSON EditMessageReplyMarkupRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "EditMessageReplyMarkupRequest" $ \o ->
     EditMessageReplyMarkupRequest <$> o .: "chat_id"
                                   <*> o .: "message_id"
                                   <*> o .:? "reply_markup"
     <|> EditInlineReplyMarkupRequest <$> o .: "inline_message_id"
                                      <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "EditMessageReplyMarkupRequest" wat

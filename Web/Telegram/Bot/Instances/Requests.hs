@@ -6,7 +6,7 @@ module Web.Telegram.Bot.Instances.Requests where
 
 import           Control.Applicative        ((<|>))
 import           Data.Aeson
-import           Data.Aeson.Types           (typeMismatch,Pair)
+import           Data.Aeson.Types           (Pair)
 import           Data.Text                  (Text)
 
 import           Web.Telegram.Bot.Types.Requests
@@ -277,7 +277,7 @@ instance ToJSON WebhookRequest where
 ------------------------
 
 instance FromJSON SendMessageRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SendMessageRequest" $ \o ->
     SendMessageRequest <$> o .: "chat_id"
                        <*> o .: "text"
                        <*> o .:? "disable_web_page_preview" .!= False
@@ -285,28 +285,25 @@ instance FromJSON SendMessageRequest where
                        <*> o .:? "parse_mode"
                        <*> o .:? "reply_to_message_id"
                        <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "SendMessageRequest" wat
 
 instance FromJSON ForwardMessageRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "ForwardMessageRequest" $ \o ->
     ForwardMessageRequest <$> o .: "chat_id"
                           <*> o .: "from_chat_id"
                           <*> o .:? "disable_notification" .!= False
                           <*> o .: "message_id"
-  parseJSON wat = typeMismatch "ForwardMessageRequest" wat
 
 instance FromJSON SendPhotoRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SendPhotoRequest" $ \o ->
     SendPhotoRequest <$> o .: "chat_id"
                      <*> o .: "photo"
                      <*> o .:? "disable_notification" .!= False
                      <*> o .:? "caption"
                      <*> o .:? "reply_to_message_id"
                      <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "SendPhotoRequest" wat
 
 instance FromJSON SendAudioRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SendAudioRequest" $ \o ->
     SendAudioRequest <$> o .: "chat_id"
                      <*> o .: "audio"
                      <*> o .:? "disable_notification" .!= False
@@ -316,29 +313,26 @@ instance FromJSON SendAudioRequest where
                      <*> o .:? "title"
                      <*> o .:? "reply_to_message_id"
                      <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "SendAudioRequest" wat
 
 instance FromJSON SendStickerRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SendStickerRequest" $ \o ->
     SendStickerRequest <$> o .: "chat_id"
                        <*> o .: "sticker"
                        <*> o .:? "disable_notification" .!= False
                        <*> o .:? "reply_to_message_id"
                        <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "SendStickerRequest" wat
 
 instance FromJSON SendDocumentRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SendDocumentRequest" $ \o ->
     SendDocumentRequest <$> o .: "chat_id"
                         <*> o .: "document"
                         <*> o .:? "disable_notification" .!= False
                         <*> o .:? "caption"
                         <*> o .:? "reply_to_message_id"
                         <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "SendDocumentRequest" wat
 
 instance FromJSON SendVideoRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SendVideoRequest" $ \o ->
     SendVideoRequest <$> o .: "chat_id"
                      <*> o .: "video"
                      <*> o .:? "disable_notification" .!= False
@@ -348,10 +342,9 @@ instance FromJSON SendVideoRequest where
                      <*> o .:? "caption"
                      <*> o .:? "reply_to_message_id"
                      <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "SendVideoRequest" wat
 
 instance FromJSON SendVoiceRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SendVoiceRequest" $ \o ->
     SendVoiceRequest <$> o .: "chat_id"
                      <*> o .: "voice"
                      <*> o .:? "disable_notification" .!= False
@@ -359,20 +352,18 @@ instance FromJSON SendVoiceRequest where
                      <*> o .:? "duration"
                      <*> o .:? "reply_to_message_id"
                      <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "SendVoiceRequest" wat
 
 instance FromJSON SendLocationRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SendLocationRequest" $ \o ->
     SendLocationRequest <$> o .: "chat_id"
                         <*> o .: "latitude"
                         <*> o .: "longitude"
                         <*> o .:? "disable_notification" .!= False
                         <*> o .:? "reply_to_message_id"
                         <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "SendLocationRequest" wat
 
 instance FromJSON SendVenueRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SendVenueRequest" $ \o ->
     SendVenueRequest <$> o .: "chat_id"
                      <*> o .: "latitude"
                      <*> o .: "longitude"
@@ -382,10 +373,9 @@ instance FromJSON SendVenueRequest where
                      <*> o .:? "foursquare_id"
                      <*> o .:? "reply_to_message_id"
                      <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "SendVenueRequest" wat
 
 instance FromJSON SendContactRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SendContactRequest" $ \o ->
     SendContactRequest <$> o .: "chat_id"
                        <*> o .: "phone_number"
                        <*> o .: "first_name"
@@ -393,19 +383,17 @@ instance FromJSON SendContactRequest where
                        <*> o .:? "disable_notification" .!= False
                        <*> o .:? "reply_to_message_id"
                        <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "SendContactRequest" wat
 
 instance FromJSON SendGameRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SendGameRequest" $ \o ->
     SendGameRequest <$> o .: "chat_id"
                     <*> o .: "game_short_name"
                     <*> o .:? "disable_notification" .!= False
                     <*> o .:? "reply_to_message_id"
                     <*> o .:? "reply_markup"
-  parseJSON wat = typeMismatch "SendGameRequest" wat
 
 instance FromJSON SetGameScoreRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "SetGameScoreRequest" $ \o ->
     SetGameScoreRequest <$> o .: "user_id"
                  <*> o .: "score"
                  <*> o .: "chat_id"
@@ -417,24 +405,22 @@ instance FromJSON SetGameScoreRequest where
                            <*> o .: "inline_message_id"
                            <*> o .:? "force" .!= False
                            <*> o .:? "disable_edit_message" .!= False
-  parseJSON wat = typeMismatch "SetGameScoreRequest" wat
 
 instance FromJSON GetGameHighScoresRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "GetGameHighScoresRequest" $ \o ->
     GetGameHighScoresRequest <$> o .: "user_id"
                              <*> o .: "chat_id"
                              <*> o .: "message_id"
     <|> GetGameHighScoresInlineRequest <$> o .: "user_id"
                                        <*> o .: "inline_message_id"
-  parseJSON wat = typeMismatch "GetGameHighScores" wat
 
 instance FromJSON SendChatActionRequest where
-  parseJSON (Object o) = SendChatActionRequest <$> o .: "chat_id"
-                                                 <*> o .: "action"
-  parseJSON wat = typeMismatch "SendChatActionRequest" wat
+  parseJSON = withObject "SendChatActionRequest" $ \o ->
+    SendChatActionRequest <$> o .: "chat_id"
+                          <*> o .: "action"
 
 instance FromJSON AnswerInlineQueryRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "AnswerInlineQueryRequest" $ \o ->
     AnswerInlineQueryRequest <$> o .: "chat_id"
                              <*> o .: "results"
                              <*> o .:? "is_personal" .!= False
@@ -442,70 +428,65 @@ instance FromJSON AnswerInlineQueryRequest where
                              <*> o .:? "next_offset"
                              <*> o .:? "switch_pm_text"
                              <*> o .:? "switch_pm_parameter"
-  parseJSON wat = typeMismatch "AnswerInlineQueryRequest" wat
 
 instance FromJSON UserProfilePhotosRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "UserProfilePhotosRequest" $ \o ->
     UserProfilePhotosRequest <$> o .: "user_id"
                              <*> o .:? "offset"
                              <*> o .:? "limit"
-  parseJSON wat = typeMismatch "UserProfilePhotosRequest" wat
 
 instance FromJSON FileRequest where
-  parseJSON (Object o) = FileRequest <$> o .: "file_id"
-  parseJSON wat = typeMismatch "FileRequest" wat
+  parseJSON = withObject "FileRequest" $ \o ->
+    FileRequest <$> o .: "file_id"
 
 instance FromJSON KickChatMemberRequest where
-  parseJSON (Object o) = KickChatMemberRequest <$> o .: "chat_id"
-                                               <*> o .: "user_id"
-  parseJSON wat = typeMismatch "KickChatMemberRequest" wat
+  parseJSON = withObject "KickChatMemberRequest" $ \o ->
+    KickChatMemberRequest <$> o .: "chat_id"
+                          <*> o .: "user_id"
 
 instance FromJSON LeaveChatRequest where
-  parseJSON (Object o) = LeaveChatRequest <$> o .: "chat_id"
-  parseJSON wat = typeMismatch "LeaveChatRequest" wat
+  parseJSON = withObject "LeaveChatRequest" $ \o ->
+    LeaveChatRequest <$> o .: "chat_id"
 
 instance FromJSON UnbanChatMemberRequest where
-  parseJSON (Object o) = UnbanChatMemberRequest <$> o .: "chat_id"
-                                                <*> o .: "user_id"
-  parseJSON wat = typeMismatch "UnbanChatMemberRequest" wat
+  parseJSON = withObject "UnbanChatMemberRequest" $ \o ->
+    UnbanChatMemberRequest <$> o .: "chat_id"
+                           <*> o .: "user_id"
 
 instance FromJSON GetChatRequest where
-  parseJSON (Object o) = GetChatRequest <$> o .: "chat_id"
-  parseJSON wat = typeMismatch "GetChatRequest" wat
+  parseJSON = withObject "GetChatRequest" $ \o ->
+    GetChatRequest <$> o .: "chat_id"
 
 instance FromJSON GetChatAdministratorsRequest where
-  parseJSON (Object o) = GetChatAdministratorsRequest <$> o .: "chat_id"
-  parseJSON wat = typeMismatch "GetChatAdministratorsRequest" wat
+  parseJSON = withObject "GetChatAdministratorsRequest" $ \o ->
+    GetChatAdministratorsRequest <$> o .: "chat_id"
 
 instance FromJSON GetChatMembersCountRequest where
-  parseJSON (Object o) = GetChatMembersCountRequest <$> o .: "chat_id"
-  parseJSON wat = typeMismatch "GetChatMembersCountRequest" wat
+  parseJSON = withObject "GetChatMembersCountRequest" $ \o ->
+    GetChatMembersCountRequest <$> o .: "chat_id"
 
 instance FromJSON GetChatMemberRequest where
-  parseJSON (Object o) = GetChatMemberRequest <$> o .: "chat_id"
-                                              <*> o .: "user_id"
-  parseJSON wat = typeMismatch "GetChatMemberRequest" wat
+  parseJSON = withObject "GetChatMemberRequest" $ \o ->
+    GetChatMemberRequest <$> o .: "chat_id"
+                         <*> o .: "user_id"
 
 instance FromJSON AnswerCallbackQueryRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "AnswerCallbackQueryRequest" $ \o ->
     AnswerCallbackQueryRequest <$> o .: "callback_query_id"
                                <*> o .:? "text"
                                <*> o .:? "show_alert" .!= False
                                <*> o .:? "url"
                                <*> o .:? "cache_time" .!= 0
-  parseJSON wat = typeMismatch "AnswerCallbackQueryRequest" wat
 
 instance FromJSON UpdatesRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "UpdatesRequest" $ \o ->
     UpdatesRequest <$> o .:? "offset"
                    <*> o .:? "limit"
                    <*> o .:? "timeout"
                    <*> o .:? "allowed_updates"
-  parseJSON wat = typeMismatch "UpdatesRequest" wat
 
 instance FromJSON WebhookRequest where
-  parseJSON (Object o) =
+  parseJSON = withObject "WebhookRequest" $ \o ->
     WebhookRequest <$> o .: "url"
                    <*> o .:? "max_conns"
                    <*> o .:? "allowed_updates"
-  parseJSON wat = typeMismatch "WebhookRequest" wat

@@ -6,7 +6,6 @@ module Web.Telegram.Bot.Instances.Inline where
 
 import           Control.Applicative        ((<|>))
 import           Data.Aeson
-import           Data.Aeson.Types           (typeMismatch)
 import           Data.Text                  (unpack)
 import           Data.Monoid                ((<>))
 import qualified Data.HashMap.Strict        as HM
@@ -21,41 +20,41 @@ import           Web.Telegram.Bot.Instances.Static()
 ----------------------
 
 instance ToJSON InlineQuery where
-  toJSON (InlineQuery ident from query offset location) =
-    object' [ "id"       .=! ident
-            , "from"     .=! from
-            , "query"    .=! query
-            , "offset"   .=! offset
-            , "location" .=!! location
+  toJSON InlineQuery{..} =
+    object' [ "id"       .=! query_id
+            , "from"     .=! query_from
+            , "query"    .=! query_query
+            , "offset"   .=! query_offset
+            , "location" .=!! query_location
             ]
 
 instance ToJSON ChosenInlineResult where
-  toJSON (ChosenInlineResult result_id from query inline location) =
-    object' [ "result_id"         .=! result_id
-            , "from"              .=! from
-            , "query"             .=! query
-            , "inline_message_id" .=!! inline
-            , "location"          .=!! location
+  toJSON ChosenInlineResult{..} =
+    object' [ "result_id"         .=! chosen_result_id
+            , "from"              .=! chosen_from
+            , "query"             .=! chosen_query
+            , "inline_message_id" .=!! chosen_inline_message_id
+            , "location"          .=!! chosen_location
             ]
 
 instance ToJSON InputMessageContent where
-  toJSON (InputTextMessageContent message_text parse_mode disable_web_page_preview) =
-    object' [ "message_text" .=! message_text
+  toJSON InputTextMessageContent{..} =
+    object' [ "message_text" .=! input_message_text
             , "parse_mode"   .=!! parse_mode
             , mBool "disable_web_page_preview" False disable_web_page_preview
             ]
-  toJSON (InputVenueMessageContent latitude longitude title address foursquare_id) =
+  toJSON InputVenueMessageContent{..} =
     object' [ "latitude"      .=! latitude
             , "longitude"     .=! longitude
             , "title"         .=! title
             , "address"       .=! address
             , "foursquare_id" .=!! foursquare_id
             ]
-  toJSON (InputLocationMessageContent latitude longitude) =
+  toJSON InputLocationMessageContent{..} =
     object [ "latitude"  .= latitude
            , "longitude" .= longitude
            ]
-  toJSON (InputContactMessageContent phone_number first_name last_name) =
+  toJSON InputContactMessageContent{..} =
     object' [ "phone_number" .=! phone_number
             , "first_name"   .=! first_name
             , "last_name"    .=!! last_name
@@ -288,23 +287,23 @@ instance ToJSON InlineQueryResult where
 ------------------------
 
 instance FromJSON InlineQuery where
-  parseJSON (Object o) = InlineQuery <$> o .: "id"
-                                     <*> o .: "from"
-                                     <*> o .: "query"
-                                     <*> o .: "offset"
-                                     <*> o .:? "location"
-  parseJSON wat = typeMismatch "InlineQuery" wat
+  parseJSON = withObject "InlineQuery" $ \o ->
+    InlineQuery <$> o .: "id"
+                <*> o .: "from"
+                <*> o .: "query"
+                <*> o .: "offset"
+                <*> o .:? "location"
 
 instance FromJSON ChosenInlineResult where
-  parseJSON (Object o) = ChosenInlineResult <$> o .: "result_id"
-                                            <*> o .: "from"
-                                            <*> o .: "query"
-                                            <*> o .:? "inline_message_id"
-                                            <*> o .:? "location"
-  parseJSON wat = typeMismatch "ChosenInlineResult" wat
+  parseJSON = withObject "ChosenInlineResult" $ \o ->
+    ChosenInlineResult <$> o .: "result_id"
+                       <*> o .: "from"
+                       <*> o .: "query"
+                       <*> o .:? "inline_message_id"
+                       <*> o .:? "location"
 
 instance FromJSON InputMessageContent where
-  parseJSON (Object o) =
+  parseJSON = withObject "InputMessageContent" $ \o ->
     InputTextMessageContent <$> o .: "message_text"
                             <*> o .:? "parse_mode"
                             <*> o .:? "disable_web_page_preview" .!= False
@@ -318,184 +317,186 @@ instance FromJSON InputMessageContent where
     <|> InputContactMessageContent <$> o .: "phone_number"
                                    <*> o .: "first_name"
                                    <*> o .:? "last_name"
-  parseJSON wat = typeMismatch "InputMessageContent" wat
 
 instance FromJSON InlineKeyboardMarkup where
-  parseJSON (Object o) = IKM <$> o .: "inline_keyboard"
-  parseJSON wat = typeMismatch "InlineKeyboardMarkup" wat
+  parseJSON = withObject "InlineKeyboardMarkup" $ \o ->
+    IKM <$> o .: "inline_keyboard"
 
 instance FromJSON InlineQueryResult where
-  parseJSON (Object o) = case "type" `HM.lookup` o of
-    Just (String "article") ->
-      InlineQueryResultArticle <$> o .: "id"
-                               <*> o .: "title"
-                               <*> o .: "input_message_content"
-                               <*> o .:? "reply_markup"
-                               <*> o .:? "url"
-                               <*> o .:? "hide_url" .!= False
-                               <*> o .:? "description"
-                               <*> o .:? "thumb_url"
-                               <*> o .:? "thumb_width"
-                               <*> o .:? "thumb_height"
-    Just (String "photo") ->
-      InlineQueryResultPhoto <$> o .: "id"
-                             <*> o .: "photo_url"
-                             <*> o .: "thumb_url"
-                             <*> o .:? "photo_width"
-                             <*> o .:? "photo_height"
-                             <*> o .:? "title"
-                             <*> o .:? "description"
-                             <*> o .:? "caption"
-                             <*> o .:? "reply_markup"
-                             <*> o .:? "input_message_content"
-      <|> InlineQueryResultCachedPhoto <$> o .: "id"
-                                       <*> o .: "photo_file_id"
-                                       <*> o .:? "title"
-                                       <*> o .:? "description"
-                                       <*> o .:? "caption"
-                                       <*> o .:? "reply_markup"
-                                       <*> o .:? "input_message_content"
-    Just (String "gif") ->
-      InlineQueryResultGif <$> o .: "id"
-                           <*> o .: "gif_url"
-                           <*> o .:? "gif_width"
-                           <*> o .:? "gif_height"
-                           <*> o .: "thumb_url"
-                           <*> o .:? "title"
-                           <*> o .:? "caption"
-                           <*> o .:? "reply_markup"
-                           <*> o .:? "input_message_content"
-      <|> InlineQueryResultCachedGif <$> o .: "id"
-                                     <*> o .: "gif_file_id"
-                                     <*> o .:? "title"
-                                     <*> o .:? "caption"
-                                     <*> o .:? "reply_markup"
-                                     <*> o .:? "input_message_content"
-    Just (String "mpeg4_gif") ->
-      InlineQueryResultMpeg4Gif <$> o .: "id"
-                                <*> o .: "mpeg4_url"
-                                <*> o .:? "mpeg4_width"
-                                <*> o .:? "mpeg4_height"
-                                <*> o .: "thumb_url"
-                                <*> o .:? "title"
-                                <*> o .:? "caption"
-                                <*> o .:? "reply_markup"
-                                <*> o .:? "input_message_content"
-      <|> InlineQueryResultCachedMpeg4Gif <$> o .: "id"
-                                          <*> o .: "mpeg4_file_id"
-                                          <*> o .:? "title"
-                                          <*> o .:? "caption"
-                                          <*> o .:? "reply_markup"
-                                          <*> o .:? "input_message_content"
-    Just (String "video") ->
-      InlineQueryResultVideo <$> o .: "id"
-                             <*> o .: "video_url"
-                             <*> o .: "mime_type"
-                             <*> o .: "thumb_url"
-                             <*> o .: "title"
-                             <*> o .:? "caption"
-                             <*> o .:? "video_width"
-                             <*> o .:? "video_height"
-                             <*> o .:? "video_duration"
-                             <*> o .:? "description"
-                             <*> o .:? "reply_markup"
-                             <*> o .:? "input_message_content"
-      <|> InlineQueryResultCachedVideo <$> o .: "id"
-                                       <*> o .: "video_file_id"
-                                       <*> o .: "title"
-                                       <*> o .:? "description"
-                                       <*> o .:? "caption"
-                                       <*> o .:? "reply_markup"
-                                       <*> o .:? "input_message_content"
-    Just (String "audio") ->
-      InlineQueryResultAudio <$> o .: "id"
-                             <*> o .: "audio_url"
-                             <*> o .: "title"
-                             <*> o .:? "caption"
-                             <*> o .:? "performer"
-                             <*> o .:? "audio_duration"
-                             <*> o .:? "reply_markup"
-                             <*> o .:? "input_message_content"
-      <|> InlineQueryResultCachedAudio <$> o .: "id"
-                                       <*> o .: "audio_file_id"
-                                       <*> o .:? "caption"
-                                       <*> o .:? "reply_markup"
-                                       <*> o .:? "input_message_content"
-    Just (String "voice") ->
-      InlineQueryResultVoice <$> o .: "id"
-                             <*> o .: "voice_url"
-                             <*> o .: "title"
-                             <*> o .:? "caption"
-                             <*> o .:? "voice_duration"
-                             <*> o .:? "reply_markup"
-                             <*> o .:? "input_message_content"
-      <|> InlineQueryResultCachedVoice <$> o .: "id"
-                                       <*> o .: "voice_file_id"
-                                       <*> o .: "title"
-                                       <*> o .:? "caption"
-                                       <*> o .:? "reply_markup"
-                                       <*> o .:? "input_message_content"
-    Just (String "document") ->
-      InlineQueryResultDocument <$> o .: "id"
-                                <*> o .: "title"
-                                <*> o .:? "caption"
-                                <*> o .: "document_url"
-                                <*> o .: "mime_type"
-                                <*> o .:? "description"
-                                <*> o .:? "reply_markup"
-                                <*> o .:? "input_message_content"
-                                <*> o .:? "thumb_url"
-                                <*> o .:? "thumb_width"
-                                <*> o .:? "thumb_height"
-      <|> InlineQueryResultCachedDocument <$> o .: "id"
-                                          <*> o .: "title"
-                                          <*> o .: "document_file_id"
-                                          <*> o .:? "description"
-                                          <*> o .:? "caption"
-                                          <*> o .:? "reply_markup"
-                                          <*> o .:? "input_message_content"
-    Just (String "location") ->
-      InlineQueryResultLocation <$> o .: "id"
-                                <*> o .: "latitude"
-                                <*> o .: "longitude"
-                                <*> o .: "title"
-                                <*> o .:? "reply_markup"
-                                <*> o .:? "input_message_content"
-                                <*> o .:? "thumb_url"
-                                <*> o .:? "thumb_width"
-                                <*> o .:? "thumb_height"
-    Just (String "venue") ->
-      InlineQueryResultVenue <$> o .: "id"
-                             <*> o .: "latitude"
-                             <*> o .: "longitude"
-                             <*> o .: "title"
-                             <*> o .: "address"
-                             <*> o .:? "foursquare_id"
-                             <*> o .:? "reply_markup"
-                             <*> o .:? "input_message_content"
-                             <*> o .:? "thumb_url"
-                             <*> o .:? "thumb_width"
-                             <*> o .:? "thumb_height"
-    Just (String "contact") ->
-      InlineQueryResultContact <$> o .: "id"
-                               <*> o .: "phone_number"
-                               <*> o .: "first_name"
-                               <*> o .:? "last_name"
+  parseJSON = withObject "InlineQueryResult" $ \o ->
+    case "type" `HM.lookup` o of
+      Nothing -> fail "No [type] argument in InlineQueryResult object"
+      Just val -> go o val
+   where
+    go o = withText "InlineQueryResult(type)" $ \s ->
+      case s of
+        "article" ->
+          InlineQueryResultArticle <$> o .: "id"
+                                   <*> o .: "title"
+                                   <*> o .: "input_message_content"
+                                   <*> o .:? "reply_markup"
+                                   <*> o .:? "url"
+                                   <*> o .:? "hide_url" .!= False
+                                   <*> o .:? "description"
+                                   <*> o .:? "thumb_url"
+                                   <*> o .:? "thumb_width"
+                                   <*> o .:? "thumb_height"
+        "photo" ->
+          InlineQueryResultPhoto <$> o .: "id"
+                                 <*> o .: "photo_url"
+                                 <*> o .: "thumb_url"
+                                 <*> o .:? "photo_width"
+                                 <*> o .:? "photo_height"
+                                 <*> o .:? "title"
+                                 <*> o .:? "description"
+                                 <*> o .:? "caption"
+                                 <*> o .:? "reply_markup"
+                                 <*> o .:? "input_message_content"
+          <|> InlineQueryResultCachedPhoto <$> o .: "id"
+                                           <*> o .: "photo_file_id"
+                                           <*> o .:? "title"
+                                           <*> o .:? "description"
+                                           <*> o .:? "caption"
+                                           <*> o .:? "reply_markup"
+                                           <*> o .:? "input_message_content"
+        "gif" ->
+          InlineQueryResultGif <$> o .: "id"
+                               <*> o .: "gif_url"
+                               <*> o .:? "gif_width"
+                               <*> o .:? "gif_height"
+                               <*> o .: "thumb_url"
+                               <*> o .:? "title"
+                               <*> o .:? "caption"
                                <*> o .:? "reply_markup"
                                <*> o .:? "input_message_content"
-                               <*> o .:? "thumb_url"
-                               <*> o .:? "thumb_width"
-                               <*> o .:? "thumb_height"
-    Just (String "game") ->
-      InlineQueryResultGame <$> o .: "id"
-                            <*> o .: "game_short_name"
-                            <*> o .:? "reply_markup"
-    Just (String "sticker") ->
-      InlineQueryResultCachedSticker <$> o .: "id"
-                                     <*> o .: "sticker_file_id"
-                                     <*> o .:? "reply_markup"
-                                     <*> o .:? "input_message_content"
-    Just (String wat) -> fail $ "Wrong String \"" <> unpack wat <> "\" in InlineQueryResult's [type] argument"
-    Just _ -> fail "Wrong type in InlineQueryResult's [type] argument"
-    Nothing -> fail "No [type] argument in InlineQueryResult object"
-  parseJSON wat = typeMismatch "InlineQueryResult" wat
+          <|> InlineQueryResultCachedGif <$> o .: "id"
+                                         <*> o .: "gif_file_id"
+                                         <*> o .:? "title"
+                                         <*> o .:? "caption"
+                                         <*> o .:? "reply_markup"
+                                         <*> o .:? "input_message_content"
+        "mpeg4_gif" ->
+          InlineQueryResultMpeg4Gif <$> o .: "id"
+                                    <*> o .: "mpeg4_url"
+                                    <*> o .:? "mpeg4_width"
+                                    <*> o .:? "mpeg4_height"
+                                    <*> o .: "thumb_url"
+                                    <*> o .:? "title"
+                                    <*> o .:? "caption"
+                                    <*> o .:? "reply_markup"
+                                    <*> o .:? "input_message_content"
+          <|> InlineQueryResultCachedMpeg4Gif <$> o .: "id"
+                                              <*> o .: "mpeg4_file_id"
+                                              <*> o .:? "title"
+                                              <*> o .:? "caption"
+                                              <*> o .:? "reply_markup"
+                                              <*> o .:? "input_message_content"
+        "video" ->
+          InlineQueryResultVideo <$> o .: "id"
+                                 <*> o .: "video_url"
+                                 <*> o .: "mime_type"
+                                 <*> o .: "thumb_url"
+                                 <*> o .: "title"
+                                 <*> o .:? "caption"
+                                 <*> o .:? "video_width"
+                                 <*> o .:? "video_height"
+                                 <*> o .:? "video_duration"
+                                 <*> o .:? "description"
+                                 <*> o .:? "reply_markup"
+                                 <*> o .:? "input_message_content"
+          <|> InlineQueryResultCachedVideo <$> o .: "id"
+                                           <*> o .: "video_file_id"
+                                           <*> o .: "title"
+                                           <*> o .:? "description"
+                                           <*> o .:? "caption"
+                                           <*> o .:? "reply_markup"
+                                           <*> o .:? "input_message_content"
+        "audio" ->
+          InlineQueryResultAudio <$> o .: "id"
+                                 <*> o .: "audio_url"
+                                 <*> o .: "title"
+                                 <*> o .:? "caption"
+                                 <*> o .:? "performer"
+                                 <*> o .:? "audio_duration"
+                                 <*> o .:? "reply_markup"
+                                 <*> o .:? "input_message_content"
+          <|> InlineQueryResultCachedAudio <$> o .: "id"
+                                           <*> o .: "audio_file_id"
+                                           <*> o .:? "caption"
+                                           <*> o .:? "reply_markup"
+                                           <*> o .:? "input_message_content"
+        "voice" ->
+          InlineQueryResultVoice <$> o .: "id"
+                                 <*> o .: "voice_url"
+                                 <*> o .: "title"
+                                 <*> o .:? "caption"
+                                 <*> o .:? "voice_duration"
+                                 <*> o .:? "reply_markup"
+                                 <*> o .:? "input_message_content"
+          <|> InlineQueryResultCachedVoice <$> o .: "id"
+                                           <*> o .: "voice_file_id"
+                                           <*> o .: "title"
+                                           <*> o .:? "caption"
+                                           <*> o .:? "reply_markup"
+                                           <*> o .:? "input_message_content"
+        "document" ->
+          InlineQueryResultDocument <$> o .: "id"
+                                    <*> o .: "title"
+                                    <*> o .:? "caption"
+                                    <*> o .: "document_url"
+                                    <*> o .: "mime_type"
+                                    <*> o .:? "description"
+                                    <*> o .:? "reply_markup"
+                                    <*> o .:? "input_message_content"
+                                    <*> o .:? "thumb_url"
+                                    <*> o .:? "thumb_width"
+                                    <*> o .:? "thumb_height"
+          <|> InlineQueryResultCachedDocument <$> o .: "id"
+                                              <*> o .: "title"
+                                              <*> o .: "document_file_id"
+                                              <*> o .:? "description"
+                                              <*> o .:? "caption"
+                                              <*> o .:? "reply_markup"
+                                              <*> o .:? "input_message_content"
+        "location" ->
+          InlineQueryResultLocation <$> o .: "id"
+                                    <*> o .: "latitude"
+                                    <*> o .: "longitude"
+                                    <*> o .: "title"
+                                    <*> o .:? "reply_markup"
+                                    <*> o .:? "input_message_content"
+                                    <*> o .:? "thumb_url"
+                                    <*> o .:? "thumb_width"
+                                    <*> o .:? "thumb_height"
+        "venue" ->
+          InlineQueryResultVenue <$> o .: "id"
+                                 <*> o .: "latitude"
+                                 <*> o .: "longitude"
+                                 <*> o .: "title"
+                                 <*> o .: "address"
+                                 <*> o .:? "foursquare_id"
+                                 <*> o .:? "reply_markup"
+                                 <*> o .:? "input_message_content"
+                                 <*> o .:? "thumb_url"
+                                 <*> o .:? "thumb_width"
+                                 <*> o .:? "thumb_height"
+        "contact" ->
+          InlineQueryResultContact <$> o .: "id"
+                                   <*> o .: "phone_number"
+                                   <*> o .: "first_name"
+                                   <*> o .:? "last_name"
+                                   <*> o .:? "reply_markup"
+                                   <*> o .:? "input_message_content"
+                                   <*> o .:? "thumb_url"
+                                   <*> o .:? "thumb_width"
+                                   <*> o .:? "thumb_height"
+        "game" ->
+          InlineQueryResultGame <$> o .: "id"
+                                <*> o .: "game_short_name"
+                                <*> o .:? "reply_markup"
+        "sticker" ->
+          InlineQueryResultCachedSticker <$> o .: "id"
+                                         <*> o .: "sticker_file_id"
+                                         <*> o .:? "reply_markup"
+                                         <*> o .:? "input_message_content"
+        wat -> fail $ "Wrong String \"" <> unpack wat <> "\" in InlineQueryResult's [type] argument"

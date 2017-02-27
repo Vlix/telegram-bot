@@ -3,7 +3,6 @@ module Web.Telegram.Bot.Responses where
 
 import           Data.Text              (Text)
 import           Data.Aeson
-import           Data.Aeson.Types       (typeMismatch)
 import qualified Data.HashMap.Strict    as HM
 import           Data.Monoid            ((<>))
 
@@ -38,12 +37,12 @@ instance ToJSON a => ToJSON (Response a) where
             ]
 
 instance FromJSON a => FromJSON (Response a) where
-  parseJSON (Object o) = case "ok" `HM.lookup` o of
-    Just (Bool False) -> ErrorResponse <$> o .: "description"
-                                       <*> o .:? "error_code"
-                                       <*> o .:? "parameters"
-    Just (Bool True) -> OKResponse <$> o .: "result"
-                                   <*> o .:? "description"
-    Just wat -> fail $ "Wrong [ok] argument type: " <> show wat
-    Nothing -> fail "No [ok] argument in Response object"
-  parseJSON wat = typeMismatch "Response" wat
+  parseJSON = withObject "Response" $ \o ->
+    case "ok" `HM.lookup` o of
+      Just (Bool False) -> ErrorResponse <$> o .: "description"
+                                         <*> o .:? "error_code"
+                                         <*> o .:? "parameters"
+      Just (Bool True) -> OKResponse <$> o .: "result"
+                                     <*> o .:? "description"
+      Just wat -> fail $ "Wrong [ok] argument type: " <> show wat
+      Nothing -> fail "No [ok] argument in Response object"

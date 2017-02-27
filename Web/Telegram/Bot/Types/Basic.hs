@@ -364,8 +364,8 @@ data Contact = Contact
 
 -- | This object represents a point on the map.
 data Location = Location
-  { longitude :: Double -- ^ Longitude as defined by sender
-  , latitude  :: Double -- ^ Latitude as defined by sender
+  { location_longitude :: Double -- ^ Longitude as defined by sender
+  , location_latitude  :: Double -- ^ Latitude as defined by sender
   } deriving (Eq, Show)
 
 -- | This object represents a venue.
