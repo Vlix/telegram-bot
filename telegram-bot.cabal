@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                telegram-bot
-version:             0.2.1.1
+version:             0.2.2.0
 synopsis:            Telegram package with all necessary types to interact with its Bot API
 -- description:         
 license:             MIT
@@ -33,9 +33,9 @@ library
                        Web.Telegram.Bot.Instances.UpdateRequests
   -- other-modules:       
   -- other-extensions:    
-  build-depends:   base                 >= 4.8  && < 4.9
-                 , aeson                >= 0.6  && < 0.12
-                 , text                 >= 0.11 && < 2.0
+  build-depends:   base
+                 , aeson
+                 , text
                  , unordered-containers
 
 -- hs-source-dirs:
