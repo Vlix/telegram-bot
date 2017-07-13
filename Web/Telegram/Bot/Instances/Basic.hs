@@ -155,86 +155,86 @@ instance ToJSON MessageEntity where
         , "user" .= entity_user ]
 
 instance ToJSON PhotoSize where
-  toJSON (PhotoSize file_id width height file_size) =
-    object' [ "file_id"   .=! file_id
-            , "width"     .=! width
-            , "height"    .=! height
-            , "file_size" .=!! file_size
+  toJSON PhotoSize{..} =
+    object' [ "file_id"   .=! photo_file_id
+            , "width"     .=! photo_width
+            , "height"    .=! photo_height
+            , "file_size" .=!! photo_file_size
             ]
 
 instance ToJSON Audio where
-  toJSON (Audio file_id duration performer title mime_type file_size) =
-    object' [ "file_id"   .=! file_id
-            , "duration"  .=! duration
-            , "performer" .=!! performer
-            , "title"     .=!! title
-            , "mime_type" .=!! mime_type
-            , "file_size" .=!! file_size
+  toJSON Audio{..} =
+    object' [ "file_id"   .=! audio_file_id
+            , "duration"  .=! audio_duration
+            , "performer" .=!! audio_performer
+            , "title"     .=!! audio_title
+            , "mime_type" .=!! audio_mime_type
+            , "file_size" .=!! audio_file_size
             ]
 
 instance ToJSON Document where
-  toJSON (Document file_id thumb file_name mime_type file_size) =
-    object' [ "file_id"   .=! file_id
-            , "thumb"     .=!! thumb
-            , "file_name" .=!! file_name
-            , "mime_type" .=!! mime_type
-            , "file_size" .=!! file_size
+  toJSON Document{..} =
+    object' [ "file_id"   .=! doc_file_id
+            , "thumb"     .=!! doc_thumb
+            , "file_name" .=!! doc_file_name
+            , "mime_type" .=!! doc_mime_type
+            , "file_size" .=!! doc_file_size
             ]
 
 instance ToJSON Game where
-  toJSON (Game title description photo text text_entities animation) =
-    object' [ "title"         .=! title
-            , "description"   .=! description
-            , "photo"         .=! photo
-            , "text"          .=!! text
-            , mEmptyList "text_entities" text_entities
-            , "animation"     .=!! animation
+  toJSON Game{..} =
+    object' [ "title"         .=! game_title
+            , "description"   .=! game_description
+            , "photo"         .=! game_photo
+            , "text"          .=!! game_text
+            , mEmptyList "text_entities" game_text_entities
+            , "animation"     .=!! game_animation
             ]
 
 instance ToJSON Animation where
-  toJSON (Animation file_id thumb file_name mime_type file_size) =
-    object' [ "file_id"   .=! file_id
-            , "thumb"     .=!! thumb
-            , "file_name" .=!! file_name
-            , "mime_type" .=!! mime_type
-            , "file_size" .=!! file_size
+  toJSON Animation{..} =
+    object' [ "file_id"   .=! animation_file_id
+            , "thumb"     .=!! animation_thumb
+            , "file_name" .=!! animation_file_name
+            , "mime_type" .=!! animation_mime_type
+            , "file_size" .=!! animation_file_size
             ]
 
 instance ToJSON Sticker where
-  toJSON (Sticker file_id width height thumb emoji file_size) =
-    object' [ "file_id"   .=! file_id
-            , "width"     .=! width
-            , "height"    .=! height
-            , "thumb"     .=!! thumb
-            , "emoji"     .=!! emoji
-            , "file_size" .=!! file_size
+  toJSON Sticker{..} =
+    object' [ "file_id"   .=! sticker_file_id
+            , "width"     .=! sticker_width
+            , "height"    .=! sticker_height
+            , "thumb"     .=!! sticker_thumb
+            , "emoji"     .=!! sticker_emoji
+            , "file_size" .=!! sticker_file_size
             ]
 
 instance ToJSON Video where
-  toJSON (Video file_id width height duration thumb mime_type file_size) =
-    object' [ "file_id"   .=! file_id
-            , "width"     .=! width
-            , "height"    .=! height
-            , "duration"  .=! duration
-            , "thumb"     .=!! thumb
-            , "mime_type" .=!! mime_type
-            , "file_size" .=!! file_size
+  toJSON Video{..} =
+    object' [ "file_id"   .=! video_file_id
+            , "width"     .=! video_width
+            , "height"    .=! video_height
+            , "duration"  .=! video_duration
+            , "thumb"     .=!! video_thumb
+            , "mime_type" .=!! video_mime_type
+            , "file_size" .=!! video_file_size
             ]
 
 instance ToJSON Voice where
-  toJSON (Voice file_id duration mime_type file_size) =
-    object' [ "file_id"   .=! file_id
-            , "duration"  .=! duration
-            , "mime_type" .=!! mime_type
-            , "file_size" .=!! file_size
+  toJSON Voice{..} =
+    object' [ "file_id"   .=! voice_file_id
+            , "duration"  .=! voice_duration
+            , "mime_type" .=!! voice_mime_type
+            , "file_size" .=!! voice_file_size
             ]
 
 instance ToJSON Contact where
-  toJSON (Contact phone_number first_name last_name user_id) =
-    object' [ "phone_number" .=! phone_number
-            , "first_name"   .=! first_name
-            , "last_name"    .=!! last_name
-            , "user_id"      .=!! user_id
+  toJSON Contact{..} =
+    object' [ "phone_number" .=! contact_phone_number
+            , "first_name"   .=! contact_first_name
+            , "last_name"    .=!! contact_last_name
+            , "user_id"      .=!! contact_user_id
             ]
 
 instance ToJSON Location where
@@ -244,11 +244,11 @@ instance ToJSON Location where
            ]
 
 instance ToJSON Venue where
-  toJSON (Venue location title address foursquare) =
-    object' [ "location"      .=! location
-            , "title"         .=! title
-            , "address"       .=! address
-            , "foursquare_id" .=!! foursquare
+  toJSON Venue{..} =
+    object' [ "location"      .=! venue_location
+            , "title"         .=! venue_title
+            , "address"       .=! venue_address
+            , "foursquare_id" .=!! venue_foursquare_id
             ]
 
 instance ToJSON UserProfilePhotos where
@@ -265,11 +265,11 @@ instance ToJSON File where
             ]
 
 instance ToJSON ReplyKeyboard where
-  toJSON (ReplyKeyboardMarkup buttons resize onetime sel) =
-    object' [ "keyboard"          .=! buttons
-            , mBool "resize_keyboard"   False resize
-            , mBool "one_time_keyboard" False onetime
-            , mBool "selective"         False sel
+  toJSON ReplyKeyboardMarkup{..} =
+    object' [ "keyboard"          .=! reply_keyboard
+            , mBool "resize_keyboard"   False reply_resize_keyboard
+            , mBool "one_time_keyboard" False reply_one_time_keyboard
+            , mBool "selective"         False reply_selective
             ]
   toJSON (InlineKeyboardMarkup buttons) =
     object [ "inline_keyboard" .= buttons ]
@@ -327,33 +327,33 @@ instance ToJSON GameHighScore where
            ]
 
 instance ToJSON CallbackQuery where
-  toJSON (CallbackMessage ident from msg chat_instance dataa) =
-    object [ "id"            .= ident
-           , "from"          .= from
-           , "message"       .= msg
-           , "chat_instance" .= chat_instance
-           , "data"          .= dataa
+  toJSON CallbackMessage{..} =
+    object [ "id"            .= callback_query_id
+           , "from"          .= callback_query_from
+           , "message"       .= callback_query_message
+           , "chat_instance" .= callback_query_chat_instance
+           , "data"          .= callback_query_data
            ]
-  toJSON (CallbackInline ident from inline chat_instance dataa) =
-    object [ "id"                .= ident
-           , "from"              .= from
-           , "inline_message_id" .= inline
-           , "chat_instance"     .= chat_instance
-           , "data"              .= dataa
+  toJSON CallbackInline{..} =
+    object [ "id"                .= callback_query_id
+           , "from"              .= callback_query_from
+           , "inline_message_id" .= callback_query_inline_message_id
+           , "chat_instance"     .= callback_query_chat_instance
+           , "data"              .= callback_query_data
            ]
-  toJSON (CallbackGameMessage ident from msg chat_instance game_short_name) =
-    object [ "id"              .= ident
-           , "from"            .= from
-           , "message"         .= msg
-           , "chat_instance"   .= chat_instance
-           , "game_short_name" .= game_short_name
+  toJSON CallbackGameMessage{..} =
+    object [ "id"              .= callback_query_id
+           , "from"            .= callback_query_from
+           , "message"         .= callback_query_message
+           , "chat_instance"   .= callback_query_chat_instance
+           , "game_short_name" .= callback_query_game_short_name
            ]
-  toJSON (CallbackGameInline ident from inline chat_instance game_short_name) =
-    object [ "id"                .= ident
-           , "from"              .= from
-           , "inline_message_id" .= inline
-           , "chat_instance"     .= chat_instance
-           , "game_short_name"   .= game_short_name
+  toJSON CallbackGameInline{..} =
+    object [ "id"                .= callback_query_id
+           , "from"              .= callback_query_from
+           , "inline_message_id" .= callback_query_inline_message_id
+           , "chat_instance"     .= callback_query_chat_instance
+           , "game_short_name"   .= callback_query_game_short_name
            ]
 
 instance ToJSON ChatMember where
@@ -415,23 +415,23 @@ instance FromJSON Chat where
 
 instance FromJSON Message where
   parseJSON (Object o)
-    | isJust $ HM.lookup "forward_date" o =
+    | isJust $ "forward_date" `HM.lookup` o =
         ForwardedMessage <$> parseJSON (Object $ HM.delete "forward_date" o)
                          <*> o .:? "forward_from"
                          <*> o .:? "forward_from_chat"
                          <*> o .:? "forward_from_message_id"
                          <*> o .: "forward_date"
-    | isJust $ HM.lookup "delete_chat_photo" o =
+    | isJust $ "delete_chat_photo" `HM.lookup` o =
         DeleteChatPhotoMessage <$> o .: "message_id"
                                <*> o .: "from"
                                <*> o .: "date"
                                <*> o .: "chat"
-    | isJust $ HM.lookup "group_chat_created" o =
+    | isJust $ "group_chat_created" `HM.lookup` o =
         GroupChatCreatedMessage <$> o .: "message_id"
                                 <*> o .: "from"
                                 <*> o .: "date"
                                 <*> o .: "chat"
-    | isJust $ HM.lookup "supergroup_chat_created" o =
+    | isJust $ "supergroup_chat_created" `HM.lookup` o =
         SuperGroupChatCreatedMessage <$> o .: "message_id"
                                      <*> o .: "from"
                                      <*> o .: "date"
@@ -440,120 +440,53 @@ instance FromJSON Message where
                           <*> o .: "from"
                           <*> o .: "date"
                           <*> o .: "chat"-}
-    | otherwise = TextMessage <$> o .: "message_id"
-                              <*> o .: "from"
-                              <*> o .: "date"
-                              <*> o .: "chat"
-                              <*> o .: "text"
-                              <*> o .:? "edit_date"
-                              <*> o .:? "reply_to_message"
-                              <*> o .:? "entities" .!= []
-              <|> AudioMessage <$> o .: "message_id"
-                               <*> o .: "from"
-                               <*> o .: "date"
-                               <*> o .: "chat"
-                               <*> o .: "audio"
-                               <*> o .:? "caption"
-                               <*> o .:? "edit_date"
-                               <*> o .:? "reply_to_message"
-              <|> DocumentMessage <$> o .: "message_id"
-                                  <*> o .: "from"
-                                  <*> o .: "date"
-                                  <*> o .: "chat"
-                                  <*> o .: "document"
-                                  <*> o .:? "caption"
-                                  <*> o .:? "edit_date"
-                                  <*> o .:? "reply_to_message"
-              <|> GameMessage <$> o .: "message_id"
-                              <*> o .: "from"
-                              <*> o .: "date"
-                              <*> o .: "chat"
-                              <*> o .: "game"
-                              <*> o .:? "edit_date"
-                              <*> o .:? "reply_to_message"
-              <|> PhotoMessage <$> o .: "message_id"
-                               <*> o .: "from"
-                               <*> o .: "date"
-                               <*> o .: "chat"
-                               <*> o .: "photo"
-                               <*> o .:? "caption"
-                               <*> o .:? "edit_date"
-                               <*> o .:? "reply_to_message"
-              <|> StickerMessage <$> o .: "message_id"
-                                 <*> o .: "from"
-                                 <*> o .: "date"
-                                 <*> o .: "chat"
-                                 <*> o .: "sticker"
-                                 <*> o .:? "reply_to_message"
-              <|> VideoMessage <$> o .: "message_id"
-                               <*> o .: "from"
-                               <*> o .: "date"
-                               <*> o .: "chat"
-                               <*> o .: "video"
-                               <*> o .:? "caption"
-                               <*> o .:? "edit_date"
-                               <*> o .:? "reply_to_message"
-              <|> VoiceMessage <$> o .: "message_id"
-                               <*> o .: "from"
-                               <*> o .: "date"
-                               <*> o .: "chat"
-                               <*> o .: "voice"
-                               <*> o .:? "caption"
-                               <*> o .:? "edit_date"
-                               <*> o .:? "reply_to_message"
-              <|> ContactMessage <$> o .: "message_id"
-                                 <*> o .: "from"
-                                 <*> o .: "date"
-                                 <*> o .: "chat"
-                                 <*> o .: "contact"
-                                 <*> o .:? "reply_to_message"
-              <|> LocationMessage <$> o .: "message_id"
-                                  <*> o .: "from"
-                                  <*> o .: "date"
-                                  <*> o .: "chat"
-                                  <*> o .: "location"
-                                  <*> o .:? "reply_to_message"
-              <|> VenueMessage <$> o .: "message_id"
-                               <*> o .: "from"
-                               <*> o .: "date"
-                               <*> o .: "chat"
-                               <*> o .: "venue"
-                               <*> o .:? "reply_to_message"
-              <|> NewChatParticipantMessage <$> o .: "message_id"
-                                            <*> o .: "from"
-                                            <*> o .: "date"
-                                            <*> o .: "chat"
-                                            <*> o .: "new_chat_participant"
-              <|> LeftChatParticipantMessage <$> o .: "message_id"
-                                             <*> o .: "from"
-                                             <*> o .: "date"
-                                             <*> o .: "chat"
-                                             <*> o .: "left_chat_participant"
-              <|> NewChatTitleMessage <$> o .: "message_id"
-                                      <*> o .: "from"
-                                      <*> o .: "date"
-                                      <*> o .: "chat"
-                                      <*> o .: "new_chat_title"
-              <|> NewChatPhotoMessage <$> o .: "message_id"
-                                      <*> o .: "from"
-                                      <*> o .: "date"
-                                      <*> o .: "chat"
-                                      <*> o .: "new_chat_photo"
-              <|> MigratedToChatMessage <$> o .: "message_id"
-                                        <*> o .: "from"
-                                        <*> o .: "date"
-                                        <*> o .: "chat"
-                                        <*> o .: "migrate_to_chat_id"
-              <|> MigrateFromChatMessage <$> o .: "message_id"
-                                         <*> o .: "from"
-                                         <*> o .: "date"
-                                         <*> o .: "chat"
-                                         <*> o .: "migrate_from_chat_id"
-              <|> PinnedMessage <$> o .: "message_id"
-                                <*> o .: "from"
-                                <*> o .: "date"
-                                <*> o .: "chat"
-                                <*> o .: "pinned_message"
+    | otherwise = do
+        message_id <- o .: "message_id"
+        from       <- o .: "from"
+        date       <- o .: "date"
+        chat       <- o .: "chat"
+        TextMessage message_id from date chat <$> o .: "text"
+                                              <*> o .:? "edit_date"
+                                              <*> o .:? "reply_to_message"
+                                              <*> o .:? "entities" .!= []
+          <|> AudioMessage message_id from date chat <$> o .: "audio"
+                                                     <*> o .:? "caption"
+                                                     <*> o .:? "edit_date"
+                                                     <*> o .:? "reply_to_message"
+          <|> DocumentMessage message_id from date chat <$> o .: "document"
+                                                        <*> o .:? "caption"
+                                                        <*> o .:? "edit_date"
+                                                        <*> o .:? "reply_to_message"
+          <|> GameMessage message_id from date chat <$> o .: "game"
+                                                    <*> o .:? "edit_date"
+                                                    <*> o .:? "reply_to_message"
+          <|> PhotoMessage message_id from date chat <$> o .: "photo"
+                                                     <*> o .:? "caption"
+                                                     <*> o .:? "edit_date"
+                                                     <*> o .:? "reply_to_message"
+          <|> StickerMessage message_id from date chat <$> o .: "sticker"
+                                                       <*> o .:? "reply_to_message"
+          <|> VideoMessage message_id from date chat <$> o .: "video"
+                                                     <*> o .:? "caption"
+                                                     <*> o .:? "edit_date"
+                                                     <*> o .:? "reply_to_message"
+          <|> VoiceMessage message_id from date chat <$> o .: "voice"
+                                                     <*> o .:? "caption"
+                                                     <*> o .:? "edit_date"
+                                                     <*> o .:? "reply_to_message"
+          <|> ContactMessage message_id from date chat <$> o .: "contact"
+                                                       <*> o .:? "reply_to_message"
+          <|> LocationMessage message_id from date chat <$> o .: "location"
+                                                        <*> o .:? "reply_to_message"
+          <|> VenueMessage message_id from date chat <$> o .: "venue"
+                                                     <*> o .:? "reply_to_message"
+          <|> NewChatParticipantMessage message_id from date chat <$> o .: "new_chat_participant"
+          <|> LeftChatParticipantMessage message_id from date chat <$> o .: "left_chat_participant"
+          <|> NewChatTitleMessage message_id from date chat <$> o .: "new_chat_title"
+          <|> NewChatPhotoMessage message_id from date chat <$> o .: "new_chat_photo"
+          <|> MigratedToChatMessage message_id from date chat <$> o .: "migrate_to_chat_id"
+          <|> MigrateFromChatMessage message_id from date chat <$> o .: "migrate_from_chat_id"
+          <|> PinnedMessage message_id from date chat <$> o .: "pinned_message"
   parseJSON wat = typeMismatch "Message" wat
 
 instance FromJSON MessageEntity where
@@ -566,17 +499,17 @@ instance FromJSON MessageEntity where
       offset  <- o .: "offset"
       length' <- o .: "length"
       case s of
-        "mention"     -> return $ MentionEntity offset length'
-        "hashtag"     -> return $ HashtagEntity offset length'
-        "bot_command" -> return $ BotCommandEntity offset length'
-        "url"         -> return $ UrlEntity offset length'
-        "email"       -> return $ EmailEntity offset length'
-        "bold"        -> return $ BoldEntity offset length'
-        "italic"      -> return $ ItalicEntity offset length'
-        "code"        -> return $ CodeEntity offset length'
-        "pre"         -> return $ PreEntity offset length'
-        "text_link"   -> TextLinkEntity offset length' <$> o .: "url"
-        "text_mention" -> TextMentionEntity offset length' <$> o .: "user"
+        "mention"     -> return $ MentionEntity     offset length'
+        "hashtag"     -> return $ HashtagEntity     offset length'
+        "bot_command" -> return $ BotCommandEntity  offset length'
+        "url"         -> return $ UrlEntity         offset length'
+        "email"       -> return $ EmailEntity       offset length'
+        "bold"        -> return $ BoldEntity        offset length'
+        "italic"      -> return $ ItalicEntity      offset length'
+        "code"        -> return $ CodeEntity        offset length'
+        "pre"         -> return $ PreEntity         offset length'
+        "text_link"   ->          TextLinkEntity    offset length' <$> o .: "url"
+        "text_mention" ->         TextMentionEntity offset length' <$> o .: "user"
         wat -> fail $ "Wrong String \"" <> unpack wat <> "\" in MessageEntity's 'type' parameter"
 
 instance FromJSON PhotoSize where
@@ -696,17 +629,13 @@ instance FromJSON KeyboardButton where
   parseJSON wat = typeMismatch "KeyboardButton" wat
 
 instance FromJSON InlineKeyboardButton where
-  parseJSON = withObject "InlineKeyboardButton" $ \o ->
-    InlineUrlButton <$> o .: "text"
-                    <*> o .: "url"
-    <|> InlineCallbackButton <$> o .: "text"
-                             <*> o .: "callback_data"
-    <|> InlineSwitchButton <$> o .: "text"
-                           <*> o .:? "switch_inline_query"
-    <|> InlineSwitchCurrentButton <$> o .: "text"
-                                  <*> o .:? "switch_inline_query_current_chat"
-    <|> InlineGameButton <$> o .: "text"
-                         <*> o .: "callback_game"
+  parseJSON = withObject "InlineKeyboardButton" $ \o -> do
+    txt <- o .: "text"
+    InlineUrlButton                 txt <$> o .: "url"
+      <|> InlineCallbackButton      txt <$> o .: "callback_data"
+      <|> InlineSwitchButton        txt <$> o .:? "switch_inline_query"
+      <|> InlineSwitchCurrentButton txt <$> o .:? "switch_inline_query_current_chat"
+      <|> InlineGameButton          txt <$> o .: "callback_game"
 
 instance FromJSON CallbackGame where
   parseJSON _ = pure CallbackGame
@@ -718,27 +647,21 @@ instance FromJSON GameHighScore where
                   <*> o .: "score"
 
 instance FromJSON CallbackQuery where
-  parseJSON = withObject "CallbackQuery" $ \o ->
-    CallbackMessage <$> o .: "id"
-                    <*> o .: "from"
-                    <*> o .: "message"
-                    <*> o .: "chat_instance"
-                    <*> o .: "data"
-    <|> CallbackInline <$> o .: "id"
-                       <*> o .: "from"
-                       <*> o .: "inline_message_id"
-                       <*> o .: "chat_instance"
-                       <*> o .: "data"
-    <|> CallbackGameMessage <$> o .: "id"
-                            <*> o .: "from"
-                            <*> o .: "message"
-                            <*> o .: "chat_instance"
-                            <*> o .: "game_short_name"
-    <|> CallbackGameInline <$> o .: "id"
-                           <*> o .: "from"
-                           <*> o .: "inline_message_id"
-                           <*> o .: "chat_instance"
-                           <*> o .: "game_short_name"
+  parseJSON = withObject "CallbackQuery" $ \o -> do
+    ident <- o .: "id"
+    from  <- o .: "from"
+    CallbackMessage ident from <$> o .: "message"
+                               <*> o .: "chat_instance"
+                               <*> o .: "data"
+      <|> CallbackInline ident from <$> o .: "inline_message_id"
+                                    <*> o .: "chat_instance"
+                                    <*> o .: "data"
+      <|> CallbackGameMessage ident from <$> o .: "message"
+                                         <*> o .: "chat_instance"
+                                         <*> o .: "game_short_name"
+      <|> CallbackGameInline ident from <$> o .: "inline_message_id"
+                                        <*> o .: "chat_instance"
+                                        <*> o .: "game_short_name"
 
 instance FromJSON ChatMember where
   parseJSON = withObject "ChatMember" $ \o ->
