@@ -275,7 +275,7 @@ data MessageEntity =
   , entity_length :: Int
   , entity_user   :: User
   } deriving (Eq, Show)
-  
+
 -- | This object represents one size of a photo or a 'File' / 'Sticker' thumbnail.
 data PhotoSize = PhotoSize
   { photo_file_id   :: Text       -- ^ Unique identifier for this file
@@ -393,7 +393,7 @@ data File = File
   , file_path :: Maybe Text -- ^ File path. Use @https://api.telegram.org/file/bot<token>/<file_path>@ to get the file.
   } deriving (Eq, Show)
 
-  -- | This object represents a custom keyboard with reply options
+-- | This object represents a custom keyboard with reply options
 data ReplyKeyboard =
   ReplyKeyboardMarkup
   { reply_keyboard          :: [[KeyboardButton]] -- ^ Array of button rows, each represented by an Array of Strings
@@ -434,7 +434,7 @@ data InlineKeyboardButton =
   }
   | InlineSwitchButton
   { inline_keyboard_text                :: Text -- ^ Label text on the button
-  , inline_keyboard_switch_inline_query :: Maybe Text 
+  , inline_keyboard_switch_inline_query :: Maybe Text
   }
   -- ^ If set, pressing the button will prompt the user to select one of their chats,
   -- open that chat and insert the bot‘s username and the specified inline query in the input field.
