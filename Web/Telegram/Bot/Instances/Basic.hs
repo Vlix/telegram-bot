@@ -320,7 +320,7 @@ instance ToJSON CallbackGame where
   toJSON _ = Object HM.empty
 
 instance ToJSON GameHighScore where
-  toJSON (GameHighScore position user score) = 
+  toJSON (GameHighScore position user score) =
     object [ "position" .= position
            , "user"     .= user
            , "score"    .= score
@@ -436,10 +436,10 @@ instance FromJSON Message where
                                      <*> o .: "from"
                                      <*> o .: "date"
                                      <*> o .: "chat"
-    {-| isJust $ HM.lookup "channel_chat_created" o = ChannelChatCreatedMessage <$> o .: "message_id"
+    {- -| isJust $ HM.lookup "channel_chat_created" o = ChannelChatCreatedMessage <$> o .: "message_id"
                           <*> o .: "from"
                           <*> o .: "date"
-                          <*> o .: "chat"-}
+                          <*> o .: "chat" -}
     | otherwise = do
         message_id <- o .: "message_id"
         from       <- o .: "from"
