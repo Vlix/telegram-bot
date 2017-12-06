@@ -132,6 +132,16 @@ instance ToJSON Message where
       PinnedMessage{..}                -> [ "pinned_message"          .=! pinned_message ]
       _ -> [ "error" .=! String "this should never occur, please report"]
 
+instance ToJSON ChannelMessage where
+  toJSON (ChannelMessage mId date chat txt editDate ents) =
+      object [ "message_id" .= mId
+             , "date" .= date
+             , "chat" .= chat
+             , "text" .= txt
+             , "edit_date" .= editDate
+             , "entities" .= ents
+             ]
+
 instance ToJSON MessageEntity where
   toJSON ent = object $ extra ++ basis
    where
@@ -488,6 +498,15 @@ instance FromJSON Message where
           <|> MigrateFromChatMessage message_id from date chat <$> o .: "migrate_from_chat_id"
           <|> PinnedMessage message_id from date chat <$> o .: "pinned_message"
   parseJSON wat = typeMismatch "Message" wat
+
+instance FromJSON ChannelMessage where
+  parseJSON = withObject "ChannelMessage" $ \o ->
+      ChannelMessage <$> o .: "message_id"
+                     <*> o .: "date"
+                     <*> o .: "chat"
+                     <*> o .:? "text"
+                     <*> o .:? "edit_date"
+                     <*> o .:? "entities" .!= []
 
 instance FromJSON MessageEntity where
   parseJSON = withObject "MessageEntity" $ \o ->

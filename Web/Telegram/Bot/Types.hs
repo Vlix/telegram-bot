@@ -7,18 +7,18 @@ module Web.Telegram.Bot.Types
     , module Web.Telegram.Bot.Types.Static
     , module Web.Telegram.Bot.Types.Inline
     -- * Types
-    , Update                (..)
+    , Update(..)
     ) where
 
-import           Control.Applicative        ((<|>))
-import           Data.Aeson
+import Control.Applicative ((<|>))
+import Data.Aeson
 
-import           Web.Telegram.Bot.Instances()
-import           Web.Telegram.Bot.Requests
-import           Web.Telegram.Bot.Responses
-import           Web.Telegram.Bot.Types.Basic
-import           Web.Telegram.Bot.Types.Static
-import           Web.Telegram.Bot.Types.Inline
+import Web.Telegram.Bot.Instances()
+import Web.Telegram.Bot.Requests
+import Web.Telegram.Bot.Responses
+import Web.Telegram.Bot.Types.Basic
+import Web.Telegram.Bot.Types.Static
+import Web.Telegram.Bot.Types.Inline
 
 
 -- | This object represents an incoming update.
@@ -35,7 +35,7 @@ data Update =
   }
   | ChannelPostUpdate
   { update_id :: Int     -- ^ Same as MessageUpdate
-  , message   :: Message -- ^ New incoming channel post of any kind — text, photo, sticker, etc.
+  , cMessage  :: ChannelMessage -- ^ New incoming channel post of any kind — text, photo, sticker, etc.
   }
   | EditedChannelPostUpdate
   { update_id :: Int     -- ^ Same as MessageUpdate

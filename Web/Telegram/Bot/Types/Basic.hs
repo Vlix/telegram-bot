@@ -228,6 +228,17 @@ data Message =
   , pinned_message :: Message -- ^ Specified message was pinned.
   } deriving (Eq, Show)
 
+-- | TODO: SUPER UGLY, just to match correctly on channel messages.
+-- If it's a text message you get the text. If it's something else, you don't.
+data ChannelMessage = ChannelMessage {
+    cmMessageId :: Int,
+    cmDate :: Int,
+    cmChat :: Chat,
+    cmText :: Maybe Text,
+    cmEditDate :: Maybe Int,
+    cMEntities :: [MessageEntity]
+} deriving (Eq, Show)
+
 data MessageEntity =
   MentionEntity
   { entity_offset :: Int

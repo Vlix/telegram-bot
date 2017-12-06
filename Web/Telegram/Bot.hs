@@ -58,7 +58,7 @@ data UpdateHandler a =
     UpdateHandler
     { handleMessage           :: UpdateID -> Message            -> a
     , handleEditedMessage     :: UpdateID -> Message            -> a
-    , handleChannelPost       :: UpdateID -> Message            -> a
+    , handleChannelPost       :: UpdateID -> ChannelMessage     -> a
     , handleEditedChannelPost :: UpdateID -> Message            -> a
     , handleCallbackQuery     :: UpdateID -> CallbackQuery      -> a
     , handleInlineQuery       :: UpdateID -> InlineQuery        -> a
