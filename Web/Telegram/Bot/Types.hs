@@ -39,7 +39,7 @@ data Update =
   }
   | EditedChannelPostUpdate
   { update_id :: Int     -- ^ Same as MessageUpdate
-  , message   :: Message -- ^ New version of a channel post that is known to the bot and was edited
+  , cMessage   :: ChannelMessage -- ^ New version of a channel post that is known to the bot and was edited
   }
   | InlineQueryUpdate
   { update_id    :: Int         -- ^ Same as MessageUpdate
@@ -61,7 +61,7 @@ data Update =
 
 
 instance ToJSON Update where
-  toJSON upd = object $ extra : updateId : []
+  toJSON upd = object [extra, updateId]
    where
     updateId = "update_id" .= update_id upd
     extra = case upd of
@@ -76,10 +76,10 @@ instance ToJSON Update where
 instance FromJSON Update where
   parseJSON = withObject "Update" $ \o -> do
     updateId <- o .: "update_id"
-    (MessageUpdate               updateId <$> o .: "message"
-        <|> EditedMessageUpdate     updateId <$> o .: "edited_message"
-        <|> ChannelPostUpdate       updateId <$> o .: "channel_post"
-        <|> EditedChannelPostUpdate updateId <$> o .: "edited_channel_post"
-        <|> InlineQueryUpdate       updateId <$> o .: "inline_query"
-        <|> ChosenInlineUpdate      updateId <$> o .: "chosen_inline_result"
-        <|> CallbackUpdate          updateId <$> o .: "callback_query")
+    MessageUpdate                 updateId <$> o .: "message"
+      <|> EditedMessageUpdate     updateId <$> o .: "edited_message"
+      <|> ChannelPostUpdate       updateId <$> o .: "channel_post"
+      <|> EditedChannelPostUpdate updateId <$> o .: "edited_channel_post"
+      <|> InlineQueryUpdate       updateId <$> o .: "inline_query"
+      <|> ChosenInlineUpdate      updateId <$> o .: "chosen_inline_result"
+      <|> CallbackUpdate          updateId <$> o .: "callback_query"

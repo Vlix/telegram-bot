@@ -59,7 +59,7 @@ data UpdateHandler a =
     { handleMessage           :: UpdateID -> Message            -> a
     , handleEditedMessage     :: UpdateID -> Message            -> a
     , handleChannelPost       :: UpdateID -> ChannelMessage     -> a
-    , handleEditedChannelPost :: UpdateID -> Message            -> a
+    , handleEditedChannelPost :: UpdateID -> ChannelMessage     -> a
     , handleCallbackQuery     :: UpdateID -> CallbackQuery      -> a
     , handleInlineQuery       :: UpdateID -> InlineQuery        -> a
     , handleChosenInline      :: UpdateID -> ChosenInlineResult -> a
