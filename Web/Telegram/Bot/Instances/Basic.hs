@@ -153,6 +153,7 @@ instance ToJSON MessageEntity where
       BotCommandEntity{} -> [ "type" .= String "bot_command" ]
       UrlEntity{}        -> [ "type" .= String "url" ]
       EmailEntity{}      -> [ "type" .= String "email" ]
+      PhoneNumberEntity{} -> [ "type" .= String "phone_number" ]
       BoldEntity{}       -> [ "type" .= String "bold" ]
       ItalicEntity{}     -> [ "type" .= String "italic" ]
       CodeEntity{}       -> [ "type" .= String "code" ]
@@ -523,6 +524,7 @@ instance FromJSON MessageEntity where
         "bot_command" -> return $ BotCommandEntity  offset length'
         "url"         -> return $ UrlEntity         offset length'
         "email"       -> return $ EmailEntity       offset length'
+        "phone_number" -> return $ PhoneNumberEntity offset length'
         "bold"        -> return $ BoldEntity        offset length'
         "italic"      -> return $ ItalicEntity      offset length'
         "code"        -> return $ CodeEntity        offset length'

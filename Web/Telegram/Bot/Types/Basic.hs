@@ -260,6 +260,10 @@ data MessageEntity =
   { entity_offset :: Int
   , entity_length :: Int
   }
+  | PhoneNumberEntity
+  { entity_offset :: Int
+  , entity_length :: Int
+  }
   | BoldEntity
   { entity_offset :: Int
   , entity_length :: Int
