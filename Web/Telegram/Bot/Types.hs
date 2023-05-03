@@ -1,7 +1,7 @@
+{-# LANGUAGE DerivingStrategies #-}
 -- | This module contains objects which represent data of Telegram Bot API responses
 module Web.Telegram.Bot.Types
-    ( module Web.Telegram.Bot.Instances
-    , module Web.Telegram.Bot.Requests
+    ( module Web.Telegram.Bot.Requests
     , module Web.Telegram.Bot.Responses
     , module Web.Telegram.Bot.Types.Basic
     , module Web.Telegram.Bot.Types.Static
@@ -52,7 +52,7 @@ data Update =
   | CallbackUpdate
   { update_id      :: Int           -- ^ Same as MessageUpdate
   , callback_query :: CallbackQuery -- ^ New incoming callback query
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 
 --------------------

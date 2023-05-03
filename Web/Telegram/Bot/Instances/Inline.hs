@@ -7,8 +7,7 @@ module Web.Telegram.Bot.Instances.Inline where
 import           Control.Applicative        ((<|>))
 import           Data.Aeson
 import           Data.Text                  (unpack)
-import           Data.Monoid                ((<>))
-import qualified Data.HashMap.Strict        as HM
+import qualified Data.Aeson.KeyMap          as KM
 
 import           Web.Telegram.Bot.Types.Inline
 import           Web.Telegram.Bot.Types.Static
@@ -324,7 +323,7 @@ instance FromJSON InlineKeyboardMarkup where
 
 instance FromJSON InlineQueryResult where
   parseJSON = withObject "InlineQueryResult" $ \o ->
-    case "type" `HM.lookup` o of
+    case "type" `KM.lookup` o of
       Nothing -> fail "No [type] argument in InlineQueryResult object"
       Just val -> go o val
    where

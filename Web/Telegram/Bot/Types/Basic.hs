@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 -- | This module contains objects which represent data of Telegram Bot API responses
 module Web.Telegram.Bot.Types.Basic where
 
@@ -12,7 +13,7 @@ data User = User
   , user_first_name :: Text       -- ^ User‘s or bot’s first name
   , user_last_name  :: Maybe Text -- ^ User‘s or bot’s last name
   , user_username   :: Maybe Text -- ^ User‘s or bot’s username
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a chat.
 data Chat =
@@ -37,7 +38,7 @@ data Chat =
   { chat_id         :: Integer    -- ^ Unique identifier for this chat, not exceeding 1e13 by absolute value
   , chat_title      :: Text       -- ^ Title, for supergroups, channels and group chats
   , chat_username   :: Maybe Text -- ^ Username, for private chats, supergroups and channels if available
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a message.
 data Message =
@@ -226,7 +227,7 @@ data Message =
   , date           :: Int     -- ^ Date the message was sent in Unix time
   , chat           :: Chat    -- ^ Conversation the message belongs to
   , pinned_message :: Message -- ^ Specified message was pinned.
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | TODO: SUPER UGLY, just to match correctly on channel messages.
 -- If it's a text message you get the text. If it's something else, you don't.
@@ -237,7 +238,7 @@ data ChannelMessage = ChannelMessage {
     cmText :: Maybe Text,
     cmEditDate :: Maybe Int,
     cMEntities :: [MessageEntity]
-} deriving (Eq, Show)
+} deriving stock (Eq, Show)
 
 data MessageEntity =
   MentionEntity
@@ -289,7 +290,7 @@ data MessageEntity =
   { entity_offset :: Int
   , entity_length :: Int
   , entity_user   :: User
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents one size of a photo or a 'File' / 'Sticker' thumbnail.
 data PhotoSize = PhotoSize
@@ -297,7 +298,7 @@ data PhotoSize = PhotoSize
   , photo_width     :: Int        -- ^ Photo width
   , photo_height    :: Int        -- ^ Photo height
   , photo_file_size :: Maybe Int  -- ^ File size
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents an audio file to be treated as music by the Telegram clients.
 data Audio = Audio
@@ -307,7 +308,7 @@ data Audio = Audio
   , audio_title     :: Maybe Text -- ^ Title of the audio as defined by sender or by audio tags
   , audio_mime_type :: Maybe Text -- ^ MIME type of the file as defined by sender
   , audio_file_size :: Maybe Int  -- ^ File size
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a general file (as opposed to 'PhotoSize', 'Voice' messages and 'Audio' files).
 data Document = Document
@@ -316,7 +317,7 @@ data Document = Document
   , doc_file_name :: Maybe Text       -- ^ Original filename as defined by sender
   , doc_mime_type :: Maybe Text       -- ^ MIME type of the file as defined by sender
   , doc_file_size :: Maybe Int        -- ^ File size
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.
 data Game = Game
@@ -328,7 +329,7 @@ data Game = Game
                                           -- ^ or manually edited using editMessageText. 0-4096 characters.
   , game_text_entities :: [MessageEntity] -- ^ Special entities that appear in text, such as usernames, URLs, bot commands, etc.
   , game_animation     :: Maybe Animation -- ^ Animation that will be displayed in the game message in chats. Upload via BotFather
-  } deriving (Eq,Show)
+  } deriving stock (Eq, Show)
 
 -- | You can provide an animation for your game so that it looks stylish in chats (check out Lumberjack for an example).
 -- This object represents an animation file to be displayed in the message containing a game.
@@ -338,7 +339,7 @@ data Animation = Animation
   , animation_file_name :: Maybe Text      -- ^ Original animation filename as defined by sender
   , animation_mime_type :: Maybe Text      -- ^ MIME type of the file as defined by sender
   , animation_file_size :: Maybe Int       -- ^ File size
-  } deriving (Eq,Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a sticker.
 data Sticker = Sticker
@@ -348,7 +349,7 @@ data Sticker = Sticker
   , sticker_thumb     :: Maybe PhotoSize  -- ^ Sticker thumbnail in .webp or .jpg format
   , sticker_emoji     :: Maybe Text       -- ^ Emoji associated with the sticker
   , sticker_file_size :: Maybe Int        -- ^ File size
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a video file.
 data Video = Video
@@ -359,7 +360,7 @@ data Video = Video
   , video_thumb     :: Maybe PhotoSize  -- ^ Video thumbnail
   , video_mime_type :: Maybe Text       -- ^ MIME type of a file as defined by sender
   , video_file_size :: Maybe Int        -- ^ File size
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a voice note.
 data Voice = Voice
@@ -367,7 +368,7 @@ data Voice = Voice
   , voice_duration  :: Int        -- ^ Duration of the audio in seconds as defined by sender
   , voice_mime_type :: Maybe Text -- ^ MIME type of the file as defined by sender
   , voice_file_size :: Maybe Int  -- ^ File size
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a phone contact.
 data Contact = Contact
@@ -375,13 +376,13 @@ data Contact = Contact
   , contact_first_name   :: Text       -- ^ Contact's first name
   , contact_last_name    :: Maybe Text -- ^ Contact's last name
   , contact_user_id      :: Maybe Int  -- ^ Contact's user identifier in Telegram
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a point on the map.
 data Location = Location
   { location_longitude :: Double -- ^ Longitude as defined by sender
   , location_latitude  :: Double -- ^ Latitude as defined by sender
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a venue.
 data Venue = Venue
@@ -389,13 +390,13 @@ data Venue = Venue
   , venue_title         :: Text       -- ^ Name of the venue
   , venue_address       :: Text       -- ^ Address of the venue
   , venue_foursquare_id :: Maybe Text -- ^ Foursquare identifier of the venue
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represent a user's profile pictures.
 data UserProfilePhotos = UserProfilePhotos
   { total_count :: Int           -- ^ Total number of profile pictures the target user has
   , photos      :: [[PhotoSize]] -- ^ Requested profile pictures (in up to 4 sizes each)
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a file ready to be downloaded. The file can be downloaded via the link
 --   @https://api.telegram.org/file/bot<token>/<file_path>@. It is guaranteed that the link will be valid
@@ -406,7 +407,7 @@ data File = File
   { file_id   :: Text         -- ^ Unique identifier for this file
   , file_size :: Maybe Int  -- ^ File size, if known
   , file_path :: Maybe Text -- ^ File path. Use @https://api.telegram.org/file/bot<token>/<file_path>@ to get the file.
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a custom keyboard with reply options
 data ReplyKeyboard =
@@ -425,7 +426,7 @@ data ReplyKeyboard =
   -- | Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot‘s message and tapped ’Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice privacy mode.
   | ForceReply
   { reply_selective         :: Bool -- ^ Use this parameter if you want to force reply from specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- |  This object represents one button of the reply keyboard. For simple text buttons String can be used instead of this object to specify text of the button.
 data KeyboardButton =
@@ -435,7 +436,7 @@ data KeyboardButton =
   { button_text :: Text }
   | LocationButton
   { button_text :: Text }
-  deriving (Eq, Show)
+  deriving stock (Eq, Show)
 
 -- | This object represents one button of an inline keyboard.
 data InlineKeyboardButton =
@@ -471,17 +472,17 @@ data InlineKeyboardButton =
   { inline_keyboard_text          :: Text         -- ^ Label text on the button
   , inline_keyboard_callback_game :: CallbackGame -- ^ Description of the game that will be launched when the user presses the button.
                                                   -- NOTE: This type of button must always be the first button in the first row.
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | A placeholder, currently holds no information. Use BotFather to set up your game.
-data CallbackGame = CallbackGame deriving (Eq,Show)
+data CallbackGame = CallbackGame deriving stock (Eq, Show)
 
 -- | This object represents one row of the high scores table for a game.
 data GameHighScore = GameHighScore
   { high_score_position :: Int  -- ^ Position in high score table for the game
   , high_score_user     :: User -- ^ User
   , high_score_score    :: Int  -- ^ Score
-  } deriving (Eq,Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents an incoming callback query from a callback button in an inline keyboard.
 data CallbackQuery =
@@ -512,19 +513,19 @@ data CallbackQuery =
   , callback_query_inline_message_id :: Text
   , callback_query_chat_instance     :: Text
   , callback_query_game_short_name   :: Text
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object contains information about one member of the chat.
 data ChatMember = ChatMember
   { chatmember_user   :: User
   , chatmember_status :: ChatMemberStatus
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | Contains information about why a request was unsuccessfull.
 data ResponseParameters = ResponseParameters
   { rps_migrate_to_chat_id :: Maybe Integer -- ^ The group has been migrated to a supergroup with the specified identifier.
   , rps_retry_after        :: Maybe Int     -- ^ In case of exceeding flood control, the number of seconds left to wait before the request can be repeated
-  } deriving (Eq,Show)
+  } deriving stock (Eq, Show)
 
 -- | Contains information about the current status of a webhook.
 data WebhookInfo = WebhookInfo

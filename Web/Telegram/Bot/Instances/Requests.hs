@@ -7,7 +7,6 @@ module Web.Telegram.Bot.Instances.Requests where
 import           Control.Applicative        ((<|>))
 import           Data.Aeson
 import           Data.Aeson.Types           (Pair)
-import           Data.Text                  (Text)
 
 import           Web.Telegram.Bot.Types.Requests
 import           Web.Telegram.Bot.Types.Static
@@ -256,7 +255,7 @@ instance ToJSON UpdatesRequest where
             , check "timeout" (<= 0 ) timeout
             , "allowed_updates" .=!! allowed_updates
             ]
-   where check :: ToJSON a => Text -> (a -> Bool) -> Maybe a -> Maybe Pair
+   where check :: ToJSON a => Key -> (a -> Bool) -> Maybe a -> Maybe Pair
          check _ _ Nothing  = Nothing
          check t f (Just a) | f a = Just $ t .= a
                             | otherwise = Nothing
@@ -267,7 +266,7 @@ instance ToJSON WebhookRequest where
             , check "max_connections" (\x -> x > 1 || x < 100 || x /= 40) max_conns
             , "allowed_updates" .=!! allowed_updates
             ]
-   where check :: ToJSON a => Text -> (a -> Bool) -> Maybe a -> Maybe Pair
+   where check :: ToJSON a => Key -> (a -> Bool) -> Maybe a -> Maybe Pair
          check _ _ Nothing  = Nothing
          check t f (Just a) | f a = Just $ t .= a
                             | otherwise = Nothing

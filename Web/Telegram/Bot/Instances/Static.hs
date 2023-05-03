@@ -3,11 +3,10 @@
 module Web.Telegram.Bot.Instances.Static where
 
 
-import           Data.Aeson
-import           Data.Monoid                ((<>))
-import           Data.Text                  (unpack)
+import Data.Aeson
+import Data.Text (unpack)
 
-import           Web.Telegram.Bot.Types.Static
+import Web.Telegram.Bot.Types.Static
 
 
 ----------------------
@@ -53,7 +52,7 @@ instance ToJSON ChatMemberStatus where
    where
     t = case typ of
       Creator       -> "creator"
-      Administrator -> "administrator" 
+      Administrator -> "administrator"
       Member        -> "member"
       MemberLeft    -> "left"
       MemberKicked  -> "kicked"

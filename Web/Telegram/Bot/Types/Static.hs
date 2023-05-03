@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
@@ -7,26 +8,25 @@ module Web.Telegram.Bot.Types.Static where
 import Data.Aeson
 import Data.Aeson.Types     (Pair)
 import Data.Maybe           (catMaybes)
-import Data.Text            (Text)
-import Data.HashMap.Strict  as HM
+import Data.Aeson.KeyMap    as KM
 
 -- | Helper function to avoid `Maybe [a]`s
-mEmptyList :: ToJSON a => Text -> [a] -> Maybe Pair
+mEmptyList :: ToJSON a => Key -> [a] -> Maybe Pair
 mEmptyList _ [] = Nothing
 mEmptyList t l  = Just $ t .= l
 
 -- | Helper function to avoid `Maybe Bool`s
 -- (first Bool is what Nothing would default to)
-mBool :: Text -> Bool -> Bool -> Maybe Pair
+mBool :: Key -> Bool -> Bool -> Maybe Pair
 mBool t a b = if a == b then Nothing else Just $ t .= b
 
 object' :: [Maybe Pair] -> Value
-object' = Object . HM.fromList . catMaybes
+object' = Object . KM.fromList . catMaybes
 
-(.=!!) :: ToJSON a => Text -> Maybe a -> Maybe Pair
+(.=!!) :: ToJSON a => Key -> Maybe a -> Maybe Pair
 name .=!! v = (name .=) <$> v
 
-(.=!) :: ToJSON a => Text -> a -> Maybe Pair
+(.=!) :: ToJSON a => Key -> a -> Maybe Pair
 name .=! value = Just $ name .= value
 
 
@@ -40,22 +40,22 @@ data ChatType = Private
               | Group
               | Supergroup
               | Channel
-  deriving (Eq, Show)
+  deriving stock (Eq, Show)
 
 -- | Parse mode for text message
 data ParseMode = Markdown
                | HTML
-  deriving (Eq, Show)
+  deriving stock (Eq, Show)
 
 -- | MIME type for InlineQueryResultVideo
 data VideoMIME = TextHTML
                | VideoMP4
-  deriving (Eq, Show)
+  deriving stock (Eq, Show)
 
 -- | MIME type for InlineQueryResultDocument
 data DocumentMIME = ApplicationPDF
                   | ApplicationZIP
-  deriving (Eq, Show)
+  deriving stock (Eq, Show)
 
 -- | Type of action to broadcast.
 data ChatAction = Typing
@@ -66,7 +66,7 @@ data ChatAction = Typing
                 | UploadAudio
                 | UploadDocument
                 | FindLocation
-  deriving (Eq, Show)
+  deriving stock (Eq, Show)
 
 -- | Status of ChatMembers
 data ChatMemberStatus = Creator
@@ -74,7 +74,7 @@ data ChatMemberStatus = Creator
                       | Member
                       | MemberLeft
                       | MemberKicked
-  deriving (Eq, Show)
+  deriving stock (Eq, Show)
 
 -- | Types of updates for `getUpdates`
 data UpdateType = MESSAGE
@@ -84,4 +84,4 @@ data UpdateType = MESSAGE
                 | INLINEQUERY
                 | CHOSENINLINERESULT
                 | CALLBACKQUERY
-  deriving (Eq,Show)
+  deriving stock (Eq, Show)

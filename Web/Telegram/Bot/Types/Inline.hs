@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 module Web.Telegram.Bot.Types.Inline where
 
 
@@ -13,21 +14,21 @@ data InlineQuery = InlineQuery
   , query_query     :: Text           -- ^ Text of the query (up to 512 characters)
   , query_offset    :: Text           -- ^ Offset of the results to be returned, can be controlled by the bot
   , query_location  :: Maybe Location -- ^ Sender location, only for bots that request user location
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents a result of an inline query that was chosen by the user and sent to their chat partner.
 data ChosenInlineResult = ChosenInlineResult
   { chosen_result_id         :: Text           -- ^ Unique identifier for this query
   , chosen_from              :: User           -- ^ Sender
   , chosen_query             :: Text           -- ^ Text of the query
-  , chosen_inline_message_id :: Maybe Text     -- ^ Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message. Will be also received in callback queries and can be used to edit the message. 
+  , chosen_inline_message_id :: Maybe Text     -- ^ Identifier of the sent inline message. Available only if there is an inline keyboard attached to the message. Will be also received in callback queries and can be used to edit the message.
   , chosen_location          :: Maybe Location -- ^ Sender location, only for bots that request user location
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- because everything here uses only the InlineKeyboardMarkup we can't just use ReplyKeyboard
 newtype InlineKeyboardMarkup =
   IKM { ikm_reply_inline_keyboard :: [[InlineKeyboardButton]] } -- ^ Array of button rows, each represented by an Array of InlineKeyboardButton objects
-    deriving (Eq, Show)
+    deriving stock (Eq, Show)
 
 -- | This object represents the content of a message to be sent as a result of an inline query.
 data InputMessageContent =
@@ -55,7 +56,7 @@ data InputMessageContent =
   { phone_number :: Text       -- ^ Contact's phone number
   , first_name   :: Text       -- ^ Contact's first name
   , last_name    :: Maybe Text -- ^ Contact's last name
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 data InlineQueryResult =
   -- | Represents a link to an article or web page.
@@ -272,7 +273,7 @@ data InlineQueryResult =
   , iqrc_reply_markup          :: Maybe InlineKeyboardMarkup -- ^ Inline keyboard attached to the message
   , iqrc_input_message_content :: Maybe InputMessageContent  -- ^ Content of the message to be sent instead of the video animation
   }
-  -- | Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. 
+  -- | Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user.
   -- | Alternatively, you can use input_message_content to send a message with the specified content instead of the voice message.
   | InlineQueryResultCachedVoice
   { iqrc_id                    :: Text                       -- ^ Unique identifier for this result, 1-64 bytes
@@ -282,7 +283,7 @@ data InlineQueryResult =
   , iqrc_reply_markup          :: Maybe InlineKeyboardMarkup -- ^ Inline keyboard attached to the message
   , iqrc_input_message_content :: Maybe InputMessageContent  -- ^ Content of the message to be sent instead of the audio
   }
-  -- | Represents a link to an mp3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. 
+  -- | Represents a link to an mp3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user.
   -- | Alternatively, you can use input_message_content to send a message with the specified content instead of the audio.
   | InlineQueryResultCachedAudio
   { iqrc_id                    :: Text                       -- ^ Unique identifier for this result, 1-64 bytes
@@ -290,4 +291,4 @@ data InlineQueryResult =
   , iqrc_caption               :: Maybe Text                 -- ^ Caption, 0-200 characters
   , iqrc_reply_markup          :: Maybe InlineKeyboardMarkup -- ^ Inline keyboard attached to the message
   , iqrc_input_message_content :: Maybe InputMessageContent  -- ^ Content of the message to be sent instead of the audio
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)

@@ -1,10 +1,10 @@
+{-# LANGUAGE DerivingStrategies #-}
 module Web.Telegram.Bot.Responses where
 
 
 import           Data.Text              (Text)
 import           Data.Aeson
-import qualified Data.HashMap.Strict    as HM
-import           Data.Monoid            ((<>))
+import qualified Data.Aeson.KeyMap      as KM
 
 import           Web.Telegram.Bot.Types.Basic
 import           Web.Telegram.Bot.Types.Static
@@ -20,7 +20,7 @@ data Response a =
   { error_description :: Text
   , error_error_code  :: Maybe Int
   , error_parameters  :: Maybe ResponseParameters
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 
 instance ToJSON a => ToJSON (Response a) where
@@ -38,7 +38,7 @@ instance ToJSON a => ToJSON (Response a) where
 
 instance FromJSON a => FromJSON (Response a) where
   parseJSON = withObject "Response" $ \o ->
-    case "ok" `HM.lookup` o of
+    case "ok" `KM.lookup` o of
       Just (Bool False) -> ErrorResponse <$> o .: "description"
                                          <*> o .:? "error_code"
                                          <*> o .:? "parameters"

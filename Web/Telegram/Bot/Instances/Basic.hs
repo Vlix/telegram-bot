@@ -1,5 +1,5 @@
-{-# OPTIONS_GHC -fno-warn-orphans #-}
 {-# LANGUAGE RecordWildCards #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Web.Telegram.Bot.Instances.Basic where
 
@@ -9,8 +9,7 @@ import           Data.Aeson
 import           Data.Aeson.Types           (typeMismatch)
 import           Data.Text                  (unpack)
 import           Data.Maybe                 (isJust,fromMaybe)
-import           Data.Monoid                ((<>))
-import qualified Data.HashMap.Strict        as HM
+import qualified Data.Aeson.KeyMap          as KM
 
 import           Web.Telegram.Bot.Types.Basic
 import           Web.Telegram.Bot.Types.Static
@@ -60,11 +59,11 @@ instance ToJSON Chat where
 instance ToJSON Message where
   toJSON ForwardedMessage{..}
         | Object msg <- toJSON forward_message =
-            Object $ HM.fromList [ ("forward_from", toJSON forward_from)
+            Object $ KM.fromList [ ("forward_from", toJSON forward_from)
                                  , ("forward_from_chat",toJSON forward_from_chat)
                                  , ("forward_date",toJSON forward_date)
                                  , ("forward_from_message_id",toJSON forward_from_message_id)
-                                 ] `HM.union` msg
+                                 ] `KM.union` msg
         | otherwise = error "message parameter isn't an Object in ToJSON Message - ForwardedMessage"
   toJSON other = object' $ extra ++ basis
    where
@@ -123,14 +122,14 @@ instance ToJSON Message where
       LeftChatParticipantMessage{..}   -> [ "left_chat_participant"   .=! left_chat_member ]
       NewChatTitleMessage{..}          -> [ "new_chat_title"          .=! new_chat_title ]
       NewChatPhotoMessage{..}          -> [ "new_chat_photo"          .=! new_chat_photo ]
-      DeleteChatPhotoMessage{..}       -> [ "delete_chat_photo"       .=! Bool True ]
-      GroupChatCreatedMessage{..}      -> [ "group_chat_created"      .=! Bool True ]
-      SuperGroupChatCreatedMessage{..} -> [ "supergroup_chat_created" .=! Bool True ]
-      ChannelChatCreatedMessage{..}    -> [ "channel_chat_created"    .=! Bool True ]
+      DeleteChatPhotoMessage{}         -> [ "delete_chat_photo"       .=! Bool True ]
+      GroupChatCreatedMessage{}        -> [ "group_chat_created"      .=! Bool True ]
+      SuperGroupChatCreatedMessage{}   -> [ "supergroup_chat_created" .=! Bool True ]
+      ChannelChatCreatedMessage{}      -> [ "channel_chat_created"    .=! Bool True ]
       MigratedToChatMessage{..}        -> [ "migrate_to_chat_id"      .=! migrate_to_chat_id ]
       MigrateFromChatMessage{..}       -> [ "migrate_from_chat_id"    .=! migrate_from_chat_id ]
       PinnedMessage{..}                -> [ "pinned_message"          .=! pinned_message ]
-      _ -> [ "error" .=! String "this should never occur, please report"]
+      -- _ -> [ "error" .=! String "this should never occur, please report"]
 
 instance ToJSON ChannelMessage where
   toJSON (ChannelMessage mId date chat txt editDate ents) =
@@ -324,11 +323,11 @@ instance ToJSON InlineKeyboardButton where
            ]
   toJSON (InlineGameButton txt _game) =
     object [ "text"          .= txt
-           , "callback_game" .= Object HM.empty
+           , "callback_game" .= Object KM.empty
            ]
 
 instance ToJSON CallbackGame where
-  toJSON _ = Object HM.empty
+  toJSON _ = Object KM.empty
 
 instance ToJSON GameHighScore where
   toJSON (GameHighScore position user score) =
@@ -402,7 +401,7 @@ instance FromJSON User where
 
 instance FromJSON Chat where
   parseJSON = withObject "Chat" $ \o ->
-    case "type" `HM.lookup` o of
+    case "type" `KM.lookup` o of
       Nothing  -> fail "no 'type' argument in Chat object"
       Just val -> go o val
    where
@@ -426,28 +425,28 @@ instance FromJSON Chat where
 
 instance FromJSON Message where
   parseJSON (Object o)
-    | isJust $ "forward_date" `HM.lookup` o =
-        ForwardedMessage <$> parseJSON (Object $ HM.delete "forward_date" o)
+    | isJust $ "forward_date" `KM.lookup` o =
+        ForwardedMessage <$> parseJSON (Object $ KM.delete "forward_date" o)
                          <*> o .:? "forward_from"
                          <*> o .:? "forward_from_chat"
                          <*> o .:? "forward_from_message_id"
                          <*> o .: "forward_date"
-    | isJust $ "delete_chat_photo" `HM.lookup` o =
+    | isJust $ "delete_chat_photo" `KM.lookup` o =
         DeleteChatPhotoMessage <$> o .: "message_id"
                                <*> o .: "from"
                                <*> o .: "date"
                                <*> o .: "chat"
-    | isJust $ "group_chat_created" `HM.lookup` o =
+    | isJust $ "group_chat_created" `KM.lookup` o =
         GroupChatCreatedMessage <$> o .: "message_id"
                                 <*> o .: "from"
                                 <*> o .: "date"
                                 <*> o .: "chat"
-    | isJust $ "supergroup_chat_created" `HM.lookup` o =
+    | isJust $ "supergroup_chat_created" `KM.lookup` o =
         SuperGroupChatCreatedMessage <$> o .: "message_id"
                                      <*> o .: "from"
                                      <*> o .: "date"
                                      <*> o .: "chat"
-    {- -| isJust $ HM.lookup "channel_chat_created" o = ChannelChatCreatedMessage <$> o .: "message_id"
+    {- -| isJust $ KM.lookup "channel_chat_created" o = ChannelChatCreatedMessage <$> o .: "message_id"
                           <*> o .: "from"
                           <*> o .: "date"
                           <*> o .: "chat" -}
@@ -511,7 +510,7 @@ instance FromJSON ChannelMessage where
 
 instance FromJSON MessageEntity where
   parseJSON = withObject "MessageEntity" $ \o ->
-    case "type" `HM.lookup` o of
+    case "type" `KM.lookup` o of
       Nothing  -> fail "No 'type' parameter in MessageEntity"
       Just val -> go o val
    where
@@ -632,8 +631,8 @@ instance FromJSON File where
 
 instance FromJSON ReplyKeyboard where
   parseJSON (Object o)
-    | "remove_keyboard" `HM.lookup` o == Just (Bool True) = ReplyKeyboardRemove <$> o .:? "selective" .!= False
-    | "force_reply"     `HM.lookup` o == Just (Bool True) = ForceReply <$> o .:? "selective" .!= False
+    | "remove_keyboard" `KM.lookup` o == Just (Bool True) = ReplyKeyboardRemove <$> o .:? "selective" .!= False
+    | "force_reply"     `KM.lookup` o == Just (Bool True) = ForceReply <$> o .:? "selective" .!= False
     | otherwise =
         InlineKeyboardMarkup <$> o .: "inline_keyboard"
     <|> ReplyKeyboardMarkup <$> o .: "keyboard"
@@ -644,8 +643,8 @@ instance FromJSON ReplyKeyboard where
 
 instance FromJSON KeyboardButton where
   parseJSON (Object o)
-    | HM.lookup "request_contact" o  == Just (Bool True) = ContactButton <$> o .: "text"
-    | HM.lookup "request_location" o == Just (Bool True) = LocationButton <$> o .: "text"
+    | KM.lookup "request_contact" o  == Just (Bool True) = ContactButton <$> o .: "text"
+    | KM.lookup "request_location" o == Just (Bool True) = LocationButton <$> o .: "text"
     | otherwise = TextButton <$> o .: "text"
   parseJSON wat = typeMismatch "KeyboardButton" wat
 

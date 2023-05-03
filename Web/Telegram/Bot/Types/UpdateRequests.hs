@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 -- | This module contains data objects which represents requests to update messages to Telegram Bot API
 module Web.Telegram.Bot.Types.UpdateRequests where
 
@@ -23,7 +24,7 @@ data EditMessageTextRequest =
   , edit_text_disable_web_page_preview :: Bool                       -- ^ Disables link previews for links in this message
   , edit_text_parse_mode               :: Maybe ParseMode            -- ^ Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
   , edit_text_reply_markup             :: Maybe InlineKeyboardMarkup -- ^ A JSON-serialized object for an inline keyboard.
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents request for 'editMessageCaption'
 -- | Use this method to edit captions of messages sent by the bot or via the bot (for inline bots). On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
@@ -38,10 +39,10 @@ data EditMessageCaptionRequest =
   { edit_caption_inline_message_id :: Text                       -- ^ Identifier of the inline message
   , edit_caption_caption           :: Text                       -- ^ New caption of the message
   , edit_caption_reply_markup      :: Maybe InlineKeyboardMarkup -- ^ A JSON-serialized object for an inline keyboard.
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)
 
 -- | This object represents request for 'editMessageReplyMarkup'
--- | Use this method to edit only the reply markup of messages sent by the bot or via the bot (for inline bots). On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned. 
+-- | Use this method to edit only the reply markup of messages sent by the bot or via the bot (for inline bots). On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
 data EditMessageReplyMarkupRequest =
   EditMessageReplyMarkupRequest
   { edit_reply_markup_chat_id      :: Text                       -- ^ Unique identifier for the target chat or username of the target channel (in the format @channelusername)
@@ -51,4 +52,4 @@ data EditMessageReplyMarkupRequest =
   | EditInlineReplyMarkupRequest
   { edit_reply_markup_inline_message_id :: Text                       -- ^ Identifier of the inline message
   , edit_reply_markup_reply_markup      :: Maybe InlineKeyboardMarkup -- ^  A JSON-serialized object for an inline keyboard.
-  } deriving (Eq, Show)
+  } deriving stock (Eq, Show)

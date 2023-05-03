@@ -1,12 +1,7 @@
-module Web.Telegram.Bot.Requests
-    ( module Web.Telegram.Bot.Types.Requests
-    , module Web.Telegram.Bot.Types.UpdateRequests
-    , module Web.Telegram.Bot.Instances.Requests
-    , module Web.Telegram.Bot.Instances.UpdateRequests
-    ) where
+module Web.Telegram.Bot.Requests (module ALL) where
 
 
-import           Web.Telegram.Bot.Types.Requests
-import           Web.Telegram.Bot.Types.UpdateRequests
-import           Web.Telegram.Bot.Instances.Requests()
-import           Web.Telegram.Bot.Instances.UpdateRequests()
+import           Web.Telegram.Bot.Types.Requests as ALL
+import           Web.Telegram.Bot.Types.UpdateRequests as ALL
+import           Web.Telegram.Bot.Instances.Requests as ALL ()
+import           Web.Telegram.Bot.Instances.UpdateRequests as ALL ()
